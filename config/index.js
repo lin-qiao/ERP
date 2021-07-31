@@ -1,0 +1,8 @@
+module.exports =  {
+	app_key: '8f67f8d29f2249ff8d1c5618845195da',
+	app_secret: '10638f3b5d2141c095574d512ab44a232386c23b6169491aa02453b87d1fcf2f'
+	// app_key: 'a4a75d0755e149e09f284ec6f15586e0',
+	// app_secret: '5765df75b65e45b5bbb1782f54250319'
+
+
+}
