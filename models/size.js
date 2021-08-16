@@ -19,7 +19,7 @@ const findAndCountAll = async function(page, size, uid) {
 }
 
 
-const findByName = async function(name, uid) { 
+const findByName = async function(name, uid) {
 	return model.findOne({
 		where: {
 			user_id: uid,

@@ -1,6 +1,7 @@
 const {
 	Op,
 	DataTypes,
+	Sequelize
 } = require("sequelize");
 const sequelize = require('../config/db.js'); // 引入todolist的表结构
 const purchaseSchema = '../schema/purchase.js';
@@ -11,7 +12,14 @@ const purchaseModel = require(purchaseSchema)(sequelize, DataTypes)
 const purchaseGoodsModel = require(purchaseGoodsSchema)(sequelize, DataTypes)
 const goodsModel = require(goodsSchema)(sequelize, DataTypes)
 const sizeModel = require(sizeSchema)(sequelize, DataTypes)
-const findAndCountAll = async function(page, size, status, createTimeBegin, createTimeEnd, supplierId, itemType, uid) {
+
+purchaseModel.hasMany(purchaseGoodsModel, {
+	foreignKey: 'purchase_sn',
+	sourceKey: 'purchase_sn',
+	as: 'purchaseGoods'
+})
+
+const findAll = async function(page, size, status, createTimeBegin, createTimeEnd, supplierId, itemType, uid) {
 	const where = {
 		'item_type': itemType,
 		'status': status,
@@ -27,8 +35,28 @@ const findAndCountAll = async function(page, size, status, createTimeBegin, crea
 		where['supplier_id'] = supplierId
 	}
 	
-	return purchaseModel.findAndCountAll({
+	return purchaseModel.findAll({
 		where: where,
+		attributes: [
+			'id',
+			'status',
+			['purchase_sn', 'purchaseSn'],
+			['item_type', 'itemType'],
+			['create_time', 'createTime'],
+			[Sequelize.fn('SUM', Sequelize.col('purchaseGoods.quantity')), 'totalNumber'],
+			[Sequelize.fn('SUM', Sequelize.col('purchaseGoods.amount')), 'totalPrice'],
+		],
+		include: [
+			{
+		
+				model: purchaseGoodsModel,
+				as: 'purchaseGoods',
+				attributes: [],
+				duplicating:false,
+			},
+		
+		],
+		group: 'id',
 		limit: size,
 		offset: size * (page - 1),
 		order: [
@@ -37,6 +65,32 @@ const findAndCountAll = async function(page, size, status, createTimeBegin, crea
 	})
 }
 
+/**
+  * @description获取商品总数
+  * @param 
+  * @return 
+  */
+
+const findCount = async(status, createTimeBegin, createTimeEnd, supplierId, itemType, uid) => {
+	const where = {
+		'item_type': itemType,
+		'status': status,
+		'user_id': uid,
+	}
+	if(createTimeBegin && createTimeEnd){
+		where['create_time'] = {
+			[Op.between]: [createTimeBegin, createTimeEnd]
+		}
+	}
+	
+	if(supplierId){
+		where['supplier_id'] = supplierId
+	}
+	
+	return purchaseModel.count({
+		where: where
+	})
+} 
 /**
  * @description  添加数据
  * @param purchaseSn 订单号
@@ -86,7 +140,8 @@ const findOne = async function(purchaseSn){
 	})
 }
 module.exports = {
-	findAndCountAll,
+	findAll,
+	findCount,
 	create,
 	changeStatus,
 	findOne

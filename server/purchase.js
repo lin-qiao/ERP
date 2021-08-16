@@ -20,15 +20,12 @@ const purchaseList = async function(ctx) {
 		supplierId = '', 
 	} = ctx.query;
 	const uid = ctx.session.user_id;
-	const {
-		count,
-		rows
-	} = await purchaseModel.findAndCountAll(parseInt(page), parseInt(size), status, createTimeBegin, createTimeEnd, supplierId, itemType, uid)
+	const data = await purchaseModel.findAll(parseInt(page), parseInt(size), status, createTimeBegin, createTimeEnd, supplierId, itemType, uid)
+	const count = await purchaseModel.findCount(status, createTimeBegin, createTimeEnd, supplierId, itemType, uid);
 
-	const list = util.filterUnderLine(rows)
 	ctx.body = {
 		code: 200,
-		data: list,
+		data: data,
 		total: count,
 		message: '请求成功'
 	}
@@ -165,8 +162,7 @@ const purchaseBackout = async function(ctx) {
 	const uid = ctx.session.user_id;
 	
 	try{
-		// 修改订单状态
-		await purchaseModel.changeStatus(2, purchaseSn);
+		
 		// 撤销库存
 		const data = await purchaseGoodsModel.findAll(purchaseSn)
 		
@@ -194,9 +190,13 @@ const purchaseBackout = async function(ctx) {
 			}
 			await stockModel.updateStock(total_price, cost_price, number, item.goods_id, item.size_id, uid)
 			
-			// 删除流水数据
-			await businessFlowModel.destroy(purchaseSn);
+		
 		}
+		// 修改订单状态
+		await purchaseModel.changeStatus(2, purchaseSn);
+		
+		// 删除流水数据
+		await businessFlowModel.destroy(purchaseSn);
 		
 		ctx.body = {
 			code: 200,

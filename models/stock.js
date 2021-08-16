@@ -105,6 +105,7 @@ const findByGoodsId = async function(goodsId, uid) {
 			'goods_id': goodsId,
 			'user_id': uid
 		},
+		order: Sequelize.literal('`sizeName` ASC'),
 		include: [{
 			model: sizeModel,
 			as: 'sizes',

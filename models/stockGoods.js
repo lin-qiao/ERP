@@ -27,7 +27,7 @@ goodsModel.hasMany(stockModel, {
  * @param 
  * @return 
  */
-const findAndCountAllByGoods = async (page, size, goodSn, brandId, uid, order) => {
+const findAndCountAllByGoods = async (page, size, goodSn, brandId, uid, order, keywords) => {
 	const where = {
 		'user_id': uid,
 	}
@@ -37,6 +37,13 @@ const findAndCountAllByGoods = async (page, size, goodSn, brandId, uid, order) =
 	}
 	if (brandId) {
 		where['brand_id'] = brandId
+	}
+	
+	if(keywords){
+		where[Op.or] = {
+			good_sn: {[Op.substring]: keywords},
+			name: {[Op.substring]: keywords},
+		}
 	}
 	return goodsModel.findAll({
 		where: where,

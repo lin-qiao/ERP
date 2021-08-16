@@ -19,15 +19,11 @@ const saleList = async function(ctx) {
 		createTimeEnd = ''
 	} = ctx.query;
 	const uid = ctx.session.user_id;
-	const {
-		count,
-		rows
-	} = await saleModel.findAndCountAll(parseInt(page), parseInt(size), status, createTimeBegin, createTimeEnd, itemType, uid)
-
-	const list = util.filterUnderLine(rows)
+	const data = await saleModel.findAll(parseInt(page), parseInt(size), status, createTimeBegin, createTimeEnd, itemType, uid)
+	const count = await saleModel.findCount(status, createTimeBegin, createTimeEnd, itemType, uid);
 	ctx.body = {
 		code: 200,
-		data: list,
+		data: data,
 		total: count,
 		message: '请求成功'
 	}
@@ -87,6 +83,8 @@ const saleList = async function(ctx) {
 				total_price -= newCostPrice * quantity;
 				number -= quantity;
 				grossProfitPrice = amount - newCostPrice * quantity;
+				//添加库存流水
+				await businessFlowModel.create(item.goodsId, item.sizeId, 3, saleSn, price, newCostPrice, total_price, quantity, number, amount, grossProfitPrice, uid)
 			}else{
 				/* 销售退货，要按最后一次的成本处理 */
 				const { cost_price: oldCostPrice } = await businessFlowModel.findOne(item.goodsId, item.sizeId, 3, uid, null);
@@ -94,17 +92,12 @@ const saleList = async function(ctx) {
 				number += quantity;
 				newCostPrice = total_price / number;
 				grossProfitPrice =  oldCostPrice * quantity - amount;
+				//添加库存流水
+				await businessFlowModel.create(item.goodsId, item.sizeId, 4, saleSn, price, oldCostPrice, total_price, -quantity, number, amount, grossProfitPrice, uid)
 			}
-			
-			await stockModel.updateStock(total_price, newCostPrice, number, item.goodsId, item.sizeId, uid)
-			
-			console.log(amount, grossProfitPrice, 1111111)
-			//添加库存流水数据
-			if(itemType == 1){
-				await businessFlowModel.create(item.goodsId, item.sizeId, 3, saleSn, price, newCostPrice, total_price, quantity, number, amount, grossProfitPrice, uid)
-			}else{
-				await businessFlowModel.create(item.goodsId, item.sizeId, 4, saleSn, price, newCostPrice, total_price, -quantity, number, amount, grossProfitPrice, uid)				
-			}
+			// 如果number = 0;  当前商品售空， 成本单价变为0
+			await stockModel.updateStock(total_price, number > 0? newCostPrice : 0, number, item.goodsId, item.sizeId, uid)
+
 			
 		}
 		let message;
@@ -161,8 +154,7 @@ const saleBackout = async function(ctx) {
 	const uid = ctx.session.user_id;
 	
 	try{
-		// 修改订单状态
-		await saleModel.changeStatus(2, saleSn);
+		
 		// 撤销库存
 		const data = await saleGoodsModel.findAll(saleSn)
 		
@@ -189,9 +181,13 @@ const saleBackout = async function(ctx) {
 			
 			await stockModel.updateStock(total_price, cost_price, number, item.goods_id, item.size_id, uid)
 			
-			// 删除流水数据
-			await businessFlowModel.destroy(saleSn);
+			
+
 		}
+		// 修改订单状态
+		await saleModel.changeStatus(2, saleSn);
+		// 删除流水数据
+		await businessFlowModel.destroy(saleSn);
 		
 		ctx.body = {
 			code: 200,

@@ -69,6 +69,7 @@ const findAndCountAll = async function(page, size, goodsId, sizeId, createTimeBe
 			['total_price', 'totalPrice'],
 			['user_id', 'userId'],
 			[Sequelize.col('goods.name'), 'goodsName'],
+			[Sequelize.col('goods.img_url'), 'imgUrl'],
 			[Sequelize.col('goods.good_sn'), 'goodsSn'],
 			[Sequelize.col('size.size_name'), 'sizeName'],
 		],
@@ -84,7 +85,6 @@ const findAndCountAll = async function(page, size, goodsId, sizeId, createTimeBe
 			},
 		],
 		order:[
-			['goods_id', 'DESC'],
 			['create_time', 'DESC'],
 		],
 		limit: size,

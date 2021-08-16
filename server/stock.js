@@ -1,6 +1,7 @@
 const stockModel = require('../models/stock');
 const stockGoodsModel = require('../models/stockGoods');
 const brandModel = require('../models/brand');
+const goodsModel = require('../models/goods');
 const sizeModel = require('../models/size');
 const util = require('../util/index');
 /**
@@ -38,13 +39,14 @@ const stockGoodsList = async function(ctx) {
  	const {
  		page = 1, 
 		size = 10,
+		keywords = '',
 		goodSn = '',
 		order = '',
 		brandId = ''
  	} = ctx.query;
  	const uid = ctx.session.user_id;
 	try{
-		const data = await stockGoodsModel.findAndCountAllByGoods(parseInt(page), parseInt(size), goodSn, brandId, uid, order);
+		const data = await stockGoodsModel.findAndCountAllByGoods(parseInt(page), parseInt(size), goodSn, brandId, uid, order, keywords);
 		const total = await stockGoodsModel.findCount(goodSn, brandId, uid);
 		for (let i = 0; i < data.length; i++) {
 			const obj = data[i].dataValues;
@@ -88,11 +90,12 @@ const getGoodsStock = async function(ctx){
 	
 	const uid = ctx.session.user_id;
 	try{
+		const detail = await goodsModel.findByGoodsId(goodsId);
 		const data = await stockModel.findByGoodsId(goodsId, uid);
-		console.log(data)
 		ctx.body = {
 			code: 200,
 			data: data,
+			detail: detail,
 			message: '请求成功'
 		}
 	}catch(e){

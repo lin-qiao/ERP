@@ -64,7 +64,7 @@ const userLogin = async function(ctx) {
 		message: '登录成功',
 		data: user,
 		token: jsonwebtoken.sign(user, 'ht', {
-			expiresIn: '1d'
+			expiresIn: '365d'
 		}),
 	}
 }
