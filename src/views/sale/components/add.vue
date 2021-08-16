@@ -121,7 +121,7 @@
 				    </el-table-column>
 			</el-table>
 			<div class="operation">
-				<el-button type="primary" @click="onSubmit">采购</el-button>
+				<el-button type="primary" @click="onSubmit">销售</el-button>
 			</div>
 		</el-form>
 	</el-card>

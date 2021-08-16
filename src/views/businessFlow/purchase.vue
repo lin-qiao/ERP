@@ -192,7 +192,9 @@
 			  * @return 
 			  */
 			const getPurchaseCount = async () => {
-				const { code, data } = await VE_API.businessFlow.purchaseCount();
+				const { code, data } = await VE_API.businessFlow.purchaseCount({
+					type: type.value
+				});
 				if(code == 200){
 					count.value = data;
 				}

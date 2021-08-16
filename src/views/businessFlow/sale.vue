@@ -214,7 +214,9 @@
 			  * @return 
 			  */
 			const getSaleCount = async () => {
-				const { code, data } = await VE_API.businessFlow.saleCount();
+				const { code, data } = await VE_API.businessFlow.saleCount({
+					type: type.value
+				});
 				if(code == 200){
 					count.value = data;
 				}

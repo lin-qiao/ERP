@@ -3,7 +3,7 @@
 		<template #header>
 			<div class="card-header">
 				<span>销售单</span>
-				<el-button type="primary" size="small" @click="handleAdd">新增采购</el-button>
+				<el-button type="primary" size="small" @click="handleAdd">新增销售</el-button>
 			</div>
 		</template>
 

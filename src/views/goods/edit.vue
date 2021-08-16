@@ -34,6 +34,13 @@
 			        </el-option>
 			      </el-select>
 			</el-form-item>
+			<el-form-item label="商品名称" prop="name">
+			    <el-input
+			        clearable
+			        v-model="name"
+			        placeholder="请选择商品名称"
+			    ></el-input>
+			</el-form-item>
 			<el-form-item label="商品货号" prop="goodSn">
 			    <el-input
 			        clearable
@@ -264,7 +271,7 @@
 				        	    imgUrl: imgUrl.value.trim(),
 				        	    brandId: brandId.value,
 				        	    sizeIds: sizeIds.value.join(),
-				        	    purchasePrice: Number(purchasePrice.value)
+				        	    purchasePrice: Number(purchasePrice.value) || 0
 				        	});
 				        } else {
 				            res = await VE_API.goods.goodsAdd({
@@ -273,7 +280,7 @@
 								imgUrl: imgUrl.value.trim(),
 								brandId: brandId.value,
 								sizeIds: sizeIds.value.join(),
-								purchasePrice: Number(purchasePrice.value)
+								purchasePrice: Number(purchasePrice.value) || 0
 							});
 				        }
 				        const { code, message } = res;
