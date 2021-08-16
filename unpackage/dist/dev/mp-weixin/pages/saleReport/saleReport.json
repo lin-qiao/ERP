@@ -1,0 +1,11 @@
+{
+  "navigationBarTitleText": "销售报表",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "com-tab": "/uni_modules/com-tab/components/com-tab/com-tab",
+    "mescroll-body": "/uni_modules/mescroll-uni/components/mescroll-body/mescroll-body",
+    "uni-collapse": "/uni_modules/uni-collapse/components/uni-collapse/uni-collapse",
+    "uni-collapse-item": "/uni_modules/uni-collapse/components/uni-collapse-item/uni-collapse-item",
+    "uni-tag": "/uni_modules/uni-tag/components/uni-tag/uni-tag"
+  }
+}

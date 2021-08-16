@@ -1,0 +1,24 @@
+{
+  "setting": {},
+  "condition": {
+    "plugin": {
+      "list": []
+    },
+    "game": {
+      "list": []
+    },
+    "gamePlugin": {
+      "list": []
+    },
+    "miniprogram": {
+      "list": [
+        {
+          "name": "pages/saleReport/saleReport",
+          "pathName": "pages/saleReport/saleReport",
+          "query": "saleSn=PH162860823056785",
+          "scene": null
+        }
+      ]
+    }
+  }
+}
