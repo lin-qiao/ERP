@@ -62,7 +62,13 @@
 					<text>销售报表</text>
 				</view>
 		    </uni-grid-item>
-		    <uni-grid-item :index="2">
+			<uni-grid-item :index="2">
+				<view class="grid-item no-bottom-border">
+					<image src="../../static/11.png"></image>
+					<text>商品销售报表</text>
+				</view>
+			</uni-grid-item>
+		    <uni-grid-item :index="3">
 		        <view class="grid-item no-bottom-border">
 		        	<image src="../../static/10.png"></image>
 		        	<text>采购报表</text>
@@ -74,15 +80,29 @@
 </template>
 
 <script>
+	import { supplierList } from '../../api/index.js'
 	export default {
 		data() {
 			return {
-
 			}
 		},
 		onLoad() {
+			this.getSupplierList()
 		},
 		methods: {
+			/**
+			 * @description 供应商列表
+			 * @param 
+			 * @return 
+			 */
+			getSupplierList(){
+				uni.showLoading()
+				supplierList({page:1, size: 100}).then(res => {
+					wx.setStorageSync('supplierList', res.data)
+				}).finally(() => {
+					uni.hideLoading()
+				})
+			},
 			changeSale(e){
 				let { index } = e.detail;
 				index = Number(index);
@@ -158,6 +178,10 @@
 						type = 1;
 						break;
 					case 2:
+						url = '/pages/goodsSaleReport/goodsSaleReport';
+						type = 1;
+						break;
+					case 3:
 						url = '/pages/purchaseReport/purchaseReport';
 						type = 1;
 						break;

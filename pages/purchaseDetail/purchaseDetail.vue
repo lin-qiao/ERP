@@ -30,6 +30,10 @@
 				<text class="text">{{detail.purchaseSn}}</text>
 			</view>
 			<view class="basic-item">
+				<text class="name">供货商：</text>
+				<text class="text">{{detail.supplierName}}</text>
+			</view>
+			<view class="basic-item">
 				<text class="name">业务时间：</text>
 				<text class="text">{{dataFormat(detail.createTime, 'yyyy-MM-dd hh:mm:ss')}}</text>
 			</view>

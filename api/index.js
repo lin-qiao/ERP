@@ -18,3 +18,7 @@ export const saleCount =  (data) => request('GET', '/api/saleCount', data);
 export const purchaseStatList =  (data) => request('GET', '/api/purchaseStatList', data); 
 export const purchaseCount =  (data) => request('GET', '/api/purchaseCount', data);
 export const userInfo =  (data) => request('GET', '/api/userInfo', data);
+export const supplierList =  (data) => request('GET', '/api/supplierList', data);
+
+
+export const goodsSaleStatList =  (data) => request('GET', '/api/goodsSaleStatList', data); 

@@ -41,7 +41,7 @@
 									</view>
 									<view class="info">
 										<view class="sn">（{{item.goodsSn}}) - {{item.sizeName}}</view>
-										<view class="price">{{formatMoney(item.totalBusinessPrice)}}</view>
+										<view class="price">￥ {{formatMoney(item.totalBusinessPrice)}}</view>
 									</view>
 								</view>
 								
@@ -51,7 +51,7 @@
 							</view>
 							<view class="time">
 								<view class="t">业务时间：{{dataFormat(item.createTime, 'yyyy-MM-dd hh:mm:ss')}}</view>
-								<view class="gross">毛利：<text :class="item.grossProfitPrice > 0? 'just': 'negative'">{{formatMoney(item.grossProfitPrice)}}</text></view>
+								<view class="gross">毛利：<text :class="item.grossProfitPrice > 0? 'just': 'negative'">{{item.grossProfitPrice > 0? '+' : ''}}{{formatMoney(item.grossProfitPrice)}}</text></view>
 							</view>
 						</view>
 					</template>
@@ -132,6 +132,7 @@
 			tabChange(index){
 				this.params.type = this.tabList[index].type;
 				this.reset()
+				this.getCount()
 			},
 			upCallback(page) {
 				this.params.page = page.num;
@@ -271,7 +272,7 @@
 				}
 				.price{
 					font-size: 32rpx;
-					color: $uni-color-warning;
+					color: $uni-color-error;
 				}
 			}
 		}

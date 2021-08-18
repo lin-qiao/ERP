@@ -354,7 +354,7 @@
 	.uni-card__header-title-text {
 		font-size: $uni-font-size-lg;
 		flex: 1;
-		color: #333;
+		color: #999;
 	}
 
 	.uni-card__header-extra-img {

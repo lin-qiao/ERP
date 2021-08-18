@@ -1,5 +1,11 @@
 <template>
 	<view>
+		<view class="form">
+			<view class="form-item">
+				<view class="label">供应商</view>
+				<input type="text" v-model="supplierName" disabled @click="handleSelectSupplier"/>
+			</view>
+		</view>
 		<uni-card class="select-goods" title="选择商品">
 		    <view class="goods-list">
 				<view class="goods-item" v-for="(item, index) in selectGoods" :key="item.goodsId">
@@ -72,13 +78,25 @@
 	export default {
 		data() {
 			return {
+				supplierId: '',
+				supplierName: '',
 				selectGoods: [],
 				curGoods: {},
 				stockList:[]
 			}
 		},
 		onShow() {
-			this.selectGoods = wx.getStorageSync('selectGoods') || [];
+			this.selectGoods = uni.getStorageSync('selectGoods') || [];
+			
+			const supplierList = uni.getStorageSync('supplierList');
+			const supplier = uni.getStorageSync('supplier');
+			if(supplier){
+				this.supplierId = supplier.id;
+				this.supplierName = supplier.supplierName;
+			}else{
+				this.supplierId = supplierList[0].id;
+				this.supplierName = supplierList[0].supplierName;
+			}
 		},
 		computed:{
 			totalNumber(){
@@ -102,9 +120,19 @@
 			}
 		},
 		methods: {
+			/**
+			 * @description 点击
+			 * @param 
+			 * @return 
+			 */
+			handleSelectSupplier(){
+				uni.navigateTo({
+					url: '/pages/selectSupplier/selectSupplier'
+				})
+			},
 			handleAdd(){
 				uni.navigateTo({
-					url: '/pages/selectGoods/selectGoods'
+					url: '/pages/selectGoods/selectGoods?type=1'
 				})
 			},
 			/**
@@ -169,7 +197,7 @@
 			  */
 			handleDei(index){
 				this.selectGoods.splice(index, 1);
-				wx.setStorageSync('selectGoods', this.selectGoods)
+				uni.setStorageSync('selectGoods', this.selectGoods)
 			},
 			
 			/**
@@ -200,6 +228,8 @@
 				uni.showLoading()
 				purchaseAdd({
 					itemType: 2,
+					supplierId: this.supplierId,
+					supplierName: this.supplierName,
 					goods: arr
 				}).then(({data}) => {
 					uni.removeStorageSync('selectGoods');
@@ -208,7 +238,7 @@
 						success:() => {
 							setTimeout(() => {
 								uni.navigateTo({
-									url: '/pages/purchaseReturnDetail/purchaseReturnDetail?purchaseSn=' + data.purchaseSn
+									url: '/pages/purchaseDetail/purchaseDetail?purchaseSn=' + data.purchaseSn
 								})
 							}, 1500)
 						}
@@ -222,6 +252,25 @@
 </script>
 
 <style lang="scss" scoped>
+	.form{
+		margin-bottom: 20rpx;
+		.form-item{
+			padding: $uni-spacing-col-lg;
+			font-size: 32rpx;
+			color: #333;
+			display: flex;
+			background-color: #fff;
+			view{
+				width: 200rpx;
+				color: #999;
+			}
+			input{
+				flex:1;
+				font-size: 32rpx;
+				padding-left: 24rpx;
+			}
+		}
+	}
 	.select-goods{
 		/deep/ .uni-card{
 			margin: 0;

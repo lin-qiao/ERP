@@ -37,7 +37,7 @@
 									</view>
 									<view class="info">
 										<view class="sn">（{{item.goodsSn}}) - {{item.sizeName}}</view>
-										<view class="price">{{formatMoney(item.totalBusinessPrice)}}</view>
+										<view class="price">￥ {{formatMoney(item.totalBusinessPrice)}}</view>
 									</view>
 								</view>
 								
@@ -122,12 +122,14 @@
 			},
 			tabChange(index){
 				this.params.type = this.tabList[index].type;
-				this.reset()
+				this.reset();
+				this.getCount();
 			},
 			upCallback(page) {
 				this.params.page = page.num;
 				this.params.size = page.size;
 				this.getData()
+				
 			},
 			reset(){
 				uni.pageScrollTo({
@@ -262,7 +264,7 @@
 				}
 				.price{
 					font-size: 32rpx;
-					color: $uni-color-warning;
+					color: $uni-color-error;
 				}
 			}
 		}

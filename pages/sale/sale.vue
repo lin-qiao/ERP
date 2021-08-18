@@ -78,7 +78,7 @@
 			}
 		},
 		onShow() {
-			this.selectGoods = wx.getStorageSync('selectGoods') || [];
+			this.selectGoods = uni.getStorageSync('selectGoods') || [];
 		},
 		computed:{
 			totalNumber(){
@@ -169,7 +169,7 @@
 			  */
 			handleDei(index){
 				this.selectGoods.splice(index, 1);
-				wx.setStorageSync('selectGoods', this.selectGoods)
+				uni.setStorageSync('selectGoods', this.selectGoods)
 			},
 			
 			/**

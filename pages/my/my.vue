@@ -30,8 +30,8 @@
 				    content: '你确定要退出登录？',
 				    success: (res) => {
 				        if (res.confirm) {
-				            wx.removeStorageSync('token');
-				            wx.redirectTo({
+				            uni.removeStorageSync('token');
+				            uni.redirectTo({
 				            	url: '/pages/login/login'
 				            })
 				        }

@@ -9,7 +9,7 @@
 				</view>
 			</view>
 		</view>
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" top="166" @down="downCallback" :up="upOption" @up="upCallback">
+		<mescroll-body ref="mescrollRef" @init="mescrollInit" top="166" bottom="88" @down="downCallback" :up="upOption" @up="upCallback">
 			<view class="goods-list">
 				<view class="goods-item" v-for="item in goodsList" :key="item.goodsId"  hover-class="none" @click="handleAdd(item)">
 					<view class="img">
@@ -68,6 +68,7 @@
 		mixins: [MescrollMixin], // 使用mixin
 		data() {
 			return {
+				type:2,
 				navList: [
 					{
 						type: '',
@@ -120,6 +121,11 @@
 				return this.stockList.reduce((total, item) => {
 					return total + Number(item.quantity)
 				}, 0)
+			}
+		},
+		onLoad(options) {
+			if(options.type){
+				this.type = options.type;
 			}
 		},
 		methods: {
@@ -177,7 +183,7 @@
 					this.total = total;
 					this.mescroll.endBySize(data.length, total);
 					if(this.params.page == 1) this.goodsList = []; 
-					const selectGoods = wx.getStorageSync('selectGoods') ||  [];
+					const selectGoods = uni.getStorageSync('selectGoods') ||  [];
 					data.forEach(item => {
 						const filter = selectGoods.filter(obj => obj.goodsId == item.goodsId);
 						if(filter.length){
@@ -209,7 +215,7 @@
 			 handleAdd(item){
 				 this.$refs.popup.open('bottom');
 				 this.curGoods = item;
-				 this.getGoodsStock(item.goodsId);
+				 this.getGoodsStock(item);
 			 },
 			 /**
 			  * @description 获取库存
@@ -217,21 +223,29 @@
 			  * @return 
 			  */
 			 
-			 getGoodsStock(id){
-				 getGoodsStock({goodsId: id}).then(res => {
+			 getGoodsStock({goodsId, purchasePrice}){
+				 uni.showLoading()
+				 getGoodsStock({goodsId: goodsId}).then(res => {
 					 const sizeList = this.curGoods.sizeList;
 					 res.data.forEach(item => {
 						 const filter = sizeList.filter(obj => obj.sizeId == item.sizeId);
 						 if(filter.length){
 							 item.quantity = filter[0].quantity;
-							 item. price = filter[0].price;
+							 item.price = filter[0].price;
 						 }else{
 							 item.quantity = 0;
-							 item. price = 0;
+							 if(this.type == 1){
+								 item.price = purchasePrice;
+							 }else{
+								 item.price = 0;
+							 }
 						 }
 					 })
 					this.stockList = res.data;
-				 })
+				 }).finally(() => {
+					uni.hideLoading()
+				})
+				 
 			 },
 			 /**
 			   * @description 选择商品
@@ -247,7 +261,7 @@
 					 sizeName: item.sizeName,
 					 sizeId: item.sizeId,
 					 quantity: item.quantity,
-					 price: 0
+					 price: item.price
 				 }));
 				 this.goodsList.forEach(item => {
 					 if(item.goodsId == this.curGoods.goodsId){
@@ -266,7 +280,7 @@
 			   */
 			 handleConfirmAll(){
 				 const selectGoods = this.goodsList.filter(item => item.total != 0);
-				 wx.setStorageSync('selectGoods', selectGoods)
+				 uni.setStorageSync('selectGoods', selectGoods)
 				 uni.navigateBack()
 			 }
 		}
