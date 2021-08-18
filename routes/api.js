@@ -77,6 +77,8 @@ router.get('/saleCount', businessFlow.saleCount)
 router.get('/purchaseStatList', businessFlow.purchaseStatList)
 //采购统计
 router.get('/purchaseCount', businessFlow.purchaseCount)
+//商品销售报表
+router.get('/goodsSaleStatList', businessFlow.goodsSaleStatList)
 //销售列表
 router.get('/saleList', sale.saleList)
 //添加销售

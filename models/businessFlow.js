@@ -19,6 +19,66 @@ businessFlowModel.belongsTo(sizeModel, {
 	foreignKey: 'size_id',
 	as: 'size'
 });
+const findAllGoods = async function(page, size, createTimeBegin, createTimeEnd, uid, flowType, order) {
+	console.log(order,111111111111111)
+	const where = {
+		'user_id': uid
+	}
+	
+	if(flowType) {
+		switch (flowType){
+			case 'sale':
+				where['flow_type'] = {
+					[Op.or]: [3, 4]
+				};
+				break;
+			case 'purchase':
+				where['flow_type'] = {
+					[Op.or]: [1, 2]
+				};
+				break;
+		}
+	}
+	
+	if(!!createTimeBegin && !!createTimeEnd){
+		where['create_time'] = {
+			[Op.between]: [createTimeBegin, createTimeEnd]
+		}
+	}
+
+	return businessFlowModel.findAll({
+		where: where,
+		attributes: [
+			[Sequelize.col('goods.name'), 'goodsName'],
+			[Sequelize.col('goods.img_url'), 'imgUrl'],
+			[Sequelize.col('goods.good_sn'), 'goodsSn'],
+			[Sequelize.fn('SUM', Sequelize.col('number')), 'number'],
+			[Sequelize.fn('SUM', Sequelize.col('gross_profit_price')), 'grossProfitPrice'],
+			[Sequelize.literal('sum(`number` * `business_price`)'), 'businessPriceToTal'],
+			[Sequelize.literal('sum(`number` * `cost_price`)'), 'costPriceTotal'],
+			[Sequelize.literal('sum(`number` * `business_price`) / sum(`number`)'), 'businessPrice'],
+			[Sequelize.literal('sum(`number` * `cost_price`) / sum(`number`)'), 'costPrice'],
+			[Sequelize.literal('sum(`gross_profit_price`) / sum(`number` * `business_price`) * 100'), 'grossProfitRate'],
+			 
+		],
+		include: [
+			{
+				model: goodsModel,
+				as:'goods',
+				attributes: [],
+			}
+		],
+		order: order ? Sequelize.literal(order) : null,
+		group:'goods_id',
+		limit: size,
+		offset: size * (page - 1)
+	})
+}
+/**
+  * @description  查询列表
+  * @param 
+  * @return 
+  */
 const findAndCountAll = async function(page, size, goodsId, sizeId, createTimeBegin, createTimeEnd, uid, flowType = '') {
 	const where = {
 		'user_id': uid
@@ -202,5 +262,6 @@ module.exports = {
 	create,
 	destroy,
 	findOne,
-	sumNumber
+	sumNumber,
+	findAllGoods
 }

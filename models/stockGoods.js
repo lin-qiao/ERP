@@ -54,6 +54,7 @@ const findAndCountAllByGoods = async (page, size, goodSn, brandId, uid, order, k
 			['good_sn', 'goodsSn'],
 			['img_url', 'imgUrl'],
 			['name', 'goodsName'],
+			['purchase_price', 'purchasePrice'],
 			['size_ids', 'sizeIds'],
 			[Sequelize.fn('SUM', Sequelize.col('stock.number')), 'totalNumber'],
 			[Sequelize.fn('SUM', Sequelize.col('stock.total_price')), 'totalCostPrice'],

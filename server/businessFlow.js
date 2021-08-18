@@ -213,11 +213,45 @@ const purchaseCount = async function(ctx) {
 
 }
 
+/**
+ * 商品销售报表
+ * @param { page } 页数
+ * @param { size } 条数
+ */
+const goodsSaleStatList = async function(ctx) {
+	const {
+		page = 1,
+		size = 10,
+		type = 'thisMonth',	
+		order = ''
 
+	} = ctx.query;
+	const uid = ctx.session.user_id;
+	let createTimeBegin, createTimeEnd;
+	if(type == 'thisMonth'){
+		createTimeBegin = date.getMonthStartDate() + ' 00:00:00';
+		createTimeEnd =  date.getMonthEndDate() + ' 23:59:59';
+	}else if(type == 'thisYear'){
+		createTimeBegin = date.getYearStartDate() + ' 00:00:00';
+		createTimeEnd =  date.getYearEndDate() + ' 23:59:59';
+	}else if(type == 'all'){
+		createTimeBegin = '';
+		createTimeEnd = '';
+	}
+	const data = await businessFlowModel.findAllGoods(parseInt(page), parseInt(size), createTimeBegin,
+		createTimeEnd, uid, 'sale', order)
+	ctx.body = {
+		code: 200,
+		data: data,
+		// total: count,
+		message: '请求成功'
+	}
+}
 module.exports = {
 	businessFlowList,
 	saleStatList,
 	saleCount,
 	purchaseStatList,
-	purchaseCount
+	purchaseCount,
+	goodsSaleStatList
 }
