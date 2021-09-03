@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "销售历史",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "com-tab": "/uni_modules/com-tab/components/com-tab/com-tab",
-    "mescroll-body": "/uni_modules/mescroll-uni/components/mescroll-body/mescroll-body"
-  }
-}
