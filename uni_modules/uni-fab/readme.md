@@ -61,7 +61,7 @@
 |  参数				|    类型	| 默认值	| 说明				|
 | :-:				|  :-:		| :-:		| :-:				|
 | color				| String	| #3c3e49	| 文字默认颜色		|
-| selectedColor		| String	| #007AFF	| 文字选中时的颜色	|
+| selectedColor		| String	| #01c2c3	| 文字选中时的颜色	|
 | backgroundColor	| String	| #ffffff	| 背景色			|
 | buttonColor		| String	| #3c3e49	| 按钮背景色		|
 

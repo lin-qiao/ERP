@@ -13,14 +13,27 @@
 			<view class="goods-list">
 				<view class="goods-item" v-for="item in goodsList" :key="item.goodsId"  hover-class="none" @click="handleAdd(item)">
 					<view class="img">
-						<image :src="item.imgUrl" mode="widthFix"></image>
+						<image :src="item.imgUrl" ></image>
 						<view class="number" v-if="item.total!= 0">{{item.total}}</view>
 					</view>
 					<view class="con">
 						<view class="goods-tit">{{item.goodsName}}</view>
 						<view class="goods-sn">{{item.goodsSn}}</view>
-						<view class="goods-price" v-if="item.totalNumber == 0">0.00</view>
-						<view class="goods-price" v-else>{{formatMoney(item.totalCostPrice / item.totalNumber )}}</view>
+						<view class="goods-price">
+							<view class="goods-price-item">
+								<text class="number" v-if="item.totalNumber == 0">0.00</text>
+								<text class="number" v-else>{{formatMoney(item.totalCostPrice / item.totalNumber )}}</text>
+								<text class="text">采购均价</text>
+							</view>
+							<view class="goods-price-item">
+								<text class="number">{{formatMoney(item.totalCostPrice)}}</text>
+								<text class="text">总成本</text>
+							</view>
+							<view class="goods-price-item">
+								<text class="number">{{item.totalNumber}}</text>
+								<text class="text">库存量</text>
+							</view>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -29,7 +42,7 @@
 			<scroll-view class="goods-popup" scroll-y>
 				<view class="goods-item">
 					<view class="img">
-						<image :src="curGoods.imgUrl" mode="widthFix"></image>
+						<image :src="curGoods.imgUrl" ></image>
 					</view>
 					<view class="con">
 						<view class="goods-tit">{{curGoods.goodsName}}</view>
@@ -74,7 +87,7 @@
 						type: '',
 						icon: '',
 						selectIcon: '',
-						name: '',
+						name: 'createTime',
 						label: '默认'
 					},
 					{
@@ -91,7 +104,7 @@
 						selectIcon: 'arrowthinup',
 						label: '库存量'
 					}
-				],
+				], 
 				upOption:{
 					
 					empty:{
@@ -103,7 +116,7 @@
 					page: 1,
 					size: 10,
 					keywords: '',
-					order: '',
+					order: 'createTime desc',
 				},
 				goodsList: [],
 				total:0,
@@ -149,7 +162,7 @@
 				const obj = this.navList[index];
 				if(index == 0){
 					obj.type = 'desc';
-					this.params.order = '';
+					this.params.order = 'createTime desc';
 					this.getData();
 					return;
 				}
@@ -319,7 +332,7 @@
 	}
 	
 	.goods-item{
-		padding: 0 24rpx;
+		padding: 0 $uni-spacing-row-lg;
 		display: flex;
 		border-bottom: 1rpx solid $uni-border-color;
 		background-color: #fff;
@@ -344,6 +357,9 @@
 			}
 			image{
 				width: 150rpx;
+				height: 96rpx;
+				background: url(../../static/empty.png) no-repeat;
+				background-size: cover;
 			}
 		}
 		.con{
@@ -369,11 +385,24 @@
 				color: #333;
 			}
 			.goods-price{
-				padding: 0 10rpx;
-				line-height: 70rpx;
-				width: 100%;
-				font-size: 28rpx;
-				color: $uni-color-error;
+				display: flex;
+				.goods-price-item{
+					width: 33.33%;
+					height: 100rpx;
+					display: flex;
+					flex-direction: column;
+					align-items: center;
+					justify-content: center;
+					.number{
+						font-size: 26rpx;
+						color: $uni-color-error;
+					}
+					.text{
+						font-size: 22rpx;
+						margin-top: 5rpx;
+						color: $uni-text-color-grey;
+					}
+				}
 			}
 		}
 	}
@@ -382,7 +411,7 @@
 		padding-bottom: 88rpx;
 	}
 	.goods-size{
-		padding: 0 24rpx;
+		padding: 0 $uni-spacing-row-lg;
 		.size-nav{
 			height: 100rpx;
 			display: flex;
@@ -424,7 +453,7 @@
 			flex:1;
 			font-size: 28rpx;
 			line-height: 88rpx;
-			padding-left: 24rpx;
+			padding-left: $uni-spacing-row-lg;
 		}
 		.btn{
 			width: 150rpx;

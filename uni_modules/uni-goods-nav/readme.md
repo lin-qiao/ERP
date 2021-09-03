@@ -33,7 +33,7 @@ export default {
 			icon: 'shop',
 			text: '店铺',
 			info: 2,
-			infoBackgroundColor:'#007aff',
+			infoBackgroundColor:'#01c2c3',
 			infoColor:"red"
 		}, {
 			icon: 'cart',

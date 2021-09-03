@@ -329,7 +329,7 @@
 	}
 
 	.uni-indexed-list__menu-text--active {
-		color: #007aff;
+		color: #01c2c3;
 	}
 
 	.uni-indexed-list__alert-wrapper {

@@ -1,12 +1,13 @@
 <template>
 	<view class="bg-white">
 		<view class="goods-img">
-			<image :src="detail.img_url" mode="heightFix"></image>
+			<image :src="detail.img_url"></image>
 		</view>
 		<view class="goods-con">
 			{{detail.name}}  <text class="sn">({{detail.good_sn}})</text>
 		</view>
 		<view class="stock">
+			<view class="stock-tit stock-flow" @click="toStockFlow">查看库存变动记录（库存流水）>></view>
 			<view class="stock-tit">库存列表</view>
 			<view class="stock-list">
 				<view class="stock-item">
@@ -37,6 +38,12 @@
 			this.getGoodsStock(options.id)
 		},
 		methods: {
+			toStockFlow(){
+				uni.setStorageSync('stockSizeList', this.stockList)
+				uni.navigateTo({
+					url: '/pages/stockFlow/stockFlow?id=' + this.detail.id
+				})
+			},
 			getGoodsStock(id){
 				uni.showLoading({
 					title: '加载中...',
@@ -62,10 +69,13 @@
 	align-items: center;
 	image{
 		height: 200rpx;
+		width: 312rpx;
+		background: url(../../static/empty.png) no-repeat;
+		background-size: cover;
 	}
 }
 .goods-con{
-	padding: 20rpx 24rpx;
+	padding: $uni-spacing-col-lg $uni-spacing-row-lg;
 	line-height: 1.5;
 	font-size: 32rpx;
 	color: #333;
@@ -82,11 +92,15 @@
 	.stock-tit{
 		height: 80rpx;
 		line-height: 80rpx;
-		padding: 0 24rpx;
-		font-size: 28rpx;
+		padding: 0 $uni-spacing-row-lg;
+		font-size: 26rpx;
 		color: #333;
-		border-top: 1rpx solid $uni-border-color;
 		border-bottom: 1rpx solid $uni-border-color;
+		&.stock-flow{
+			border-top: 1rpx solid $uni-border-color;
+			color: $uni-color-primary;
+			text-align: right;
+		}
 	}
 	.stock-list{
 		.stock-item{

@@ -30,7 +30,7 @@
 <style lang="scss" scoped>
 .supplier-list{
 	.supplier-item{
-		padding: 40rpx 24rpx;
+		padding: 40rpx $uni-spacing-row-lg;
 		background-color: #fff;
 		border-bottom: 1px solid $uni-border-color;
 		.name{

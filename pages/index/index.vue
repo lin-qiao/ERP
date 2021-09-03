@@ -54,6 +54,27 @@
 			    </view>
 			</uni-grid-item>
 		</uni-grid>
+<!-- 		<uni-title type="h1" title="基础"></uni-title>
+		<uni-grid :column="3" :showBorder="false" :square="false" @change="changeBase">
+		    <uni-grid-item :index="1">
+		        <view class="grid-item no-bottom-border">
+		        	<image src="../../static/13.png"></image>
+		        	<text>尺码管理</text>
+		        </view>
+		    </uni-grid-item>
+		    <uni-grid-item :index="2">
+		        <view class="grid-item no-bottom-border">
+		        	<image src="../../static/14.png"></image>
+		        	<text>品牌管理</text>
+		        </view>
+		    </uni-grid-item>
+			<uni-grid-item :index="3">
+			    <view class="grid-item no-right-border no-bottom-border">
+			    	<image src="../../static/15.png"></image>
+			    	<text>供应商管理</text>
+			    </view>
+			</uni-grid-item>
+		</uni-grid> -->
 		<uni-title type="h1" title="统计"></uni-title>
 		<uni-grid :column="3" :showBorder="false" :square="false" @change="changeReport">
 		    <uni-grid-item :index="1">
@@ -69,7 +90,7 @@
 				</view>
 			</uni-grid-item>
 		    <uni-grid-item :index="3">
-		        <view class="grid-item no-bottom-border">
+		        <view class="grid-item no-bottom-border no-right-border">
 		        	<image src="../../static/10.png"></image>
 		        	<text>采购报表</text>
 		        </view>
@@ -195,6 +216,28 @@
 						url,
 					})
 				}
+			},
+			changeBase(){
+				let { index } = e.detail;
+				index = Number(index);
+				let url;
+				switch (index){
+					case 1:
+						url = '/pages/saleReport/saleReport';
+						break;
+					case 2:
+						url = '/pages/goodsSaleReport/goodsSaleReport';
+						break;
+					case 3:
+						url = '/pages/purchaseReport/purchaseReport';
+						break;
+					case 3:
+						url = '/pages/purchaseReport/purchaseReport';
+						break;
+				}
+				uni.navigateTo({
+					url,
+				})
 			}
 		}
 	}
@@ -202,7 +245,7 @@
 
 <style lang="scss">
 	.index{
-		height: 100vh;
+		min-height: 100vh;
 		background-color: #fff;
 	}
 	.grid-item{

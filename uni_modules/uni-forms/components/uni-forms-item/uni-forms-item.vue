@@ -2,11 +2,11 @@
 	<view class="uni-forms-item" :class="{ 'uni-forms-item--border': border, 'is-first-border': border && isFirstBorder, 'uni-forms-item-error': msg }">
 		<view class="uni-forms-item__box">
 			<view class="uni-forms-item__inner" :class="['is-direction-' + labelPos]">
-				<view class="uni-forms-item__label" :style="{ width: labelWid , justifyContent: justifyContent }">
+				<view class="uni-forms-item__label" >
 					<slot name="left">
 						<uni-icons v-if="leftIcon" class="label-icon" size="16" :type="leftIcon" :color="iconColor" />
-						<text class="label-text">{{ label }}</text>
 						<text v-if="required" class="is-required">*</text>
+						<text class="label-text">{{ label }}</text>
 						<view v-if="label" class="label-seat"></view>
 					</slot>
 				</view>
@@ -419,7 +419,7 @@ export default {
 	/* #endif */
 	flex-direction: row;
 	align-items: center;
-	width: 65px;
+	width: 80px;
 	// line-height: 2;
 	// margin-top: 3px;
 	padding: 5px 0;

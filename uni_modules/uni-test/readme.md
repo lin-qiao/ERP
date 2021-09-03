@@ -260,7 +260,7 @@ export default {
 |max					|String/Number			|-											|-			|最大选择个数 ，multiple为true时生效		|
 |wrap					|Boolean						|-											|-			|是否换行显示				|
 |icon					|String							|left/right							|left		|list 列表模式下 icon 显示的位置	|
-|selectedColor|String							|-											|#007aff|选中颜色|
+|selectedColor|String							|-											|#01c2c3|选中颜色|
 |selectedTextColor|String					|-											|#333		|选中文本颜色，如不填写则自动显示|
 
 #### Localdata Options

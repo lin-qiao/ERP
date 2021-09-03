@@ -107,7 +107,7 @@
 		width: 100%;
 		height: 70rpx;
 		border-bottom: 1px solid $uni-border-color;
-		padding: 0 24rpx;
+		padding: 0 $uni-spacing-row-lg;
 		font-size: 28rpx;
 	}
 	.btn{

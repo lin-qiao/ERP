@@ -227,7 +227,7 @@ $border-color: #ebeef5;
 	}
 	&.active {
 		::after {
-			background-color: #007aff;
+			background-color: #01c2c3;
 		}
 	}
 }
@@ -244,7 +244,7 @@ $border-color: #ebeef5;
 	}
 	&.active {
 		::after {
-			background-color: #007aff;
+			background-color: #01c2c3;
 		}
 	}
 }

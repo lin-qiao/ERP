@@ -348,7 +348,7 @@
 
 	.sale-list{
 		.sale-item{
-			padding: 24rpx;
+			padding: $uni-spacing-col-lg $uni-spacing-row-lg;
 			background-color: #fff;
 			border-bottom: 1px solid $uni-border-color;
 			.goods{
@@ -358,9 +358,13 @@
 					width: 110rpx;
 					padding-right: 10rpx;
 					box-sizing: border-box;
+					display: flex;
+					align-items: center;
 					image{
 						width: 100rpx;
 						height: 64rpx;
+						background: url(../../static/empty.png) no-repeat;
+						background-size: cover;
 					}
 				}
 				.goods-con{
@@ -390,7 +394,7 @@
 		}
 	}
 	.goods-info{
-		padding: 12rpx 24rpx;
+		padding: 12rpx $uni-spacing-row-lg;
 		.info-item{
 			height: 40rpx;
 			display: flex;
@@ -402,7 +406,7 @@
 		}
 	}
 	.detailed{
-		padding: 24rpx 24rpx 0;
+		padding: $uni-spacing-col-lg $uni-spacing-row-lg 0;
 		border-top: 1px dashed $uni-border-color;
 		.detailed-item{
 			height: 40rpx;

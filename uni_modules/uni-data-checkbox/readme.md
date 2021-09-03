@@ -260,7 +260,7 @@ export default {
 |max					|String/Number			|-											|-			|最大选择个数 ，multiple为true时生效		|
 |wrap					|Boolean						|-											|-			|是否换行显示				|
 |icon					|String							|left/right							|left		|list 列表模式下 icon 显示的位置	|
-|selectedColor|String							|-											|#007aff|选中颜色|
+|selectedColor|String							|-											|#01c2c3|选中颜色|
 |selectedTextColor|String					|-											|#333		|选中文本颜色，如不填写则自动显示|
 |emptyText 	|String					|-											|暂无数据		|没有数据时显示的文字 ，本地数据无效|
 |map 				|Object					|-											|{text:'text',value:'value'}		|字段映射，将text/value映射到数据中的其他字段|

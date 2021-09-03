@@ -19,7 +19,7 @@
 
 ```html
 <uni-fav :checked="checked" @click="onClick"/>
-<uni-fav :checked="checked" class="favBtn" circle="true" bgColor="#dd524d" bgColorChecked="#007aff" @click="onClick"/>
+<uni-fav :checked="checked" class="favBtn" circle="true" bgColor="#dd524d" bgColorChecked="#01c2c3" @click="onClick"/>
 ```
 
 ## API
@@ -30,7 +30,7 @@
 |:-:				|:-:	|:-:												|:-:				|
 |star				|Boolean|true												|按钮是否带星星		|
 |bgColor			|String	|#eeeeee											|未收藏时的背景色	|
-|bgColorChecked	|String	|#007aff											|已收藏时的背景色	|
+|bgColorChecked	|String	|#01c2c3											|已收藏时的背景色	|
 |fgColor			|String	|#666666											|未收藏时的文字颜色	|
 |fgColorChecked	|String	|#FFFFFF											|已收藏时的文字颜色	|
 |circle				|Boolean|false												|是否为圆角			|

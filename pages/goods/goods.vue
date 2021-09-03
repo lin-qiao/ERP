@@ -1,6 +1,14 @@
 <template>
 	<view class="container">
 		<view class="top-wrap">
+			<uni-nav-bar 
+				backgroundColor="#01c2c3" 
+				color="#fff"
+				statusBar="true"
+				right-icon="plusempty" 
+				title="商品"
+				@clickRight="handleAdd">
+			</uni-nav-bar>
 			<uni-search-bar placeholder="货号/名称" @confirm="search" v-model="params.keywords"></uni-search-bar>
 			<view class="stat">
 				<view class="stat-item">
@@ -19,36 +27,45 @@
 				</view>
 			</view>
 		</view>
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" top="276" @down="downCallback" :up="upOption" @up="upCallback">
-			<view class="goods-list">
-				<navigator :url="'../detail/detail?id=' + item.goodsId " class="goods-item" v-for="item in goodsList" hover-class="none">
-					<view class="img">
-						<image :src="item.imgUrl" mode="widthFix"></image>
-					</view>
-					<view class="con">
-						<view class="goods-tit">{{item.goodsName}}</view>
-						<view class="goods-sn">{{item.goodsSn}}</view>
-						<view class="goods-price">
-							<view class="goods-price-item">
-								<text class="number" v-if="item.totalNumber == 0">0.00</text>
-								<text class="number" v-else>{{formatMoney(item.totalCostPrice / item.totalNumber )}}</text>
-								<text class="text">采购均价</text>
+		<view class="goods">
+			<mescroll-uni :fixed="false"  ref="mescrollRef" @init="mescrollInit"  @down="downCallback" :up="upOption" @up="upCallback">
+				<uni-swipe-action class="goods-list">
+					<uni-swipe-action-item  v-for="item in goodsList">
+						<navigator :url="'../detail/detail?id=' + item.goodsId " class="goods-item" hover-class="none">
+							<view class="img">
+								<image :src="item.imgUrl"></image>
 							</view>
-							<view class="goods-price-item">
-								<text class="number">{{formatMoney(item.totalCostPrice)}}</text>
-								<text class="text">总成本</text>
+							<view class="con">
+								<view class="goods-tit">{{item.goodsName}}</view>
+								<view class="goods-sn">{{item.goodsSn}}</view>
+								<view class="goods-price">
+									<view class="goods-price-item">
+										<text class="number" v-if="item.totalNumber == 0">0.00</text>
+										<text class="number" v-else>{{formatMoney(item.totalCostPrice / item.totalNumber )}}</text>
+										<text class="text">采购均价</text>
+									</view>
+									<view class="goods-price-item">
+										<text class="number">{{formatMoney(item.totalCostPrice)}}</text>
+										<text class="text">总成本</text>
+									</view>
+									<view class="goods-price-item">
+										<text class="number">{{item.totalNumber}}</text>
+										<text class="text">库存量</text>
+									</view>
+								</view>
 							</view>
-							<view class="goods-price-item">
-								<text class="number">{{item.totalNumber}}</text>
-								<text class="text">库存量</text>
+						</navigator>
+						<template v-slot:right>
+							<view class="del-btn"  @click="handleEdit(item)">
+								<image  src="../../static/edit2.png" alt=""></image>
 							</view>
-						</view>
-					</view>
-				</navigator>
-			</view>
-		</mescroll-body> 
-		
-		
+						</template>
+					</uni-swipe-action-item>
+						
+					
+				</uni-swipe-action>
+			</mescroll-uni> 
+		</view>
 	</view>
 </template>
 
@@ -65,7 +82,7 @@
 						type: '',
 						icon: '',
 						selectIcon: '',
-						name: '',
+						name: 'createTime',
 						label: '默认'
 					},
 					{
@@ -94,7 +111,7 @@
 					page: 1,
 					size: 10,
 					keywords: '',
-					order: '',
+					order: 'createTime desc',
 				},
 				goodsList: [],
 				total:0,
@@ -104,6 +121,7 @@
 		},
 		onShow() {
 			this.getStockStat()
+			this.reset()
 		},
 		methods: {
 			formatMoney(price){
@@ -114,6 +132,12 @@
 			},
 			search(val){
 				this.reset()
+			},
+			// 点击添加
+			handleAdd(){
+				uni.navigateTo({
+					url: '/pages/goodsAdd/goodsAdd'
+				})
 			},
 			/**
 			  * @description 点击tab
@@ -129,7 +153,7 @@
 				const obj = this.navList[index];
 				if(index == 0){
 					obj.type = 'desc';
-					this.params.order = '';
+					this.params.order = 'createTime desc';
 					this.reset()
 					return;
 				}
@@ -147,7 +171,20 @@
 				this.params.order = obj.name + ' ' + obj.type;
 				this.reset()
 			},
-			
+			//点击编辑
+			handleEdit(obj){
+				uni.setStorageSync('editGoods', {
+					name: obj.goodsName,
+					goodSn: obj.goodsSn,
+					imgUrl: obj.imgUrl,
+					brandId: obj.brandId,
+					sizeIds: obj.sizeIds.split(',').map(item => Number(item)),
+					purchasePrice: obj.purchasePrice
+				})
+				uni.navigateTo({
+					url: '/pages/goodsAdd/goodsAdd?id=' + obj.goodsId
+				})
+			},
 			reset(){
 				uni.pageScrollTo({
 					scrollTop: 0,
@@ -195,14 +232,17 @@
 </script>
 
 <style lang="scss">
+	.container{
+		height: 100vh;
+		display: flex;
+		flex-direction: column;
+	}
 	.top-wrap {
-		    z-index: 9990;
-		    position: fixed;
-		    top: --window-top;
-		    left: 0;
-		    width: 100%;
-		    height: 276rpx;
-		    background-color: white;
+		background-color: white;
+	}
+	.goods{
+		min-height: 0;
+		flex:1;
 	}
 	.uni-icons {
 		color: inherit !important;
@@ -255,8 +295,12 @@
 				justify-content: center;
 				align-items: center;
 				width: 220rpx;
+				
 				image{
 					width: 180rpx;
+					height: 115rpx;
+					background: url(../../static/empty.png) no-repeat;
+					background-size: cover;
 				}
 			}
 			.con{
@@ -304,6 +348,18 @@
 					}
 				}
 			}
+		}
+	}
+	.del-btn{
+		width: 150rpx;
+		height: 100%;
+		background-color: $uni-color-primary;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		image{
+			width:60rpx;
+			height: 60rpx;
 		}
 	}
 </style>

@@ -216,16 +216,20 @@
 	}
 }
 .title{
-	padding: 24rpx 0 24rpx 24rpx;
+	padding: $uni-spacing-row-lg 0 $uni-spacing-row-lg $uni-spacing-row-lg;
 	.goods{
 		display: flex;
 		.goods-img{
 			width: 110rpx;
 			padding-right: 10rpx;
 			box-sizing: border-box;
+			display: flex;
+			align-items: center;
 			image{
 				width: 100rpx;
 				height: 64rpx;
+				background: url(../../static/empty.png) no-repeat;
+				background-size: cover;
 			}
 		}
 		.goods-con{
@@ -297,7 +301,7 @@
 	}
 }
 .detailed{
-	padding: 24rpx;
+	padding: $uni-spacing-row-lg;
 	border-top: 1px dashed $uni-border-color;
 	.detailed-item{
 		height: 40rpx;

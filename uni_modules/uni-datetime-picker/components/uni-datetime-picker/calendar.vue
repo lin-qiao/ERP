@@ -526,6 +526,7 @@
 	}
 
 	.uni-calendar__mask {
+		width: 750rpx;
 		position: fixed;
 		bottom: 0;
 		top: 0;
@@ -545,6 +546,7 @@
 	}
 
 	.uni-calendar--fixed {
+		width: 750rpx;
 		position: fixed;
 		bottom: 0;
 		left: 0;
@@ -621,7 +623,7 @@
 		text-align: center;
 		width: 100px;
 		font-size: $uni-font-size-base;
-		color: #007aff;
+		color: #01c2c3;
 		/* #ifndef APP-NVUE */
 		letter-spacing: 3px;
 		/* #endif */

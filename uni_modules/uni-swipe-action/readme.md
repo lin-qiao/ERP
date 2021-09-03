@@ -87,7 +87,7 @@ export default {
         {
             text: '取消',
             style: {
-                backgroundColor: '#007aff'
+                backgroundColor: '#01c2c3'
             }
         }, {
             text: '确认',

@@ -109,9 +109,9 @@
 				isAndroidNvue: platform === 'android',
 				styles: {
 					color: '#3c3e49',
-					selectedColor: '#007AFF',
+					selectedColor: '#01c2c3',
 					backgroundColor: '#fff',
-					buttonColor: '#007AFF'
+					buttonColor: '#01c2c3'
 				}
 			}
 		},

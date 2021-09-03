@@ -151,7 +151,7 @@
 	}
 
 	.goods-item {
-		padding: 0 24rpx;
+		padding: 0 $uni-spacing-row-lg;
 
 		.goods-info {
 			padding: 15rpx 0;
@@ -191,7 +191,7 @@
 	.basic{
 		.basic-item{
 			height: 80rpx;
-			padding: 0 24rpx;
+			padding: 0 $uni-spacing-row-lg;
 			display: flex;
 			align-items: center;
 			background-color: #fff;

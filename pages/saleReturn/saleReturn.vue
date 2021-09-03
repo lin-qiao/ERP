@@ -231,7 +231,7 @@
 		}
 	}
 	.goods-item{
-		padding: 0 24rpx;
+		padding: 0 $uni-spacing-row-lg;
 		.goods-info{
 			padding: 15rpx 0;
 			font-size: 24rpx;
@@ -260,7 +260,7 @@
 				}
 				.input{
 					width: 33%;
-					padding: 0 24rpx;
+					padding: 0 $uni-spacing-row-lg;
 					.input-wrap{
 						height: 60rpx;
 						display: flex;
@@ -306,7 +306,7 @@
 			flex:1;
 			font-size: 24rpx;
 			line-height: 88rpx;
-			padding-left: 24rpx;
+			padding-left: $uni-spacing-row-lg;
 			.red{
 				font-size: 30rpx;
 				margin-left: 20rpx;
@@ -326,7 +326,7 @@
 		max-height: 80vh;
 		padding-bottom: 88rpx;
 		.goods-item{
-			padding: 0 24rpx;
+			padding: 0 $uni-spacing-row-lg;
 			display: flex;
 			border-bottom: 1rpx solid $uni-border-color;
 			background-color: #fff;
@@ -385,7 +385,7 @@
 			}
 		}
 		.goods-size{
-			padding: 0 24rpx;
+			padding: 0 $uni-spacing-row-lg;
 			.size-nav{
 				height: 100rpx;
 				display: flex;
@@ -427,7 +427,7 @@
 				flex:1;
 				font-size: 28rpx;
 				line-height: 88rpx;
-				padding-left: 24rpx;
+				padding-left: $uni-spacing-row-lg;
 			}
 			.btn{
 				width: 150rpx;

@@ -124,7 +124,7 @@
 		height: 150rpx;
 		background-color: #fff;
 		border-bottom: 1px solid $uni-border-color;
-		padding: 0 24rpx;
+		padding: 0 $uni-spacing-row-lg;
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
