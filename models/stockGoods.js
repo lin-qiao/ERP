@@ -28,6 +28,7 @@ goodsModel.hasMany(stockModel, {
  * @return 
  */
 const findAndCountAllByGoods = async (page, size, goodSn, brandId, uid, order, keywords) => {
+	console.log(size, size * (page - 1))
 	const where = {
 		'user_id': uid,
 	}
@@ -56,6 +57,7 @@ const findAndCountAllByGoods = async (page, size, goodSn, brandId, uid, order, k
 			['name', 'goodsName'],
 			['purchase_price', 'purchasePrice'],
 			['size_ids', 'sizeIds'],
+			['create_time', 'createTime'],
 			[Sequelize.fn('SUM', Sequelize.col('stock.number')), 'totalNumber'],
 			[Sequelize.fn('SUM', Sequelize.col('stock.total_price')), 'totalCostPrice'],
 			[Sequelize.col('brand.brand_name'), 'brandName'],
@@ -77,7 +79,7 @@ const findAndCountAllByGoods = async (page, size, goodSn, brandId, uid, order, k
 
 		],
 		group:'id',
-		order: order ? Sequelize.literal(order) : null,
+		order: order ? Sequelize.literal(order + ", `id` desc") : null,
 		limit: size,
 		offset: size * (page - 1)
 	})
