@@ -2,9 +2,8 @@ const goodsModel = require('../models/goods');
 const sizeModel = require('../models/size');
 const brandModel = require('../models/brand');
 const stockModel = require('../models/stock');
-
+var sign = require("../util/sign");
 const axios = require('axios');
-const getQueryStr = require('../util/getQuery');
 const config = require('../config/index');
 const util = require('../util/index');
 /**
@@ -49,34 +48,23 @@ const getGoodsBySn = async function(ctx) {
 		code,
 	} = ctx.query;
 
-	const queryStr = getQueryStr({
-		title: code,
-		page: 0,
-		limit: 20,
-		showHot: -1,
-		sortType: 1,
-		sortMode: 1,
-		unionId: "",
-	});
-	const {
-		data
-	} = await axios.get('https://app.poizon.com/api/v1/h5/search/fire/search/list?' + queryStr, {
-		headers: {
-			'Host': 'app.poizon.com',
-			'accept': '*/*',
-			'content-type': 'application/x-www-form-urlencoded',
-			'referer': 'https://servicewechat.com/wx3c12cdd0ae8b1a7b/117/page-frame.html',
-			'appid': 'wxapp',
-			'appversion': '4.4.0',
-			'wxapp-login-token': '3f885cf3|5805b23362561089694d1976c3f2ea84|1843f86c|13d7302d',
-			'accept-language': 'zh-cn',
-			'user-agent': 'Mozilla/5.0 (iPhone; CPU iPhone OS 13_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/7.0.12(0x17000c2f) NetType/WIFI Language/zh_CN'
-		}
-	});
+	const params = {
+		app_key: '8f67f8d29f2249ff8d1c5618845195da',
+		timestamp: new Date().getTime(),
+		article_numbers: [code]
+	};
+	params.sign = sign(params);
+	const { data } = await axios.post('https://openapi.dewu.com/dop/api/v1/spu/batch_article_number', params);
+	
+	let list = data.data && data.data.length? data.data.map(item => ({
+		title: item.title,
+		articleNumber: item.article_number,
+		logoUrl: item.spu_logo
+	})) : []
 	ctx.body = {
 		code: 200,
 		message: '成功',
-		data: data.data.productList
+		data: list
 	}
 }
 
