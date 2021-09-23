@@ -150,6 +150,7 @@
 						success:() => {
 							setTimeout(() => {
 								uni.navigateBack();
+								uni.$emit('isAdd');
 							}, 1500)
 						}
 					})
@@ -197,6 +198,7 @@
 								success:() => {
 									setTimeout(() => {
 										uni.navigateBack();
+										uni.$emit('isAdd');
 									}, 1500)
 								}
 							})
@@ -215,6 +217,7 @@
 								success:() => {
 									setTimeout(() => {
 										uni.navigateBack();
+										uni.$emit('isAdd');
 									}, 1500)
 								}
 							})

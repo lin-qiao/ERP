@@ -1,43 +1,55 @@
 <template>
-	<view class="container">
-		<view class="top-wrap">
-			<uni-search-bar placeholder="货号/名称" @confirm="search" v-model="params.keywords"></uni-search-bar>
-			<view class="nav-list">
-				<view :class="['nav-item', {'on': item.type != ''}]" v-for="(item, index) in navList" :key="index" @click="handleNav(index)">
-					<uni-icons v-if="item.type" :type="item.type == 'desc'? item.icon: item.selectIcon" size="12" ></uni-icons>
-					<text>{{item.label}}</text>
-				</view>
-			</view>
-		</view>
-		<mescroll-body ref="mescrollRef" @init="mescrollInit" top="166" bottom="88" @down="downCallback" :up="upOption" @up="upCallback">
-			<view class="goods-list">
-				<view class="goods-item" v-for="item in goodsList" :key="item.goodsId"  hover-class="none" @click="handleAdd(item)">
-					<view class="img">
-						<image :src="item.imgUrl" ></image>
-						<view class="number" v-if="item.total!= 0">{{item.total}}</view>
+	<view class="select-goods">
+		<view class="goods-wrap">
+			<scroll-view class="left" :scroll-y="true">
+				<view class="tab" :class="{on: '' == params.brandId}"  @click="handleChangeTab('')">全部</view>
+				<view class="tab" :class="{on:item.id == params.brandId}" v-for="item in brandList" :key="item.id" @click="handleChangeTab(item.id)">{{item.brand_name}}</view>
+			</scroll-view>
+			<view class="right">
+				<view class="nav-list">
+					<view :class="['nav-item', {'on': item.type != ''}]" v-for="(item, index) in navList" :key="index" @click="handleNav(index)">
+						<uni-icons v-if="item.type" :type="item.type == 'desc'? item.icon: item.selectIcon" size="12" ></uni-icons>
+						<text>{{item.label}}</text>
 					</view>
-					<view class="con">
-						<view class="goods-tit">{{item.goodsName}}</view>
-						<view class="goods-sn">{{item.goodsSn}}</view>
-						<view class="goods-price">
-							<view class="goods-price-item">
-								<text class="number" v-if="item.totalNumber == 0">0.00</text>
-								<text class="number" v-else>{{formatMoney(item.totalCostPrice / item.totalNumber )}}</text>
-								<text class="text">采购均价</text>
-							</view>
-							<view class="goods-price-item">
-								<text class="number">{{formatMoney(item.totalCostPrice)}}</text>
-								<text class="text">总成本</text>
-							</view>
-							<view class="goods-price-item">
-								<text class="number">{{item.totalNumber}}</text>
-								<text class="text">库存量</text>
+				</view>
+				<view class="goods">
+					<mescroll-uni :fixed="false" ref="mescrollRef" @init="mescrollInit" @down="downCallback" :up="upOption" @up="upCallback">
+						<view class="goods-list">
+							<view class="goods-item" v-for="item in goodsList" :key="item.goodsId"  hover-class="none" @click="handleAdd(item)">
+								<view class="img">
+									<image :src="item.imgUrl" ></image>
+									<view class="number" v-if="item.total!= 0">{{item.total}}</view>
+								</view>
+								<view class="con">
+									<view class="goods-tit">{{item.goodsName}}</view>
+									<view class="goods-sn">{{item.goodsSn}}</view>
+									<view class="goods-price">
+										<view class="goods-price-item">
+											<text class="number" v-if="item.totalNumber == 0">0.00</text>
+											<text class="number" v-else>{{formatMoney(item.totalCostPrice / item.totalNumber )}}</text>
+											<text class="text">采购均价</text>
+										</view>
+										<view class="goods-price-item">
+											<text class="number">{{formatMoney(item.totalCostPrice)}}</text>
+											<text class="text">总成本</text>
+										</view>
+										<view class="goods-price-item">
+											<text class="number">{{item.totalNumber}}</text>
+											<text class="text">库存量</text>
+										</view>
+									</view>
+								</view>
 							</view>
 						</view>
-					</view>
+					</mescroll-uni> 
 				</view>
+				
 			</view>
-		</mescroll-body> 
+		</view>
+		<view class="fixed goods-nav">
+			<view class="total">已选择{{totalNumber}}件</view>
+			<view class="btn" @click="handleConfirmAll">选好了</view>
+		</view>
 		<uni-popup ref="popup" type="bottom" background-color="#fff">
 			<scroll-view class="goods-popup" scroll-y>
 				<view class="goods-item">
@@ -66,22 +78,20 @@
 				</view>
 			</scroll-view>
 		</uni-popup>
-		<view class="fixed goods-nav">
-			<view class="total">已选择{{totalNumber}}件</view>
-			<view class="btn" @click="handleConfirmAll">选好了</view>
-		</view>
+		
 	</view>
 </template>
 
 <script>
 	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
-	import { getStockGoodsList, getGoodsStock } from '../../api/index.js'
+	import { getStockGoodsList, getGoodsStock, getBrandList } from '../../api/index.js'
 	import { formatMoney } from '../../utils/util.js'
 	export default {
 		mixins: [MescrollMixin], // 使用mixin
 		data() {
 			return {
 				type:2,
+				brandList:[],
 				navList: [
 					{
 						type: '',
@@ -115,6 +125,7 @@
 				params:{
 					page: 1,
 					size: 10,
+					brandId: '',
 					keywords: '',
 					order: 'createTime desc',
 				},
@@ -140,8 +151,23 @@
 			if(options.type){
 				this.type = options.type;
 			}
+			this.getBrandList();
 		},
 		methods: {
+			handleChangeTab(id){
+				this.params.brandId = id;
+				this.params.page = 1;
+				this.goodsList = []// 先置空列表,显示加载进度
+				this.mescroll.resetUpScroll() // 再刷新列表数据
+			},
+			getBrandList(){
+				getBrandList({
+					page: 1,
+					size: 100
+				}).then(res => {
+					this.brandList = res.data;
+				})
+			},
 			formatMoney(price){
 				return formatMoney(price)
 			},
@@ -163,7 +189,9 @@
 				if(index == 0){
 					obj.type = 'desc';
 					this.params.order = 'createTime desc';
-					this.getData();
+					this.params.page = 1;
+					this.goodsList = []// 先置空列表,显示加载进度
+					this.mescroll.resetUpScroll() // 再刷新列表数据
 					return;
 				}
 				
@@ -178,12 +206,8 @@
 					obj.type = 'desc';
 				}
 				this.params.order = obj.name + ' ' + obj.type;
-				uni.pageScrollTo({
-					scrollTop: 0,
-					duration: 0
-				})
 				this.params.page = 1;
-				this.goods = []// 先置空列表,显示加载进度
+				this.goodsList = []// 先置空列表,显示加载进度
 				this.mescroll.resetUpScroll() // 再刷新列表数据
 			},
 			/**
@@ -238,7 +262,7 @@
 			 
 			 getGoodsStock({goodsId, purchasePrice}){
 				 uni.showLoading()
-				 getGoodsStock({goodsId: goodsId}).then(res => {
+				 getGoodsStock({goodsId: goodsId}).then(res => {		
 					 const sizeList = this.curGoods.sizeList;
 					 res.data.forEach(item => {
 						 const filter = sizeList.filter(obj => obj.sizeId == item.sizeId);
@@ -301,20 +325,53 @@
 </script>
 
 <style lang="scss">
-	.top-wrap {
-		    z-index: 1;
-		    position: fixed;
-		    top: --window-top;
-		    left: 0;
-		    width: 100%;
-		    height: 166rpx;
-		    background-color: white;
+	.select-goods{
+		display: flex;
+		flex-direction: column;
+		height: 100vh;
+		.goods-wrap{
+			display: flex;
+			flex:1;
+			min-height: 0;
+			.left{
+				width: 180rpx;
+				background-color: $uni-bg-color-grey;
+				.tab{
+					height:80rpx;
+					line-height: 80rpx;
+					text-align: center;
+					font-size: 24rpx;
+					color: #666;
+					&.on{
+						background-color: #fff;
+						color: $uni-color-primary;
+						font-weight: bold;
+					}
+				}
+			}
+			.right{
+				min-width: 0;
+				flex:1;
+				display: flex;
+				flex-direction: column;
+				.top-wrap {
+					width: 100%;
+					background-color: #fff;
+				}
+				.goods{
+					flex:1;
+					min-height: 0;
+				}
+			}
+		}
 	}
+	
 	.uni-icons {
 		color: inherit !important;
 	}
 	.nav-list{
 		height: 70rpx;
+		background-color: #fff;
 		display: flex;
 		border-top: 1rpx solid $uni-border-color;
 		border-bottom: 1rpx solid $uni-border-color;
@@ -332,7 +389,7 @@
 	}
 	
 	.goods-item{
-		padding: 0 $uni-spacing-row-lg;
+		padding: 10rpx 20rpx;
 		display: flex;
 		border-bottom: 1rpx solid $uni-border-color;
 		background-color: #fff;
@@ -340,8 +397,7 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			width: 196rpx;
-			margin: 20rpx 0;
+			width: 150rpx;
 			position: relative;
 			.number{
 				position: absolute;
@@ -363,10 +419,12 @@
 			}
 		}
 		.con{
-			width: 516rpx;
+			flex: 1;
+			min-width: 0;
 			.goods-tit{
-				padding: 10rpx 10rpx 0;
-				line-height: 70rpx;
+				box-sizing: border-box;
+				padding-left: 20rpx;
+				line-height: 60rpx;
 				width: 100%;
 				overflow: hidden;
 				text-overflow: ellipsis;
@@ -375,20 +433,21 @@
 				color: #333;
 			}
 			.goods-sn{
-				padding: 0 10rpx;
-				line-height: 70rpx;
+				box-sizing: border-box;
+				padding-left: 20rpx;
+				line-height: 45rpx;
 				width: 100%;
 				overflow: hidden;
 				text-overflow: ellipsis;
 				white-space: nowrap;
-				font-size: 28rpx;
-				color: #333;
+				font-size: 24rpx;
+				color: #666;
 			}
 			.goods-price{
 				display: flex;
 				.goods-price-item{
 					width: 33.33%;
-					height: 100rpx;
+					height: 80rpx;
 					display: flex;
 					flex-direction: column;
 					align-items: center;
@@ -408,7 +467,6 @@
 	}
 	.goods-popup{
 		max-height: 80vh;
-		padding-bottom: 88rpx;
 	}
 	.goods-size{
 		padding: 0 $uni-spacing-row-lg;
@@ -441,14 +499,9 @@
 	}
 	.goods-nav{
 		height: 88rpx;
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
 		display: flex;
 		background-color: #fff;
 		border-top: 1rpx solid $uni-border-color;
-		z-index: 1111;
 		.total{
 			flex:1;
 			font-size: 28rpx;

@@ -121,7 +121,11 @@
 		},
 		onShow() {
 			this.getStockStat()
-			this.reset()
+		},
+		onLoad() {
+			uni.$on('isAdd', (data) => {
+				this.reset()
+			})
 		},
 		methods: {
 			formatMoney(price){

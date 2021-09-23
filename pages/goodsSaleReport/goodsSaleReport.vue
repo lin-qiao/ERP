@@ -70,7 +70,7 @@
 						</view>
 						<view class="detailed-item">
 							<text>毛利：￥{{formatMoney(item.grossProfitPrice)}}</text>
-							<text>毛利率（%）：{{item.grossProfitRate.toFixed(2)}}</text>
+							<text>毛利率（%）：{{(item.grossProfitRate || 0).toFixed(2)}}</text>
 						</view>
 					</view>
 				</view>
@@ -104,6 +104,10 @@
 				tabList: [{
 						type: 'thisMonth',
 						name: '本月',
+					},
+					{
+						type: 'lastMonth',
+						name: '上月',
 					},
 					{
 						type: 'thisYear',
@@ -248,7 +252,7 @@
 		border-top: 1px solid $uni-border-color;
 
 		.wuc-tab-item {
-			width: 33.33%;
+			width: 25%;
 			text-align: center;
 			margin: 0;
 

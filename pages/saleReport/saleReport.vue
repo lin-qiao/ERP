@@ -92,6 +92,10 @@
 						type: 'thisMonth',
 						name: '本月',
 					},
+					{
+						type: 'lastMonth',
+						name: '上月',
+					},
 					{ 
 						type: 'thisYear',
 						name: '本年',
@@ -188,7 +192,7 @@
 	background-color: #fff;
 	border-top: 1px solid $uni-border-color;
 	.wuc-tab-item{
-		width: 33%;
+		width: 25%;
 		text-align: center;
 		margin: 0;
 		&.select-tab{

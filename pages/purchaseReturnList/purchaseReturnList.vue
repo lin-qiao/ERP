@@ -9,7 +9,7 @@
 						<view class="time">{{dataFormat(item.createTime, 'yyyy-MM-dd hh:mm:ss')}}</view>
 					</view>
 					<view class="right">
-						<view class="num">销:{{item.totalNumber}}</view>
+						<view class="num">退:{{item.totalNumber}}</view>
 						<view class="price">￥{{formatMoney(item.totalPrice)}}</view>
 					</view>
 				</navigator>
