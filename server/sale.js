@@ -80,8 +80,14 @@ const saleList = async function(ctx) {
 			
 			//销售，减少库存
 			if(itemType == 1){
-				total_price -= newCostPrice * quantity;
-				number -= quantity;
+				//防止出现 2位小数不准确的问题
+				if(number == quantity){
+					total_price = 0;
+					number = 0;
+				}else{
+					total_price -= newCostPrice * quantity;
+					number -= quantity;
+				}
 				grossProfitPrice = amount - newCostPrice * quantity;
 				//添加库存流水
 				await businessFlowModel.create(item.goodsId, item.sizeId, 3, saleSn, price, newCostPrice, total_price, quantity, number, amount, grossProfitPrice, uid)
