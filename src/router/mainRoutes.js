@@ -72,5 +72,10 @@ export default {
 		    name: "SaleReturn",
 		    component: () => import("@/views/saleReturn/index.vue")
 		},
+		{
+		    path: "calculator",
+		    name: "Calculator",
+		    component: () => import("@/views/calculator/index.vue")
+		},
     ]
 };

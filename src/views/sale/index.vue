@@ -1,8 +1,12 @@
 <template>
 	<div class="sale">
 		<div class="left">
-			<detail ref="detail"  v-if="orderSn"  @getData="getData"  @changeOrderSn="changeOrderSn" :orderSn="orderSn"></detail>
-			<add v-else  @getData="getData" @changeOrderSn="changeOrderSn"></add>
+			<div v-show="!orderSn">
+				<add  :supplierList="supplierList" @getData="getData" @changeOrderSn="changeOrderSn"></add>
+			</div>
+			<div  v-show="orderSn" >
+				<detail ref="detail"  @getData="getData"  @changeOrderSn="changeOrderSn" :orderSn="orderSn"></detail>
+			</div>
 		</div>
 		<div class="right">
 			<list ref="list"  @changeOrderSn="changeOrderSn"></list>

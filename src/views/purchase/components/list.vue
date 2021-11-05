@@ -19,7 +19,7 @@
 				</el-form-item>
 				
 				
-				<el-form-item label="供应商" prop="supplierId">
+				<!-- <el-form-item label="供应商" prop="supplierId">
 				    <el-select 
 						v-model="supplierId" 
 						placeholder="请选择供应商"
@@ -32,7 +32,7 @@
 							:value="item.id">
 						</el-option>
 					</el-select>
-				</el-form-item>
+				</el-form-item> -->
 				
 			    <el-form-item>
 			        <el-button
@@ -208,9 +208,9 @@
 						)
 					}
 				},
-				{
-					props: { prop: "supplierName", label: "供应商"},
-				}
+				// {
+				// 	props: { prop: "supplierName", label: "供应商"},
+				// }
 			])
 			
 			const { createTime, createTimeBegin, createTimeEnd, supplierId, status, page, size, total } = toRefs(params);

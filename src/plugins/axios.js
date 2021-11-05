@@ -54,7 +54,6 @@ const install = (app, { router, store, opt }) => {
 
 			config.headers['Content-Type'] = 'application/json;charset=UTF-8';
             // Do something before request is sent
-			console.log(config)
             return config;
         },
         error => {

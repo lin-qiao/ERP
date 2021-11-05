@@ -88,6 +88,9 @@
 					{ label: '采购统计', url: '/purchaseStat'},
 					{ label: '销售统计', url: '/saleStat'},
 				]
+			}, {
+				label: '计算器',
+				url: '/calculator'
 			}])
 			const defaultActive = computed(() => {
 				return route.path

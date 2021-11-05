@@ -148,6 +148,7 @@
 	} from 'vue';
 	import { useStore } from "vuex";
 	import selectSize from '@/components/selectSize';
+	import {tableDataList} from '@/utils/data';
 	export default{
 		components:{
 			selectSize
@@ -162,74 +163,7 @@
 			const goodsInfo = ref(null);
 			const goodsList = ref([]);
 			const loading = ref(false);
-			const tableData = ref([
-				{
-					goodsInfo: null,
-					goodsName: '',
-					goodsId: '',
-					goodsSn: '',
-					sizeList:[],
-					sizeId: '',
-					sizeName: '',
-					quantity: 1,
-					price: 0,
-				},
-				{
-					goodsInfo: null,
-					goodsName: '',
-					goodsId: '',
-					goodsSn: '',
-					sizeList:[],
-					sizeId: '',
-					sizeName: '',
-					quantity: 1,
-					price: 0,
-				},
-				{
-					goodsInfo: null,
-					goodsName: '',
-					goodsId: '',
-					goodsSn: '',
-					sizeList:[],
-					sizeId: '',
-					sizeName: '',
-					quantity: 1,
-					price: 0,
-				},
-				{
-					goodsInfo: null,
-					goodsName: '',
-					goodsId: '',
-					goodsSn: '',
-					sizeList:[],
-					sizeId: '',
-					sizeName: '',
-					quantity: 1,
-					price: 0,
-				},
-				{
-					goodsInfo: null,
-					goodsName: '',
-					goodsId: '',
-					goodsSn: '',
-					sizeList:[],
-					sizeId: '',
-					sizeName: '',
-					quantity: 1,
-					price: 0,
-				},
-				{
-					goodsInfo: null,
-					goodsName: '',
-					goodsId: '',
-					goodsSn: '',
-					sizeList:[],
-					sizeId: '',
-					sizeName: '',
-					quantity: 1,
-					price: 0,
-				}
-			]);
+			const tableData = ref(JSON.parse(JSON.stringify(tableDataList)));
 
 			
 			/**
@@ -384,7 +318,7 @@
 									return  Number(item[column.property])
 								}
 							}else{
-								return  Number(item[column.property])
+								return Number(item.price * item.quantity)
 							}
 						});
 						if (!values.every(value => isNaN(value))) {
@@ -433,6 +367,7 @@
 				});
 				
 				if (code == 200) {
+					tableData.value = JSON.parse(JSON.stringify(tableDataList));
 					emit('getData');
 					emit('changeOrderSn', data.saleSn)
 					proxy.$message({

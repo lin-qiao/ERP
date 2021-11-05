@@ -74,6 +74,10 @@
 					label:'本月'
 				},
 				{
+					value:'lastMonth',
+					label:'上月'
+				},
+				{
 					value:'thisYear',
 					label:'本年'
 				},
@@ -222,6 +226,7 @@
 			 const handleChangeType = async (value) => {
 				params.type = value;
 				await getDataList()
+				await getPurchaseCount()
 			 }
 			
 			return {

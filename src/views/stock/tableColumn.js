@@ -39,7 +39,7 @@ export const tableColumnGoods = [
 	{
 		props: { prop: "costPrice", label: "成本单价", minWidth: "100px"},
 		default: (scope) => {
-			if(scope.row.totalCostPrice == 0){
+			if(scope.row.totalCostPrice == 0 || scope.row.totalNumber == 0){
 				return '0.00'
 			}else{
 				return formatMoney(scope.row.totalCostPrice / scope.row.totalNumber)
