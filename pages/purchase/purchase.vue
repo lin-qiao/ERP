@@ -24,9 +24,9 @@
 									<input type="digit"  v-model="subItem.price"></input>
 								</view>
 							</view>
-							<view class="input">
+							<view class="input" @click="handleEdit(item)">
 								<view class="input-wrap">
-									<input type="number"  v-model="subItem.quantity"></input>
+									<input type="number" disabled v-model="subItem.quantity"></input>
 								</view>
 							</view>
 						</view>
@@ -109,7 +109,7 @@
 			selectPrice(){
 				return this.selectGoods.reduce((total, item) => {
 					 return total +  item.sizeList.reduce((subTotal, subItem) => {
-						return subTotal + subItem.quantity * subItem.price
+						return ((subTotal * 100) + subItem.quantity * (subItem.price * 100)) / 100
 					}, 0)
 				}, 0)
 			},

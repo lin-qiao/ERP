@@ -18,9 +18,9 @@
 									<input type="digit"  v-model="subItem.price"></input>
 								</view>
 							</view>
-							<view class="input">
+							<view class="input" @click="handleEdit(item)">
 								<view class="input-wrap">
-									<input type="number"  v-model="subItem.quantity"></input>
+									<input type="number" disabled v-model="subItem.quantity"></input>
 								</view>
 							</view>
 						</view>
@@ -55,7 +55,7 @@
 					<view class="size-item" v-for="item in stockList" :key="item.sizeId">
 						<text>{{item.sizeName}}</text>
 						<text>{{item.number}}</text>
-						<uni-number-box v-model="item.quantity"/>
+						<uni-number-box :max="item.number" v-model="item.quantity"/>
 					</view>
 				</view>
 				<view class="goods-nav">
@@ -91,7 +91,7 @@
 			selectPrice(){
 				return this.selectGoods.reduce((total, item) => {
 					 return total +  item.sizeList.reduce((subTotal, subItem) => {
-						return subTotal + subItem.quantity * subItem.price
+						return ((subTotal * 100) + subItem.quantity * (subItem.price * 100)) / 100
 					}, 0)
 				}, 0)
 			},
@@ -104,7 +104,7 @@
 		methods: {
 			handleAdd(){
 				uni.navigateTo({
-					url: '/pages/selectGoods/selectGoods'
+					url: '/pages/selectGoods/selectGoods?type=3'
 				})
 			},
 			/**

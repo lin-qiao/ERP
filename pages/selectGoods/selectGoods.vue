@@ -69,7 +69,7 @@
 					<view class="size-item" v-for="item in stockList" :key="item.sizeId">
 						<text>{{item.sizeName}}</text>
 						<text>{{item.number}}</text>
-						<uni-number-box v-model="item.quantity"/>
+						<uni-number-box :max="[2,3].includes(type)? item.number : 99" v-model="item.quantity"/>
 					</view>
 				</view>
 				<view class="goods-nav">
@@ -90,7 +90,7 @@
 		mixins: [MescrollMixin], // 使用mixin
 		data() {
 			return {
-				type:2,
+				type:2,   //   1采购，2采购退货  3销售  4销售退货
 				brandList:[],
 				navList: [
 					{
@@ -149,7 +149,7 @@
 		},
 		onLoad(options) {
 			if(options.type){
-				this.type = options.type;
+				this.type = parseInt(options.type);
 			}
 			this.getBrandList();
 		},
@@ -271,7 +271,8 @@
 							 item.price = filter[0].price;
 						 }else{
 							 item.quantity = 0;
-							 if(this.type == 1){
+							 console.log(this.type)
+							 if([1,2].includes(this.type)){
 								 item.price = purchasePrice;
 							 }else{
 								 item.price = 0;
