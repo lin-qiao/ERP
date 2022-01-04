@@ -1,4 +1,4 @@
-const {
+﻿const {
 	Op,
 	DataTypes,
 	Sequelize
@@ -20,7 +20,6 @@ businessFlowModel.belongsTo(sizeModel, {
 	as: 'size'
 });
 const findAllGoods = async function(page, size, createTimeBegin, createTimeEnd, uid, flowType, order) {
-	console.log(order,111111111111111)
 	const where = {
 		'user_id': uid
 	}

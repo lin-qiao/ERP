@@ -16,7 +16,7 @@ function getData(){
 	nowMonth = now.getMonth(); //当前月
 	nowYear = now.getYear(); //当前年
 	nowYear += (nowYear < 2000) ? 1900 : 0; //
-	
+
 	lastMonthDate = new Date(); //上月日期
 	lastMonthDate.setDate(1);
 	lastMonthDate.setMonth(lastMonthDate.getMonth()-1);
@@ -96,6 +96,10 @@ function getMonthEndDate(){
 //获得上月开始时间
 function getLastMonthStartDate(){
 	getData();
+    if(nowMonth === 0){
+        nowYear -= 1;
+    }
+    console.log(nowYear)
     var lastMonthStartDate = new Date(nowYear, lastMonth, 1);
     return formatDate(lastMonthStartDate);
 }
@@ -103,6 +107,9 @@ function getLastMonthStartDate(){
 //获得上月结束时间
 function getLastMonthEndDate(){
 	getData();
+    if(nowMonth === 0){
+        nowYear -= 1;
+    }
     var lastMonthEndDate = new Date(nowYear, lastMonth, getMonthDays(lastMonth));
     return formatDate(lastMonthEndDate);
 }

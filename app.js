@@ -48,7 +48,7 @@ app.use(async (ctx, next) => {
 router.use('/api', jwt({   //jwt token验证
 	secret: 'ht'
 }).unless({
-    path:[/^\/api\/login/, /^\/api\/register/]
+    path:[/^\/api\/login/, /^\/api\/register/, /^\/api\/getMessage/]
 }), async function(ctx, next) { 
 	let token = ctx.request.header.authorization;
 	console.log(token)

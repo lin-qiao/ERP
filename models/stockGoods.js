@@ -1,4 +1,4 @@
-const {
+﻿const {
 	Op,
 	DataTypes,
 	Sequelize,

@@ -1,4 +1,4 @@
-const userModel = require('../models/user');
+﻿const userModel = require('../models/user');
 const jsonwebtoken = require('jsonwebtoken');
 const crypto = require('crypto');
 /**
@@ -132,7 +132,8 @@ const register = async function(ctx) {
 			return;
 		}
 		const hash = crypto.createHash('md5');
-		const password = hash.digest('hex')
+		hash.update(data.password);
+		const password = hash.digest('hex');
 		
 		const info = await userModel.create(data.mobile, password);
 		const user = {

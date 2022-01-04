@@ -2,10 +2,13 @@ const goodsModel = require('../models/goods');
 const sizeModel = require('../models/size');
 const brandModel = require('../models/brand');
 const stockModel = require('../models/stock');
-var sign = require("../util/sign");
+const sign = require("../util/sign");
 const axios = require('axios');
 const config = require('../config/index');
 const util = require('../util/index');
+const {
+	app_key
+} = require("../config/index.js");
 /**
  * 商品列表
  * @param { page } 页数
@@ -49,7 +52,7 @@ const getGoodsBySn = async function(ctx) {
 	} = ctx.query;
 
 	const params = {
-		app_key: '8f67f8d29f2249ff8d1c5618845195da',
+		app_key: app_key,
 		timestamp: new Date().getTime(),
 		article_numbers: [code]
 	};

@@ -13,4 +13,5 @@ const config = require('../config/index');
     return md5(paramsStr).toUpperCase() 
   }
   
+  
 module.exports = sign;
