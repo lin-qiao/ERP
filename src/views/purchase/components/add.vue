@@ -92,6 +92,7 @@
 	import selectSize from '@/components/selectSize';
 	import {tableDataList} from '@/utils/data';
 	export default {
+		emits:['getData', 'changeOrderSn'],
 		components: {
 			selectSize
 		},
@@ -154,6 +155,7 @@
 				obj.goodsSn = obj.goodsInfo.goodSn;
 				obj.goodsId = obj.goodsInfo.id;
 				obj.price = obj.goodsInfo.purchasePrice;
+				obj.sizeId = '';
 				obj.sizeList = obj.goodsInfo.sizeNames;
 				goodsId.value = obj.goodsInfo.id;
 				goodsInfo.value = obj.goodsInfo;

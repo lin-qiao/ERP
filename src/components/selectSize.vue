@@ -13,6 +13,7 @@
 							style="width: 100%;"
 							v-model="row[item.sizeName].number"
 							:controls="false"
+							:disabled="type == 'reduce' ?row[item.sizeName].numberStored == 0: false"
 							:max="type == 'reduce' ? row[item.sizeName].numberStored: 99"
 						>
 						</el-input-number>

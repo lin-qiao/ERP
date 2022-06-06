@@ -10,28 +10,28 @@ export default {
     namespaced: true,
     state: {
         slider: {
-            opened: JSON.parse(sessionStorage.getItem("opened"))
+            opened: JSON.parse(localStorage.getItem("opened"))
         },
-        token: sessionStorage.getItem("token") || "",
+        token: localStorage.getItem("token") || "",
         menuList: null,
         permissionList: [],
-        uname: sessionStorage.getItem("uname") || ""
+        uname: localStorage.getItem("uname") || ""
     },
     mutations: {
         TOGGLE_SLIDER(state) {
             state.slider.opened = !state.slider.opened;
-            sessionStorage.setItem(
+            localStorage.setItem(
                 "opened",
                 JSON.stringify(state.slider.opened)
             );
         },
         SET_TOKEN(state, token) {
             state.token = token;
-            sessionStorage.setItem("token", state.token);
+            localStorage.setItem("token", state.token);
         },
         SET_UNAME(state, uname) {
             state.uname = uname;
-            sessionStorage.setItem("uname", state.uname);
+            localStorage.setItem("uname", state.uname);
         },
         SET_MENU_LIST(state, menuList) {
             state.menuList = menuList;

@@ -18,9 +18,11 @@
 			</el-header>
 			<el-main :style="styles">
 				<el-scrollbar style="padding:12px;box-sizing:border-box;background:#fff;">
-					<router-view v-slot="{ Component }">
-						<component :key="routerAlive" :is="Component" />
-					</router-view>
+						<router-view v-slot="{ Component }">
+							<!-- <keep-alive> -->
+								<component :key="routerAlive" :is="Component" />
+							<!-- </keep-alive> -->
+						</router-view>
 				</el-scrollbar>
 			</el-main>
 		</el-container>

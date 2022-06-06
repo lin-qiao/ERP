@@ -1,4 +1,40 @@
 <template>
+	<!-- 搜索 -->
+	<el-form ref="queryForm" :inline="true" :model="params">
+	    <el-form-item label="商品"  prop="name">
+	        <el-input
+				clearable
+				v-model="name" 
+				placeholder="请输入商品名称"
+			>
+			</el-input>
+	    </el-form-item>
+		<el-form-item label="品牌" prop="brandId">
+		    <el-select
+				clearable
+				v-model="brandId" 
+				placeholder="请选择商品品牌"
+				@change="onSubmit(params, getDataList)"
+			>
+		        <el-option
+					v-for="item in brandList"
+					:key="item.id"
+					:label="item.brand_name"
+					:value="item.id">
+				</el-option>
+			</el-select>
+		</el-form-item>
+	    <el-form-item>
+	        <el-button
+	            type="primary"
+	            @click="onSubmit(params, getDataList)"
+	            >搜索</el-button
+	        >
+	        <el-button @click="resetForm(queryForm, params, getDataList)"
+	            >重置</el-button
+	        >
+	    </el-form-item>
+	</el-form>
 	<!-- table工具条 -->
 	<toolbar
 		title="商品列表"
@@ -58,6 +94,8 @@
 	} from 'vue';
 	//*导入公共查询方法
 	import {
+		onSubmit,
+		resetForm,
 	    handleSizeChange,
 	    handleCurrentChange,
 	    maxHeight
@@ -81,11 +119,14 @@
 			const toolBar = ref(null);
 			const pagination = ref(null);
 			const queryForm = ref(null);
+			const brandList = ref([]);
 			/* 请求参数 */
 			const params = reactive({
 				size: 10,
 				page: 1,
-				total: 0
+				total: 0,
+				name: '',
+				brandId: ''
 			});
 			const tableColumn = ref([
 				{
@@ -163,10 +204,11 @@
 					},
 				}
 			])
-			let { size, page, total } = toRefs(params)
+			let { size, page, total, brandId, name } = toRefs(params)
 			
 			
 			onMounted(async() => {
+				await getBrandList()
 				await getDataList()
 				maxHeight(pagination, queryForm, toolBar, ve_max_height);
 			})
@@ -182,7 +224,19 @@
 				}
 			}
 			
-			/* 点击添加品牌 */
+			/**
+			  * @description 获取品牌列表
+			  * @param 
+			  * @return 
+			  */
+			const getBrandList = async () => {
+				const { code, data } = await  VE_API.brand.brandList({page:1, size: 100});
+				if(code == 200){
+					brandList.value = data;
+				}
+			}
+			 
+			/* 点击添加 */
 			const handleAdd = () => {
 				showDialog.value = true;
 			}
@@ -232,6 +286,8 @@
 				total,
 				page,
 				size,
+				brandId,
+				name,
 				tableColumn,
 				ve_max_height,
 				toolBar,
@@ -246,7 +302,10 @@
 				handelDialog,
 				handleSizeChange,
 				handleCurrentChange,
-				getDataList 
+				getDataList,
+				brandList,
+				onSubmit,
+				resetForm
 			}
 		}
 	}

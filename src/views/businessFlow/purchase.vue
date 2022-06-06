@@ -211,9 +211,9 @@
 			  */
 			const toBusiness = (orderSn) => {
 				let url;
-				if(orderSn.indexOf('PH') != -1){
+				if(orderSn.indexOf('JH') != -1){
 					url = '/purchase?orderSn=' + orderSn
-				}else if((orderSn.indexOf('PT') != -1)){
+				}else if((orderSn.indexOf('JT') != -1)){
 					url = '/purchaseReturn?orderSn=' + orderSn
 				}
 				router.push(url)
