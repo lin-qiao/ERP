@@ -12,7 +12,7 @@ goodsModel.belongsTo(brandModel, {
 	foreignKey: 'brand_id'
 });
 
-const findAndCountAll = async function(page, size, name, uid) {
+const findAndCountAll = async function(page, size, name, brandId, uid) {
 
 	const where = {
 		'user_id': uid,
@@ -31,6 +31,10 @@ const findAndCountAll = async function(page, size, name, uid) {
 			}
 		]
 	}
+	if (brandId) {
+		where['brand_id'] = brandId
+	}
+	
 	return goodsModel.findAndCountAll({
 		where: where,
 		include: [{ //联表查询

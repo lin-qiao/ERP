@@ -16,13 +16,13 @@ const {
  */
 const goodsList = async function(ctx) {
 	const {
-		page = 1, size = 10, name = ''
+		page = 1, size = 10, name = '', brandId = ''
 	} = ctx.query;
 	const uid = ctx.session.user_id;
 	const {
 		count,
 		rows
-	} = await goodsModel.findAndCountAll(parseInt(page), parseInt(size), name, uid)
+	} = await goodsModel.findAndCountAll(parseInt(page), parseInt(size), name, brandId, uid)
 
 
 	for (let i = 0; i < rows.length; i++) {
