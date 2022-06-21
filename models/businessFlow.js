@@ -1,4 +1,4 @@
-﻿const {
+const {
 	Op,
 	DataTypes,
 	Sequelize
@@ -21,7 +21,8 @@ businessFlowModel.belongsTo(sizeModel, {
 });
 const findAllGoods = async function(page, size, createTimeBegin, createTimeEnd, uid, flowType, order) {
 	const where = {
-		'user_id': uid
+		'user_id': uid,
+		'status': 1
 	}
 	
 	if(flowType) {
@@ -80,7 +81,8 @@ const findAllGoods = async function(page, size, createTimeBegin, createTimeEnd, 
   */
 const findAndCountAll = async function(page, size, goodsId, sizeId, createTimeBegin, createTimeEnd, uid, flowType = '') {
 	const where = {
-		'user_id': uid
+		'user_id': uid,
+		'status': 1
 	}
 	
 	if (goodsId) {
@@ -162,9 +164,12 @@ const findAndCountAll = async function(page, size, goodsId, sizeId, createTimeBe
   * @param totalPrice  库存总价
   * @param number  库存增加数量
   * @param number_stored  库存总数
+  * @param totalBusinessPrice  业务成本
+  * @param grossProfitPrice  利润
+  * @param status  1正常 0删除
   * @return 
   */
-const create = async function(goodsId, sizeId, flowType, businessSn, businessPrice, costPrice, totalPrice, number, numberStored, totalBusinessPrice, grossProfitPrice, uid) {
+const create = async function({ goodsId, sizeId, flowType, businessSn, businessPrice, costPrice, totalPrice, number, numberStored, totalBusinessPrice, grossProfitPrice, uid }, t) {
 	return businessFlowModel.create({
 		'goods_id': goodsId,
 		'size_id': sizeId,
@@ -178,8 +183,9 @@ const create = async function(goodsId, sizeId, flowType, businessSn, businessPri
 		'user_id': uid,
 		'gross_profit_price':grossProfitPrice,
 		'total_business_price':totalBusinessPrice,
+		'status': 1,
 		'create_time': new Date()
-	})
+	}, t)
 }
 
 /**
@@ -188,12 +194,14 @@ const create = async function(goodsId, sizeId, flowType, businessSn, businessPri
   * @return 
   */
 
-const destroy = async function(businessSn) {
-	return businessFlowModel.destroy({
+const updateStatus = async function({businessSn}, t) {
+	return businessFlowModel.update({
+		status: 0
+	},{
 		where: {
 			'business_sn': businessSn,
 		}
-	})
+	}, t)
 }
 
 /**
@@ -227,6 +235,7 @@ const findOne = async function(goodsId, sizeId, flowType, uid, businessSn){
 const sumNumber = async function(flowType, uid, type, createTimeBegin, createTimeEnd ) {
 	const where = {
 		'user_id': uid,
+		'status': 1
 	}
 	if(!!createTimeBegin && !!createTimeEnd){
 		where['create_time'] = {
@@ -259,7 +268,7 @@ const sumNumber = async function(flowType, uid, type, createTimeBegin, createTim
 module.exports = {
 	findAndCountAll,
 	create,
-	destroy,
+	updateStatus,
 	findOne,
 	sumNumber,
 	findAllGoods

@@ -65,7 +65,7 @@ const findAll = async function(saleSn) {
  * @param amount 总价 
  * @return 
  */
-const create = async function(saleSn, goodsId, sizeId, quantity, price, amount, uid) {
+const create = async function({saleSn, goodsId, sizeId, quantity, price, amount, uid}, t) {
 	return saleGoodsModel.create({
 		'sale_sn': saleSn,
 		'goods_id': goodsId,
@@ -75,7 +75,7 @@ const create = async function(saleSn, goodsId, sizeId, quantity, price, amount, 
 		'amount': amount,
 		'user_id': uid,
 		create_time: new Date()
-	})
+	}, t)
 }
 
 

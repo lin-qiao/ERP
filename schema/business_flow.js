@@ -70,7 +70,12 @@ module.exports = function(sequelize, DataTypes) {
 	  type: DataTypes.DOUBLE(20,2),
 	  allowNull: false,
 	  comment: "毛利"
-	}
+	},
+	status: {
+	  type: DataTypes.INTEGER,
+	  allowNull: false,
+	  comment: "1、正常 2、删除"
+	},
   }, {
     sequelize,
     tableName: 'business_flow',

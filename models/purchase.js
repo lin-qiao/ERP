@@ -100,7 +100,7 @@ const findCount = async(status, createTimeBegin, createTimeEnd, supplierId, item
  * @param itemType 1 采购  2采购退货
  * @return 
  */
-const create = async function(purchaseSn, supplierName, supplierId, itemType, uid) {
+const create = async function({ purchaseSn, supplierName, supplierId, itemType, uid }, t) {
 	return purchaseModel.create({
 		purchase_sn: purchaseSn,
 		supplier_name: supplierName,
@@ -109,7 +109,7 @@ const create = async function(purchaseSn, supplierName, supplierId, itemType, ui
 		item_type: itemType,
 		create_time: new Date(),
 		user_id: uid
-	})
+	}, t)
 }
 
 /**
@@ -117,14 +117,14 @@ const create = async function(purchaseSn, supplierName, supplierId, itemType, ui
  * @param   status  1采购  2撤销
  * @return 
  */
-const changeStatus = async function(status, purchaseSn) {
+const changeStatus = async function({ status, purchaseSn }, t) {
 	return purchaseModel.update({
 		status: status
 	}, {
 		where: {
 			purchase_sn: purchaseSn
 		}
-	})
+	}, t)
 }
 
 /**

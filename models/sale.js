@@ -24,12 +24,12 @@ const findAll = async function(page, size, status, createTimeBegin, createTimeEn
 		'status': status,
 		'user_id': uid,
 	}
-	if(createTimeBegin && createTimeEnd){
+	if (createTimeBegin && createTimeEnd) {
 		where['create_time'] = {
 			[Op.between]: [createTimeBegin, createTimeEnd]
 		}
 	}
-	
+
 	return saleModel.findAll({
 		where: where,
 		attributes: [
@@ -41,15 +41,14 @@ const findAll = async function(page, size, status, createTimeBegin, createTimeEn
 			[Sequelize.fn('SUM', Sequelize.col('saleGoods.quantity')), 'totalNumber'],
 			[Sequelize.fn('SUM', Sequelize.col('saleGoods.amount')), 'totalPrice'],
 		],
-		include: [
-			{
-		
+		include: [{
+
 				model: saleGoodsModel,
 				as: 'saleGoods',
 				attributes: [],
-				duplicating:false,
+				duplicating: false,
 			},
-		
+
 		],
 		group: 'id',
 		order: [
@@ -61,27 +60,27 @@ const findAll = async function(page, size, status, createTimeBegin, createTimeEn
 }
 
 /**
-  * @description获取商品总数
-  * @param 
-  * @return 
-  */
+ * @description获取商品总数
+ * @param 
+ * @return 
+ */
 
-const findCount = async(status, createTimeBegin, createTimeEnd, itemType, uid) => {
+const findCount = async (status, createTimeBegin, createTimeEnd, itemType, uid) => {
 	const where = {
 		'item_type': itemType,
 		'status': status,
 		'user_id': uid,
 	}
-	if(createTimeBegin && createTimeEnd){
+	if (createTimeBegin && createTimeEnd) {
 		where['create_time'] = {
 			[Op.between]: [createTimeBegin, createTimeEnd]
 		}
 	}
-	
+
 	return saleModel.count({
 		where: where
 	})
-} 
+}
 /**
  * @description  添加数据
  * @param saleSn 订单号
@@ -89,14 +88,18 @@ const findCount = async(status, createTimeBegin, createTimeEnd, itemType, uid) =
  * @param itemType 1 采购  2采购退货
  * @return 
  */
-const create = async function(saleSn, itemType, uid) {
+const create = async function({
+	saleSn,
+	itemType,
+	uid
+}, t) {
 	return saleModel.create({
 		sale_sn: saleSn,
 		status: 1,
 		item_type: itemType,
 		create_time: new Date(),
 		user_id: uid
-	})
+	}, t)
 }
 
 /**
@@ -104,22 +107,25 @@ const create = async function(saleSn, itemType, uid) {
  * @param   status  1采购  2撤销
  * @return 
  */
-const changeStatus = async function(status, saleSn) {
+const changeStatus = async function({
+	status,
+	saleSn
+}, t) {
 	return saleModel.update({
 		status: status
 	}, {
 		where: {
 			sale_sn: saleSn
 		}
-	})
+	}, t)
 }
 
 /**
-  * @description 根据订单号查询信息
-  * @param 
-  * @return 
-  */
-const findOne = async function(saleSn){
+ * @description 根据订单号查询信息
+ * @param 
+ * @return 
+ */
+const findOne = async function(saleSn) {
 	return saleModel.findOne({
 		where: {
 			sale_sn: saleSn
@@ -133,15 +139,14 @@ const findOne = async function(saleSn){
 			[Sequelize.fn('SUM', Sequelize.col('saleGoods.quantity')), 'totalNumber'],
 			[Sequelize.fn('SUM', Sequelize.col('saleGoods.amount')), 'totalPrice'],
 		],
-		include: [
-			{
-		
+		include: [{
+
 				model: saleGoodsModel,
 				as: 'saleGoods',
 				attributes: [],
-				duplicating:false,
+				duplicating: false,
 			},
-		
+
 		],
 		group: 'id',
 	})

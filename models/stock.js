@@ -224,7 +224,7 @@ const sumStock = async function(goodsId, uid) {
  * @param 
  * @return 
  */
-const updateStock = async function(totalPrice, costPrice, number, goodsId, sizeId, uid) {
+const updateStock = async function({ totalPrice, costPrice, number, goodsId, sizeId, uid }, t) {
 	return stockModel.update({
 		'total_price': totalPrice,
 		'cost_price': costPrice,
@@ -235,7 +235,7 @@ const updateStock = async function(totalPrice, costPrice, number, goodsId, sizeI
 			'goods_id': goodsId,
 			'user_id': uid
 		}
-	})
+	}, t)
 }
 
 /**

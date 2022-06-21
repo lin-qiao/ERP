@@ -1,3 +1,4 @@
+const sequelize = require('../config/db.js'); // 引入todolist的表结构
 const purchaseModel = require('../models/purchase');
 const purchaseGoodsModel = require('../models/purchaseGoods');
 const businessFlowModel = require('../models/businessFlow');
@@ -11,17 +12,19 @@ const util = require('../util/index');
  */
 const purchaseList = async function(ctx) {
 	const {
-		page = 1, 
-		size = 10, 
-		status = 1,
-		itemType = 1,
-		createTimeBegin = '', 
-		createTimeEnd = '', 
-		supplierId = '', 
+		page = 1,
+			size = 10,
+			status = 1,
+			itemType = 1,
+			createTimeBegin = '',
+			createTimeEnd = '',
+			supplierId = '',
 	} = ctx.query;
 	const uid = ctx.session.user_id;
-	const data = await purchaseModel.findAll(parseInt(page), parseInt(size), status, createTimeBegin, createTimeEnd, supplierId, itemType, uid)
-	const count = await purchaseModel.findCount(status, createTimeBegin, createTimeEnd, supplierId, itemType, uid);
+	const data = await purchaseModel.findAll(parseInt(page), parseInt(size), status, createTimeBegin,
+		createTimeEnd, supplierId, itemType, uid)
+	const count = await purchaseModel.findCount(status, createTimeBegin, createTimeEnd, supplierId, itemType,
+		uid);
 
 	ctx.body = {
 		code: 200,
@@ -32,110 +35,141 @@ const purchaseList = async function(ctx) {
 }
 
 /**
-  * @description 新增采购
-  * @param supplierName 供货商名称
-  * @param supplierId	供货商id
-  * @param itemType	1采购 2退货
-  * @param goods	商品列表
-  * @return 
-  */
- 
- const purchaseAdd = async function(ctx) {
- 	const {
- 		supplierName, 
+ * @description 新增采购
+ * @param supplierName 供货商名称
+ * @param supplierId	供货商id
+ * @param itemType	1采购 2退货
+ * @param goods	商品列表
+ * @return 
+ */
+
+const purchaseAdd = async function(ctx) {
+	const {
+		supplierName,
 		supplierId,
 		itemType,
 		goods
- 	} = ctx.request.body;
- 	const uid = ctx.session.user_id;
-	if(!goods.length){
+	} = ctx.request.body;
+	const uid = ctx.session.user_id;
+	if (!goods.length) {
 		ctx.body = {
 			code: 101,
 			message: '请选中商品'
 		}
 		return;
 	}
-	try{
-		let purchaseSn;
-		// 进货
-		if(itemType == 1){
-			purchaseSn = util.generateOrder('JH')
-		}else{
-			purchaseSn = util.generateOrder('JT')
-		}
-		
-		const info = await purchaseModel.create(purchaseSn, supplierName, supplierId, itemType, uid)
-		if(!info.id){
-			ctx.body = {
-				code: 101,
-				message: '新增失败'
-			}
-			return;
-		}
-		
-		for(let i = 0; i< goods.length; i++){
+
+	//开始一个事务并将其保存到变量 t 中
+	const t = await sequelize.transaction();
+	try {
+		let purchaseSn = itemType == 1 ? util.generateOrder('JH') : util.generateOrder('JT');
+		const info = await purchaseModel.create({
+			purchaseSn,
+			supplierName,
+			supplierId,
+			itemType,
+			uid
+		}, {
+			transaction: t
+		})
+
+		for (let i = 0; i < goods.length; i++) {
 			const item = goods[i];
-			const quantity =  Number(item.quantity);
+			const quantity = Number(item.quantity);
 			const price = Number(item.price);
 			const amount = quantity * price;
-			// 保存商品数据
-			await purchaseGoodsModel.create(purchaseSn, item.goodsId, item.sizeId, quantity, price, amount, uid);
-			// 保存库存数据
-			let {number, cost_price, total_price}  = await stockModel.findBySizeAndGoods(item.goodsId, item.sizeId, uid);
 			
-			if(itemType == 1){
-				total_price += amount;
+			let {
+				number,  //库存
+				cost_price: costPrice,  //单价
+				total_price: totalPrice  //总价
+			} = await stockModel.findBySizeAndGoods(item.goodsId, item.sizeId, uid);
+			if (itemType == 1) {
+				totalPrice += amount;
 				number += quantity;
-				cost_price = total_price / number;
-			}else{
-				total_price -= amount;
+				costPrice = totalPrice / number;
+			} else {
+				totalPrice -= amount;
 				number -= quantity;
-				if(total_price == 0 || number == 0){
-					cost_price = 0;
-				}else{
-					cost_price = total_price / number;
+				if (totalPrice == 0 || number == 0) {
+					costPrice = 0;
+				} else {
+					costPrice = totalPrice / number;
 				}
 			}
 			
+			// 保存商品数据
+			await purchaseGoodsModel.create({
+				purchaseSn,
+				goodsId: item.goodsId,
+				sizeId: item.sizeId,
+				quantity,
+				price,
+				amount,
+				uid
+			}, {
+				transaction: t
+			});
 			
-			
-			await stockModel.updateStock(total_price, cost_price, number, item.goodsId, item.sizeId, uid)
+			// 保存库存数据
+			await stockModel.updateStock({
+				totalPrice,
+				costPrice,
+				number,
+				goodsId: item.goodsId,
+				sizeId: item.sizeId,
+				uid
+			}, {
+				transaction: t
+			})
+
 			//添加库存流水数据
-			if(itemType == 1){
-				await businessFlowModel.create(item.goodsId, item.sizeId, 1, purchaseSn, price, cost_price, total_price, quantity, number, amount, 0, uid)
-			}else{
-				await businessFlowModel.create(item.goodsId, item.sizeId, 2, purchaseSn, price, cost_price, total_price, -quantity, number, amount, 0, uid)				
+			const flowData = {
+				goodsId: item.goodsId,
+				sizeId: item.sizeId,
+				flowType: itemType == 1 ? 1 : 2,
+				businessSn: purchaseSn,
+				businessPrice: price,
+				costPrice: costPrice,
+				totalPrice: totalPrice,
+				number: itemType == 1 ? quantity : -quantity,
+				numberStored: number,
+				totalBusinessPrice: amount,
+				grossProfitPrice: 0,
+				uid: uid
 			}
-			
+			await businessFlowModel.create(flowData, {
+				transaction: t
+			})
+
 		}
-		let message;
-		if(itemType == 1){
-			message = '新增采购成功'
-		}else{
-			message = '采购退货成功'
-		}
+
+		//都保存成功则提交
+		await t.commit();
+		let message = itemType == 1 ? '新增采购成功' : '采购退货成功';
 		ctx.body = {
 			code: 200,
 			data: util.filterUnderLineObj(info),
 			message
 		}
-	}catch(e){
+	} catch (e) {
 		console.log(e)
+		await t.rollback();
 		ctx.body = {
 			code: 101,
 			message: '系统异常'
 		}
 	}
- }
+}
 
 /**
-  * @description  根据订单号查看详情
-  * @param 
-  * @return 
-  */
+ * @description  根据订单号查看详情
+ * @param 
+ * @return 
+ */
 const purchaseDetail = async function(ctx) {
 	const {
-		purchaseSn 
+		purchaseSn
 	} = ctx.query;
 	const uid = ctx.session.user_id;
 	let data = await purchaseModel.findOne(purchaseSn);
@@ -150,66 +184,90 @@ const purchaseDetail = async function(ctx) {
 }
 
 /**
-  * @description 撤销库存
-  * @param 
-  * @return 
-  */
+ * @description 撤销库存
+ * @param 
+ * @return 
+ */
 const purchaseBackout = async function(ctx) {
 	const {
 		purchaseSn,
 		itemType
 	} = ctx.request.body;
 	const uid = ctx.session.user_id;
-	
-	try{
-		
+
+	//开始一个事务并将其保存到变量 t 中
+	const t = await sequelize.transaction();
+	try {
 		// 撤销库存
 		const data = await purchaseGoodsModel.findAll(purchaseSn)
-		
-		for(let i = 0; i< data.length; i++){
+
+		for (let i = 0; i < data.length; i++) {
 			const item = data[i];
-			const quantity =  Number(item.quantity);
+			const quantity = Number(item.quantity);
 			const price = Number(item.price);
 			const amount = quantity * price;
-			let {number, cost_price, total_price}  = await stockModel.findBySizeAndGoods(item.goods_id, item.size_id, uid);
-			
-			
-			if(itemType == 1){
-				total_price -= amount;
+			let {
+				number,
+				cost_price: costPrice,
+				total_price: totalPrice
+			} = await stockModel.findBySizeAndGoods(item.goods_id, item.size_id, uid);
+
+
+			if (itemType == 1) {
+				totalPrice -= amount;
 				number -= quantity;
 				// 如果总价为0,均价直接为0  防止0/0 报错
-				if(total_price == 0 || number == 0){
-					cost_price = 0;
-				}else{
-					cost_price = total_price / number;
+				if (totalPrice == 0 || number == 0) {
+					costPrice = 0;
+				} else {
+					costPrice = totalPrice / number;
 				}
-			}else{
-				total_price += amount;
+			} else {
+				totalPrice += amount;
 				number += quantity;
-				cost_price = total_price / number;
+				costPrice = totalPrice / number;
 			}
-			await stockModel.updateStock(total_price, cost_price, number, item.goods_id, item.size_id, uid)
-			
-		
+			await stockModel.updateStock({
+				totalPrice,
+				costPrice,
+				number,
+				goodsId: item.goods_id,
+				sizeId: item.size_id,
+				uid
+			}, {
+				transaction: t
+			})
 		}
+
 		// 修改订单状态
-		await purchaseModel.changeStatus(2, purchaseSn);
-		
-		// 删除流水数据
-		await businessFlowModel.destroy(purchaseSn);
-		
+		await purchaseModel.changeStatus({
+			status: 2,
+			purchaseSn
+		}, {
+			transaction: t
+		});
+
+		//修改流水状态
+		await businessFlowModel.updateStatus({
+			businessSn: purchaseSn
+		}, {
+			transaction: t
+		});
+
+		await t.commit();
 		ctx.body = {
 			code: 200,
 			message: '撤销成功'
 		}
-	}catch(e){
+	} catch (e) {
+		await t.rollback();
 		console.log(e)
 		ctx.body = {
 			code: 101,
 			message: '系统异常'
 		}
 	}
-	
+
 }
 module.exports = {
 	purchaseList,
