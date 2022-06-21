@@ -11,7 +11,7 @@
         "nvueCompiler" : "uni-app",
         "splashscreen" : {
             "alwaysShowBeforeRender" : true,
-            "waiting" : true,
+            "waiting" : false,
             "autoclose" : true,
             "delay" : 0
         },
@@ -42,7 +42,8 @@
             "ios" : {},
             /* ios打包配置 */
             "sdkConfigs" : {
-                "ad" : {}
+                "ad" : {},
+                "oauth" : {}
             },
             "icons" : {
                 "android" : {
@@ -79,10 +80,11 @@
             "splashscreen" : {
                 "androidStyle" : "default",
                 "android" : {
-                    "hdpi" : "icon/3.png",
-                    "xhdpi" : "icon/2.png",
-                    "xxhdpi" : "icon/1.png"
-                }
+                    "hdpi" : "icon/splash.9.png",
+                    "xhdpi" : "icon/splash.9.png",
+                    "xxhdpi" : "icon/splash.9.png"
+                },
+                "useOriginalMsgbox" : false
             }
         }
     },

@@ -33,7 +33,7 @@
 			</view>
 		</uni-card>
 		<view class="bottom-nav">
-			<view class="total">合计：{{totalNumber}} <text class="red">￥{{selectPrice}}</text></view>
+			<view class="total">合计：{{totalNumber}} <text class="red">￥{{selectPrice.toFixed(2)}}</text></view>
 			<view class="btn" @click="handleConfirmAll()">出售退货</view>
 		</view>
 		<uni-popup ref="popup" type="bottom" background-color="#fff">
@@ -74,7 +74,8 @@
 			return {
 				selectGoods: [],
 				curGoods: {},
-				stockList:[]
+				stockList:[],
+				noClick: false,
 			}
 		},
 		onShow() {
@@ -197,6 +198,8 @@
 						})
 					})
 				})
+				if(this.noClick) return;
+				this.noClick = true;
 				uni.showLoading()
 				saleAdd({
 					itemType: 2,
@@ -207,13 +210,15 @@
 						title: '出售退货成功',
 						success:() => {
 							setTimeout(() => {
+								this.noClick = false;
 								uni.navigateTo({
 									url: '/pages/saleReturnDetail/saleReturnDetail?saleSn=' + data.saleSn
 								})
 							}, 1500)
 						}
 					})
-				}).finally(() => {
+				}).catch(() => {
+					this.noClick = false;
 					uni.hideLoading()
 				})
 			}

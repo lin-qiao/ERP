@@ -12,11 +12,11 @@
 					<view class="con" >￥ {{formatMoney(count.priceTotal)}}</view>
 				</view>
 				<view class="count-item">
-					<view class="name">毛利</view>
+					<view class="name">利润</view>
 					<view class="con" >￥ {{formatMoney(count.grossProfitTotal)}}</view>
 				</view>
 				<view class="count-item">
-					<view class="name">毛利率（%）</view>
+					<view class="name">利润率（%）</view>
 					<view class="con">{{count.grossProfitRate || 0}}</view>
 				</view>
 			</view>
@@ -51,7 +51,7 @@
 							</view>
 							<view class="time">
 								<view class="t">业务时间：{{dataFormat(item.createTime, 'yyyy-MM-dd hh:mm:ss')}}</view>
-								<view class="gross">毛利：<text :class="item.grossProfitPrice > 0? 'just': 'negative'">{{item.grossProfitPrice > 0? '+' : ''}}{{formatMoney(item.grossProfitPrice)}}</text></view>
+								<view class="gross">利润：<text :class="item.grossProfitPrice > 0? 'just': 'negative'">{{item.grossProfitPrice > 0? '+' : ''}}{{formatMoney(item.grossProfitPrice)}}</text></view>
 							</view>
 						</view>
 					</template>
@@ -68,8 +68,8 @@
 							<text>成本：￥{{formatMoney(item.costPrice * item.number)}}</text>
 						</view>
 						<view class="detailed-item">
-							<text>毛利：￥{{formatMoney(item.grossProfitPrice)}}</text>
-							<text>毛利率（%）：{{(item.grossProfitPrice / item.totalBusinessPrice * 100).toFixed(2)}}</text>
+							<text>利润：￥{{formatMoney(item.grossProfitPrice)}}</text>
+							<text>利润率（%）：{{(item.grossProfitPrice / item.totalBusinessPrice * 100).toFixed(2)}}</text>
 						</view>
 					</view>
 			    </uni-collapse-item>

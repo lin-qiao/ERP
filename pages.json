@@ -151,6 +151,13 @@
                 "enablePullDownRefresh" : false
             }
         },
+		{
+		    "path" : "pages/brandSaleReport/brandSaleReport",
+		    "style" : {
+		        "navigationBarTitleText" : "品牌销售报表",
+		        "enablePullDownRefresh" : false
+		    }
+		},
         {
             "path" : "pages/goodsAdd/goodsAdd",
             "style" : {

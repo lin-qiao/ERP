@@ -20,8 +20,11 @@ export const purchaseCount =  (data) => request('GET', '/api/purchaseCount', dat
 export const userInfo =  (data) => request('GET', '/api/userInfo', data);
 export const supplierList =  (data) => request('GET', '/api/supplierList', data);
 
+// 商品销售列表
+export const goodsSaleStatList =  (data) => request('GET', '/api/goodsSaleStatList', data);
+ //品牌销售列表
+export const brandSaleStatList =  (data) => request('GET', '/api/brandSaleStatList', data); 
 
-export const goodsSaleStatList =  (data) => request('GET', '/api/goodsSaleStatList', data); 
 export const getGoodsBySn =  (data) => request('GET', '/api/getGoodsBySn', data); 
 export const getSizeList =  (data) => request('GET', '/api/sizeList', data); 
 export const getBrandList =  (data) => request('GET', '/api/brandList', data); 

@@ -39,7 +39,7 @@
 			</view>
 		</uni-card>
 		<view class="bottom-nav">
-			<view class="total">合计：{{totalNumber}} <text class="red">￥{{selectPrice}}</text></view>
+			<view class="total">合计：{{totalNumber}} <text class="red">￥{{selectPrice.toFixed(2)}}</text></view>
 			<view class="btn" @click="handleConfirmAll()">采购退货</view>
 		</view>
 		<uni-popup ref="popup" type="bottom" background-color="#fff">
@@ -82,7 +82,8 @@
 				supplierName: '',
 				selectGoods: [],
 				curGoods: {},
-				stockList:[]
+				stockList:[],
+				noClick: false,
 			}
 		},
 		onShow() {
@@ -225,6 +226,8 @@
 						})
 					})
 				})
+				if(this.noClick) return;
+				this.noClick = true;
 				uni.showLoading()
 				purchaseAdd({
 					itemType: 2,
@@ -237,13 +240,15 @@
 						title: '采购退货成功',
 						success:() => {
 							setTimeout(() => {
+								this.noClick = false;
 								uni.navigateTo({
 									url: '/pages/purchaseDetail/purchaseDetail?purchaseSn=' + data.purchaseSn
 								})
 							}, 1500)
 						}
 					})
-				}).finally(() => {
+				}).catch(() => {
+					this.noClick = false;
 					uni.hideLoading()
 				})
 			}

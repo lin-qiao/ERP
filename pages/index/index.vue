@@ -78,19 +78,25 @@
 		<uni-title type="h1" title="统计"></uni-title>
 		<uni-grid :column="3" :showBorder="false" :square="false" @change="changeReport">
 		    <uni-grid-item :index="1">
-				<view class="grid-item no-bottom-border">
+				<view class="grid-item">
 					<image src="../../static/9.png"></image>
 					<text>销售报表</text>
 				</view>
 		    </uni-grid-item>
 			<uni-grid-item :index="2">
-				<view class="grid-item no-bottom-border">
+				<view class="grid-item">
 					<image src="../../static/11.png"></image>
 					<text>商品销售报表</text>
 				</view>
 			</uni-grid-item>
-		    <uni-grid-item :index="3">
-		        <view class="grid-item no-bottom-border no-right-border">
+			<uni-grid-item :index="3">
+				<view class="grid-item no-right-border">
+					<image src="../../static/16.png"></image>
+					<text>品牌销售报表</text>
+				</view>
+			</uni-grid-item>
+		    <uni-grid-item :index="4">
+		        <view class="grid-item no-bottom-border">
 		        	<image src="../../static/10.png"></image>
 		        	<text>采购报表</text>
 		        </view>
@@ -203,6 +209,10 @@
 						type = 1;
 						break;
 					case 3:
+						url = '/pages/brandSaleReport/brandSaleReport';
+						type = 1;
+						break;
+					case 4:
 						url = '/pages/purchaseReport/purchaseReport';
 						type = 1;
 						break;

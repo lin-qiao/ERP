@@ -37,17 +37,8 @@
 			<scroll-view class="sale-list" scroll-y>
 				<view class="sale-item" v-for="(item,index) in list" :key="index">
 					<view class="goods">
-						<view class="goods-img">
-							<image :src="item.imgUrl"></image>
-						</view>
-						<view class="goods-con">
-							<view class="goods-name">{{item.goodsName}}</view>
-							<view class="goods-sn">
-								<text class="sn">({{item.goodsSn}})</text>
-								<text class="price red">￥{{formatMoney(item.businessPriceToTal)}}</text>
-							</view>
-							
-						</view>
+						<view class="goods-name">{{item.brandName}}</view>
+						<view class="price red">￥{{formatMoney(item.businessPriceToTal)}}</view>
 					</view>
 					<view class="goods-info">
 						<view class="info-item">
@@ -61,12 +52,8 @@
 					</view>
 					<view class="detailed">
 						<view class="detailed-item">
-							<text>单价：￥{{formatMoney(item.businessPrice)}}</text>
-							<text>销售额：￥{{formatMoney(item.businessPriceToTal)}}</text>
-						</view>
-						<view class="detailed-item">
-							<text>采购均价：￥{{formatMoney(item.costPrice)}}</text>
 							<text>成本：￥{{formatMoney(item.costPriceTotal)}}</text>
+							<text>销售额：￥{{formatMoney(item.businessPriceToTal)}}</text>
 						</view>
 						<view class="detailed-item">
 							<text>利润：￥{{formatMoney(item.grossProfitPrice)}}</text>
@@ -87,7 +74,7 @@
 	} from '../../utils/util.js'
 	import MescrollMixin from "@/uni_modules/mescroll-uni/components/mescroll-uni/mescroll-mixins.js";
 	import {
-		goodsSaleStatList,
+		brandSaleStatList,
 		saleCount
 	} from '../../api/index.js'
 	export default {
@@ -207,7 +194,7 @@
 			 * @return 
 			 */
 			getData() {
-				goodsSaleStatList(this.params).then(({
+				brandSaleStatList(this.params).then(({
 						data,
 						total
 					}) => {
@@ -356,42 +343,15 @@
 			background-color: #fff;
 			border-bottom: 1px solid $uni-border-color;
 			.goods{
+				padding: 12rpx $uni-spacing-row-lg;
 				display: flex;
-				align-items: center;
-				.goods-img{
-					width: 110rpx;
-					padding-right: 10rpx;
-					box-sizing: border-box;
-					display: flex;
-					align-items: center;
-					image{
-						width: 100rpx;
-						height: 64rpx;
-						background: url(../../static/empty.png) no-repeat;
-						background-size: cover;
-					}
+				justify-content: space-between;
+				.goods-name{
+					font-size: 32rpx;
+					color: #333;
 				}
-				.goods-con{
-					width: 592rpx;
-					.goods-name{
-						overflow: hidden;
-						white-space: nowrap;
-						text-overflow: ellipsis;
-						font-size: 32rpx;
-						color: #333;
-					}
-					.goods-sn{
-						display: flex;
-						justify-content: space-between;
-						margin-top: 10rpx;
-						.sn{
-							font-size: 24rpx;
-							color: #999;
-						}
-						.price{
-							font-size: 32rpx;
-						}
-					}
+				.price{
+					font-size: 32rpx;
 				}
 			}
 			
