@@ -46,9 +46,6 @@
 									class="red" style="margin-left: 5rpx;">{{item.number}}</text></view>
 							<view class="profit">利润：<text :class="item.grossProfitPrice > 0? 'red': 'green'">￥{{item.grossProfitPrice > 0? '+' : ''}}{{formatMoney(item.grossProfitPrice)}}</text></view>
 						</view>
-						<view class="info-item">
-							<view class="cost-price">采购均价：￥{{formatMoney(item.costPrice)}}</view>
-						</view>
 					</view>
 					<view class="detailed">
 						<view class="detailed-item">
