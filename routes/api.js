@@ -80,6 +80,8 @@ router.get('/purchaseStatList', businessFlow.purchaseStatList)
 router.get('/purchaseCount', businessFlow.purchaseCount)
 //商品销售报表
 router.get('/goodsSaleStatList', businessFlow.goodsSaleStatList)
+//品牌销售报表
+router.get('/brandSaleStatList', businessFlow.brandSaleStatList)
 //销售列表
 router.get('/saleList', sale.saleList)
 //添加销售

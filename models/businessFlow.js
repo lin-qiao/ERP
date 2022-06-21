@@ -7,10 +7,12 @@ const sequelize = require('../config/db.js'); // 引入todolist的表结构
 const businessFlowSchema = '../schema/business_flow.js';
 const goodsSchema = '../schema/goods.js';
 const sizeSchema = '../schema/size.js';
+const brandSchema = '../schema/brand.js';
 const date = require('../util/date.js');
 const businessFlowModel = require(businessFlowSchema)(sequelize, DataTypes)
 const goodsModel = require(goodsSchema)(sequelize, DataTypes)
 const sizeModel = require(sizeSchema)(sequelize, DataTypes)
+const brandModel = require(brandSchema)(sequelize, DataTypes)
 businessFlowModel.belongsTo(goodsModel, {
 	foreignKey: 'goods_id',
 	as: 'goods'
@@ -19,6 +21,16 @@ businessFlowModel.belongsTo(sizeModel, {
 	foreignKey: 'size_id',
 	as: 'size'
 });
+
+goodsModel.belongsTo(brandModel, {
+	foreignKey: 'brand_id',
+	as: 'brands'
+});
+/**
+  * @description  查询商品统计列表
+  * @param 
+  * @return 
+  */
 const findAllGoods = async function(page, size, createTimeBegin, createTimeEnd, uid, flowType, order) {
 	const where = {
 		'user_id': uid,
@@ -74,6 +86,76 @@ const findAllGoods = async function(page, size, createTimeBegin, createTimeEnd, 
 		offset: size * (page - 1)
 	})
 }
+
+
+
+/**
+  * @description  查询商品统计列表
+  * @param 
+  * @return 
+  */
+const findAllBrands = async function(page, size, createTimeBegin, createTimeEnd, uid, flowType, order) {
+	const where = {
+		'user_id': uid,
+		'status': 1
+	}
+	
+	if(flowType) {
+		switch (flowType){
+			case 'sale':
+				where['flow_type'] = {
+					[Op.or]: [3, 4]
+				};
+				break;
+			case 'purchase':
+				where['flow_type'] = {
+					[Op.or]: [1, 2]
+				};
+				break;
+		}
+	}
+	
+	if(!!createTimeBegin && !!createTimeEnd){
+		where['create_time'] = {
+			[Op.between]: [createTimeBegin, createTimeEnd]
+		}
+	}
+
+	return businessFlowModel.findAll({
+		where: where,
+		attributes: [
+			[Sequelize.col('goods.brand_id'), 'brandId'],
+			[Sequelize.col('goods.brands.brand_name'), 'brandName'],
+			[Sequelize.fn('SUM', Sequelize.col('number')), 'number'],
+			[Sequelize.fn('SUM', Sequelize.col('gross_profit_price')), 'grossProfitPrice'],
+			[Sequelize.literal('sum(`number` * `business_price`)'), 'businessPriceToTal'],
+			[Sequelize.literal('sum(`number` * `cost_price`)'), 'costPriceTotal'],
+			[Sequelize.literal('sum(`number` * `business_price`) / sum(`number`)'), 'businessPrice'],
+			[Sequelize.literal('sum(`number` * `cost_price`) / sum(`number`)'), 'costPrice'],
+			[Sequelize.literal('sum(`gross_profit_price`) / sum(`number` * `business_price`) * 100'), 'grossProfitRate'],
+			 
+		],
+		include: [
+			{
+				model: goodsModel,
+				as:'goods',
+				attributes: [],
+				include: [
+					{
+						model: brandModel,
+						as: 'brands',
+						attributes: []
+					}
+				]
+			}
+		],
+		order: order ? Sequelize.literal(order) : null,
+		group:'goods.brand_id',
+		limit: size,
+		offset: size * (page - 1)
+	})
+}
+
 /**
   * @description  查询列表
   * @param 
@@ -271,5 +353,6 @@ module.exports = {
 	updateStatus,
 	findOne,
 	sumNumber,
-	findAllGoods
+	findAllGoods,
+	findAllBrands
 }

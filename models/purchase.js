@@ -43,6 +43,7 @@ const findAll = async function(page, size, status, createTimeBegin, createTimeEn
 			['purchase_sn', 'purchaseSn'],
 			['item_type', 'itemType'],
 			['create_time', 'createTime'],
+			['supplier_name', 'supplierName'],
 			[Sequelize.fn('SUM', Sequelize.col('purchaseGoods.quantity')), 'totalNumber'],
 			[Sequelize.fn('SUM', Sequelize.col('purchaseGoods.amount')), 'totalPrice'],
 		],
