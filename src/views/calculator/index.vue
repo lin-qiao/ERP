@@ -12,10 +12,10 @@
 				<el-input v-model="form1.price2" placeholder="Pick a date"
 					style="width: 80px; display: inline-block; margin-left: 10px;"></el-input>
 			</el-form-item>
-			<el-form-item label="定金">
+			<el-form-item label="定金价格">
 				<el-input v-model="form1.deposit"></el-input>
 			</el-form-item>
-			<el-form-item label="总价">
+			<el-form-item label="尾款价格">
 				<el-input v-model="form1.totalPrice"></el-input>
 			</el-form-item>
 			<el-form-item label="数量">
@@ -43,13 +43,13 @@
 				<el-input v-model="form2.bprice2" placeholder="Pick a date"
 					style="width: 80px; display: inline-block; margin-left: 10px;"></el-input>
 			</el-form-item>
-			<el-form-item label="价格">
+			<el-form-item label="单品价格">
 				<el-input v-model="form2.bprice"></el-input>
 			</el-form-item>
-			<el-form-item label="总价">
+			<el-form-item label="总计价格">
 				<el-input v-model="form2.btotalPrice"></el-input>
 			</el-form-item>
-			<el-form-item label="红包">
+			<el-form-item label="红包价格">
 				<el-input v-model="form2.bredPrice"></el-input>
 			</el-form-item>
 			
@@ -96,13 +96,15 @@
 				let t = Number(totalPrice.value);
 				let n = Number(number.value);
 				const discount = p1 / p2; //购物金折扣
-				const price = t / n * discount; //单价
-				const total = d + price
 				if (!check.value) {
-					res1.value = total;
+					res1.value = (d + (t * discount)) / n;
 				} else {
-					const pr = discount * (d - (d / (t / n + d) * d)) + (d / (t / n + d) * d)
-					res1.value = total - pr;
+					//尾款没有购物金折扣的部分
+					let n1 = d/(d+t)*d;
+					//退的购物金实际金额
+					let n2 = (d-n1)*discount+n1;
+					let n3 = (t*discount+d-n2)/n;
+					res1.value = n3;
 				}
 			}
 			
