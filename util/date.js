@@ -142,7 +142,19 @@ function getYearEndDate(){
     var monthEndDate = new Date(nowYear, 11, 31);
     return formatDate(monthEndDate);
 }
+//获得上一年的开始日期
+function getLastYearStartDate(){
+	getData();
+    var monthStartDate = new Date(nowYear - 1, 0, 1);
+    return formatDate(monthStartDate);
+}
 
+//获得上一年的结束日期
+function getLastYearEndDate(){
+	getData();
+    var monthEndDate = new Date(nowYear - 1, 11, 31);
+    return formatDate(monthEndDate);
+}
 module.exports = {
 	formatDate,
 	getMonthDays,
@@ -156,5 +168,7 @@ module.exports = {
 	getQuarterStartDate,
 	getQuarterEndDate,
 	getYearStartDate,
-	getYearEndDate
+	getYearEndDate,
+	getLastYearStartDate,
+	getLastYearEndDate
 };

@@ -55,6 +55,9 @@ const saleStatList = async function(ctx) {
 	} else if (type == 'thisYear') {
 		createTimeBegin = date.getYearStartDate() + ' 00:00:00';
 		createTimeEnd = date.getYearEndDate() + ' 23:59:59';
+	} else if (type == 'lastYear') {
+		createTimeBegin = date.getLastYearStartDate() + ' 00:00:00';
+		createTimeEnd = date.getLastYearEndDate() + ' 23:59:59';
 	} else if (type == 'all') {
 		createTimeBegin = '';
 		createTimeEnd = '';
@@ -92,6 +95,9 @@ const saleCount = async function(ctx) {
 	} else if (type == 'thisYear') {
 		createTimeBegin = date.getYearStartDate() + ' 00:00:00';
 		createTimeEnd = date.getYearEndDate() + ' 23:59:59';
+	} else if (type == 'lastYear') {
+		createTimeBegin = date.getLastYearStartDate() + ' 00:00:00';
+		createTimeEnd = date.getLastYearEndDate() + ' 23:59:59';
 	} else if (type == 'all') {
 		createTimeBegin = '';
 		createTimeEnd = '';
@@ -161,6 +167,9 @@ const purchaseStatList = async function(ctx) {
 	} else if (type == 'thisYear') {
 		createTimeBegin = date.getYearStartDate() + ' 00:00:00';
 		createTimeEnd = date.getYearEndDate() + ' 23:59:59';
+	} else if (type == 'lastYear') {
+		createTimeBegin = date.getLastYearStartDate() + ' 00:00:00';
+		createTimeEnd = date.getLastYearEndDate() + ' 23:59:59';
 	} else if (type == 'all') {
 		createTimeBegin = '';
 		createTimeEnd = '';
@@ -199,6 +208,9 @@ const purchaseCount = async function(ctx) {
 	} else if (type == 'thisYear') {
 		createTimeBegin = date.getYearStartDate() + ' 00:00:00';
 		createTimeEnd = date.getYearEndDate() + ' 23:59:59';
+	} else if (type == 'lastYear') {
+		createTimeBegin = date.getLastYearStartDate() + ' 00:00:00';
+		createTimeEnd = date.getLastYearEndDate() + ' 23:59:59';
 	} else if (type == 'all') {
 		createTimeBegin = '';
 		createTimeEnd = '';
@@ -259,6 +271,9 @@ const goodsSaleStatList = async function(ctx) {
 	} else if (type == 'thisYear') {
 		createTimeBegin = date.getYearStartDate() + ' 00:00:00';
 		createTimeEnd = date.getYearEndDate() + ' 23:59:59';
+	} else if (type == 'lastYear') {
+		createTimeBegin = date.getLastYearStartDate() + ' 00:00:00';
+		createTimeEnd = date.getLastYearEndDate() + ' 23:59:59';
 	} else if (type == 'all') {
 		createTimeBegin = '';
 		createTimeEnd = '';
@@ -297,6 +312,9 @@ const brandSaleStatList = async function(ctx) {
 	} else if (type == 'thisYear') {
 		createTimeBegin = date.getYearStartDate() + ' 00:00:00';
 		createTimeEnd = date.getYearEndDate() + ' 23:59:59';
+	} else if (type == 'lastYear') {
+		createTimeBegin = date.getLastYearStartDate() + ' 00:00:00';
+		createTimeEnd = date.getLastYearEndDate() + ' 23:59:59';
 	} else if (type == 'all') {
 		createTimeBegin = '';
 		createTimeEnd = '';
