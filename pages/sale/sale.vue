@@ -13,9 +13,9 @@
 						<view class="goods-size" v-for="subItem in item.sizeList" :key="subItem.sizeId">
 							<text>{{subItem.sizeName}}</text>
 							<view class="input">
-								<view class="input-wrap">
+								<view class="input-wrap">  
 									<text>￥</text>
-									<input type="digit"  v-model="subItem.price"></input>
+									<input type="digit"  v-model="subItem.price" @input="inputPrice"></input>
 								</view>
 							</view>
 							<view class="input" @click="handleEdit(item)">
@@ -103,6 +103,14 @@
 			}
 		},
 		methods: {
+			/**
+			 * @description 修改缓存价格
+			 * @param 
+			 * @return 
+			 */
+			inputPrice(){
+				uni.setStorageSync('selectGoods', this.selectGoods)
+			},
 			handleAdd(){
 				uni.navigateTo({
 					url: '/pages/selectGoods/selectGoods?type=3'

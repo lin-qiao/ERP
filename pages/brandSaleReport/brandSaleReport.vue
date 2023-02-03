@@ -98,6 +98,10 @@
 						name: '本年',
 					},
 					{
+						type: 'lastYear',
+						name: '上年',
+					},
+					{
 						type: 'all',
 						name: '全部',
 					},
@@ -236,7 +240,7 @@
 		border-top: 1px solid $uni-border-color;
 
 		.wuc-tab-item {
-			width: 25%;
+			width: 20%;
 			text-align: center;
 			margin: 0;
 
