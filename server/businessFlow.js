@@ -40,8 +40,10 @@ const businessFlowList = async function(ctx) {
 const saleStatList = async function(ctx) {
 	const {
 		page = 1,
-			size = 10,
-			type = 'thisMonth'
+		size = 10,
+		type = 'thisMonth',
+		name,
+		brandId
 
 	} = ctx.query;
 	const uid = ctx.session.user_id;
@@ -66,7 +68,7 @@ const saleStatList = async function(ctx) {
 		count,
 		rows
 	} = await businessFlowModel.findAndCountAll(parseInt(page), parseInt(size), '', '', createTimeBegin,
-		createTimeEnd, uid, 'sale')
+		createTimeEnd, uid, 'sale', name, brandId)
 	const list = util.filterUnderLine(rows)
 	ctx.body = {
 		code: 200,
@@ -82,8 +84,9 @@ const saleStatList = async function(ctx) {
  */
 const saleCount = async function(ctx) {
 	const {
-		type = 'thisMonth'
-
+		type = 'thisMonth',
+		name,
+		brandId
 	} = ctx.query;
 	const uid = ctx.session.user_id;
 	if (type == 'thisMonth') {
@@ -105,21 +108,21 @@ const saleCount = async function(ctx) {
 	try {
 		//总数量
 		const saleNumber = await businessFlowModel.sumNumber(3, uid, 'number', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const saleReturnNumber = await businessFlowModel.sumNumber(4, uid, 'number', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const numberTotal = +saleNumber + saleReturnNumber;
 		//总销售额
 		const salePrice = await businessFlowModel.sumNumber(3, uid, 'totalBusinessPrice', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const saleReturnPrice = await businessFlowModel.sumNumber(4, uid, 'totalBusinessPrice', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const priceTotal = (salePrice * 100 - saleReturnPrice * 100) / 100;
 		//总毛利
 		const saleGrossProfit = await businessFlowModel.sumNumber(3, uid, 'grossProfitPrice', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const saleReturnGrossProfit = await businessFlowModel.sumNumber(4, uid, 'grossProfitPrice',
-			createTimeBegin, createTimeEnd) || 0;
+			createTimeBegin, createTimeEnd, name, brandId) || 0;
 		const grossProfitTotal = (saleGrossProfit * 100 + saleReturnGrossProfit * 100) / 100
 		//毛利率
 		const grossProfitRate = Math.round(grossProfitTotal / priceTotal * 10000) / 100;
@@ -152,9 +155,10 @@ const saleCount = async function(ctx) {
 const purchaseStatList = async function(ctx) {
 	const {
 		page = 1,
-			size = 10,
-			type = 'thisMonth'
-
+		size = 10,
+		type = 'thisMonth',
+		name,
+		brandId
 	} = ctx.query;
 	const uid = ctx.session.user_id;
 	let createTimeBegin, createTimeEnd;
@@ -178,7 +182,7 @@ const purchaseStatList = async function(ctx) {
 		count,
 		rows
 	} = await businessFlowModel.findAndCountAll(parseInt(page), parseInt(size), '', '', createTimeBegin,
-		createTimeEnd, uid, 'purchase')
+		createTimeEnd, uid, 'purchase', name, brandId)
 	const list = util.filterUnderLine(rows)
 	ctx.body = {
 		code: 200,
@@ -195,8 +199,9 @@ const purchaseStatList = async function(ctx) {
  */
 const purchaseCount = async function(ctx) {
 	const {
-		type = 'thisMonth'
-
+		type = 'thisMonth',
+		name,
+		brandId
 	} = ctx.query;
 	const uid = ctx.session.user_id;
 	if (type == 'thisMonth') {
@@ -218,16 +223,16 @@ const purchaseCount = async function(ctx) {
 	try {
 		//总数量
 		const saleNumber = await businessFlowModel.sumNumber(1, uid, 'number', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const saleReturnNumber = await businessFlowModel.sumNumber(2, uid, 'number', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const numberTotal = +saleNumber + saleReturnNumber;
 
 		//总成本
 		const saleCostTotal = await businessFlowModel.sumNumber(1, uid, 'totalBusinessPrice', createTimeBegin,
-			createTimeEnd) || 0;
+			createTimeEnd, name, brandId) || 0;
 		const saleReturnCostTotal = await businessFlowModel.sumNumber(2, uid, 'totalBusinessPrice',
-			createTimeBegin, createTimeEnd) || 0;
+			createTimeBegin, createTimeEnd, name, brandId) || 0;
 		const costTotal = (saleCostTotal * 100 - saleReturnCostTotal * 100) / 100;
 		ctx.body = {
 			code: 200,

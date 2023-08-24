@@ -29,7 +29,7 @@ goodsModel.belongsTo(brandModel, {
 /**
   * @description  查询商品统计列表
   * @param 
-  * @return 
+  * @return  
   */
 const findAllGoods = async function(page, size, createTimeBegin, createTimeEnd, uid, flowType, order) {
 	const where = {
@@ -161,12 +161,28 @@ const findAllBrands = async function(page, size, createTimeBegin, createTimeEnd,
   * @param 
   * @return 
   */
-const findAndCountAll = async function(page, size, goodsId, sizeId, createTimeBegin, createTimeEnd, uid, flowType = '') {
+const findAndCountAll = async function(page, size, goodsId, sizeId, createTimeBegin, createTimeEnd, uid, flowType = '', name, brandId) {
 	const where = {
 		'user_id': uid,
 		'status': 1
 	}
-	
+	if (name) {
+		where[Op.or] = [{
+				'$goods.name$': {
+					[Op.like]: '%' + name + '%'
+				}
+			},
+			{
+				'$goods.good_sn$': {
+					[Op.like]: '%' + name + '%'
+				}
+			}
+		]
+	}
+	if (brandId) {
+		where['$goods.brand_id$'] = brandId
+	}
+
 	if (goodsId) {
 		where['goods_id'] = goodsId;
 	}
@@ -314,11 +330,28 @@ const findOne = async function(goodsId, sizeId, flowType, uid, businessSn){
   * @return 
   */
  
-const sumNumber = async function(flowType, uid, type, createTimeBegin, createTimeEnd ) {
+const sumNumber = async function(flowType, uid, type, createTimeBegin, createTimeEnd, name, brandId ) {
 	const where = {
 		'user_id': uid,
 		'status': 1
 	}
+	if (name) {
+		where[Op.or] = [{
+				'$goods.name$': {
+					[Op.like]: '%' + name + '%'
+				}
+			},
+			{
+				'$goods.good_sn$': {
+					[Op.like]: '%' + name + '%'
+				}
+			}
+		]
+	}
+	if (brandId) {
+		where['$goods.brand_id$'] = brandId
+	}
+
 	if(!!createTimeBegin && !!createTimeEnd){
 		where['create_time'] = {
 			[Op.between]: [createTimeBegin, createTimeEnd]
@@ -330,19 +363,63 @@ const sumNumber = async function(flowType, uid, type, createTimeBegin, createTim
 	}
 	if(type == 'number'){
 		return businessFlowModel.sum('number', {
-			where: where
+			where: where,
+			include: [
+				{
+					model: goodsModel,
+					as:'goods',
+					attributes: [],
+				},{
+					model: sizeModel,
+					as:'size',
+					attributes: [],
+				},
+			],
 		})
 	}else if(type == 'totalBusinessPrice'){
 		return businessFlowModel.sum('total_business_price', {
-			where: where
+			where: where,
+			include: [
+				{
+					model: goodsModel,
+					as:'goods',
+					attributes: [],
+				},{
+					model: sizeModel,
+					as:'size',
+					attributes: [],
+				},
+			],
 		})
 	}else if(type == 'grossProfitPrice'){
 		return businessFlowModel.sum('gross_profit_price', {
-			where: where
+			where: where,
+			include: [
+				{
+					model: goodsModel,
+					as:'goods',
+					attributes: [],
+				},{
+					model: sizeModel,
+					as:'size',
+					attributes: [],
+				},
+			],
 		})
 	}else if(type == 'totalPrice'){
 		return businessFlowModel.sum('total_price', {
-			where: where
+			where: where,
+			include: [
+				{
+					model: goodsModel,
+					as:'goods',
+					attributes: [],
+				},{
+					model: sizeModel,
+					as:'size',
+					attributes: [],
+				},
+			],
 		})
 	}
 }
