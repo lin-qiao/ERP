@@ -1,74 +1,74 @@
 .ve_header_row_class_name,
 .el-table__fixed-right-patch {
-    background: $main-bg-color !important;
+  background: $main-bg-color !important;
 }
 .ve_header_cell_class_name {
-    background: $main-bg-color !important;
+  background: $main-bg-color !important;
 }
 .ve_cell_class_name {
-    background: #f11111 !important;
-    border-color: #f11111 !important;
+  background: #f11111 !important;
+  border-color: #f11111 !important;
 }
 .ve_row_class_name {
-    background: #f11111 !important;
+  background: #f11111 !important;
 }
 .ve_p_10 {
-    padding: 10px;
+  padding: 10px;
 }
 //滚动条的宽度
 ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+  width: 6px;
+  height: 6px;
 }
 //滚动条的滑块
 ::-webkit-scrollbar-thumb {
-    background-color: rgba(144, 147, 153, 0.3);
-    border-radius: 3px;
+  background-color: rgba(144, 147, 153, 0.3);
+  border-radius: 3px;
 }
 .ve_select_option_slot {
-    font-size: 12px;
-    float: left;
-    line-height: initial;
-    padding-bottom: 10px;
-    opacity: 0.7;
+  font-size: 12px;
+  float: left;
+  line-height: initial;
+  padding-bottom: 10px;
+  opacity: 0.7;
 }
 .ve_option_box {
-    width: calc(50% - 132px);
+  width: calc(50% - 132px);
 }
 .size-watch {
-    width: 100%;
-    height: 100%;
-    // display: none;
-    position: absolute;
-    top: 0;
-    z-index: -1;
-    visibility: hidden;
-    margin: 0;
-    padding: 0;
-    border: 0;
+  width: 100%;
+  height: 100%;
+  // display: none;
+  position: absolute;
+  top: 0;
+  z-index: -1;
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
 .el-table th {
-    overflow: hidden;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color:  $main-bg-color;
+  overflow: hidden;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: $main-bg-color;
 }
 
-.el-pagination{
-	margin-top: 12px;
-	text-align: right;
+.el-pagination {
+  padding-top: 12px;
+  text-align: right;
 }
 
-.el-card__header{
-	padding: 10px 20px;
+.el-card__header {
+  padding: 10px 20px;
 }
-.ellipsis-text{
-	display: inline-block;
-	max-width: 100%;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
+.ellipsis-text {
+  display: inline-block;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
