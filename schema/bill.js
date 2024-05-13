@@ -1,43 +1,35 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('stock', {
+  return sequelize.define('bill', {
     id: {
-      autoIncrement: true,
+		autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    goods_id: {
+    bill_sn: {
+      type: DataTypes.CHAR(17),
+      allowNull: true
+    },
+	remark: {
+	  type: DataTypes.STRING(255),
+	  allowNull: true,
+	},
+    status: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     },
-    size_id: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    number: {
-      type: DataTypes.INTEGER,
-      allowNull: false
-    },
-    cost_price: {
-      type: DataTypes.DOUBLE(20,2),
-      allowNull: false
-    },
-    total_price: {
-      type: DataTypes.DOUBLE(20,2),
-      allowNull: false
-    },
-    update_time: {
+    create_time: {
       type: DataTypes.DATE,
-      allowNull: false
+      allowNull: true
     },
     user_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'stock',
+    tableName: 'bill',
     timestamps: false,
     indexes: [
       {

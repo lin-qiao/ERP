@@ -1,4 +1,6 @@
 var DataTypes = require("sequelize").DataTypes;
+var _bill = require("./bill");
+var _bill_goods = require("./bill_goods");
 var _brand = require("./brand");
 var _business_flow = require("./business_flow");
 var _goods = require("./goods");
@@ -12,6 +14,8 @@ var _supplier = require("./supplier");
 var _user = require("./user");
 
 function initModels(sequelize) {
+  var bill = _bill(sequelize, DataTypes);
+  var bill_goods = _bill_goods(sequelize, DataTypes);
   var brand = _brand(sequelize, DataTypes);
   var business_flow = _business_flow(sequelize, DataTypes);
   var goods = _goods(sequelize, DataTypes);
@@ -26,6 +30,8 @@ function initModels(sequelize) {
 
 
   return {
+    bill,
+    bill_goods,
     brand,
     business_flow,
     goods,

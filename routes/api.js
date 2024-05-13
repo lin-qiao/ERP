@@ -10,6 +10,7 @@ const purchase = require('../server/purchase.js')
 const sale = require('../server/sale.js')
 const businessFlow = require('../server/businessFlow.js')
 const callback = require('../server/callback.js')
+const bill = require('../server/bill.js')
 
 
 //登录
@@ -92,6 +93,12 @@ router.get('/saleDetail', sale.saleDetail)
 router.post('/saleBackout', sale.saleBackout)
 //回调
 router.post('/getMessage', callback.getMessage)
+//添加记账
+router.post('/billAdd', bill.billAdd)
+router.get('/billList', bill.billList)
+router.get('/billDetail', bill.billDetail)
+router.post('/billBackout', bill.billBackout)
+router.post('/billExport', bill.billExport)
 
 
 module.exports = router

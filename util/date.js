@@ -11,13 +11,12 @@ var lastMonth;
 function getData(){
 	//获取时间
 	now = new Date(); //当前日期
-    console.log(now)
 	nowDayOfWeek = now.getDay(); //今天本周的第几天
 	nowDay = now.getDate(); //当前日
 	nowMonth = now.getMonth(); //当前月
 	nowYear = now.getYear(); //当前年
 	nowYear += (nowYear < 2000) ? 1900 : 0; //
-
+    console.log(nowDay)
 	lastMonthDate = new Date(); //上月日期
 	lastMonthDate.setDate(1);
 	lastMonthDate.setMonth(lastMonthDate.getMonth()-1);
@@ -69,14 +68,15 @@ function getQuarterStartMonth(){
 //获得本周的开始日期
 function getWeekStartDate() {
 	getData();
-    var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek +1);
+    var weekStartDate = new Date(nowYear, nowMonth, nowDay - (nowDayOfWeek === 0 ? 6 : nowDayOfWeek + 1));
+	console.log(weekStartDate)
     return formatDate(weekStartDate);
 }
 
 //获得本周的结束日期
 function getWeekEndDate() {
 	getData();
-    var weekEndDate = new Date(nowYear, nowMonth, nowDay + (7 - nowDayOfWeek));
+    var weekEndDate = new Date(nowYear, nowMonth, nowDay - (nowDayOfWeek === 0 ? 6 : nowDayOfWeek + 1) + 7);
     return formatDate(weekEndDate);
 }
 
@@ -155,6 +155,20 @@ function getLastYearEndDate(){
     var monthEndDate = new Date(nowYear - 1, 11, 31);
     return formatDate(monthEndDate);
 }
+
+//获取当天日期
+function getDay(){
+	getData();
+    var monthEndDate = new Date(nowYear, nowMonth, nowDay);
+    return formatDate(monthEndDate);
+}
+
+//获取昨天日期
+function getLastDay(){
+	getData();
+    var monthEndDate = new Date(nowYear, nowMonth, nowDay -1);
+    return formatDate(monthEndDate);
+}
 module.exports = {
 	formatDate,
 	getMonthDays,
@@ -170,5 +184,7 @@ module.exports = {
 	getYearStartDate,
 	getYearEndDate,
 	getLastYearStartDate,
-	getLastYearEndDate
+	getLastYearEndDate,
+	getDay,
+	getLastDay
 };

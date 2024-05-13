@@ -32,16 +32,16 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       comment: "业务单价"
     },
-	cost_price: {
-	  type: DataTypes.DOUBLE(20,2),
-	  allowNull: false,
-	  comment: "库存成本"
-	},
-	total_price: {
-	  type: DataTypes.DOUBLE(20,2),
-	  allowNull: false,
-	  comment: "剩余成本"
-	},
+    cost_price: {
+      type: DataTypes.DOUBLE(20,2),
+      allowNull: false,
+      comment: "库存成本单价"
+    },
+    total_price: {
+      type: DataTypes.DOUBLE(20,2),
+      allowNull: false,
+      comment: "剩余库存成本"
+    },
     number_stored: {
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -61,21 +61,21 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       comment: "用户id"
     },
-	total_business_price: {
-	  type: DataTypes.DOUBLE(20,2),
-	  allowNull: false,
-	  comment: "业务总价"
-	},
-	gross_profit_price: {
-	  type: DataTypes.DOUBLE(20,2),
-	  allowNull: false,
-	  comment: "毛利"
-	},
-	status: {
-	  type: DataTypes.INTEGER,
-	  allowNull: false,
-	  comment: "1、正常 2、删除"
-	},
+    total_business_price: {
+      type: DataTypes.DOUBLE(20,2),
+      allowNull: false,
+      comment: "业务成本"
+    },
+    gross_profit_price: {
+      type: DataTypes.DOUBLE(20,2),
+      allowNull: false,
+      comment: "毛利"
+    },
+    status: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: "0 删除 1 正常"
+    }
   }, {
     sequelize,
     tableName: 'business_flow',

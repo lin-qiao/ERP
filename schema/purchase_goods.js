@@ -42,11 +42,11 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false,
       comment: "创建时间"
     },
-	user_id: {
-	  type: DataTypes.INTEGER,
-	  allowNull: false,
-	  comment: "用户id"
-	}
+    user_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      comment: "用户id"
+    }
   }, {
     sequelize,
     tableName: 'purchase_goods',
