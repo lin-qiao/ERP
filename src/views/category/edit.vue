@@ -3,16 +3,20 @@
     :title="title"
     append-to-body
     destroy-on-close
+    width="800px"
     :model-value="showDialog"
-    width="500px"
     @close="closeDialog()"
   >
     <el-form ref="formRef" :model="form" label-width="80px" :rules="rules" :inline="false">
-      <el-form-item label="供应商" prop="supplierName">
-        <el-input clearable v-model="supplierName" placeholder="请输入供应商名称"></el-input>
+      <el-form-item label="大类名称" prop="categoryName">
+        <el-input clearable v-model="categoryName" placeholder="大类名称"></el-input>
       </el-form-item>
-      <el-form-item label="联系方式" prop="contact">
-        <el-input clearable v-model="contact" placeholder="请输入联系方式"></el-input>
+      <el-form-item label="选择品牌" prop="brandIds">
+        <el-checkbox-group v-model="brandIds" placeholder="请选择选择品牌">
+          <el-checkbox v-for="item in brandList" :key="item.id" :label="item.id" :value="item.id">
+            {{ item.brand_name }}
+          </el-checkbox>
+        </el-checkbox-group>
       </el-form-item>
     </el-form>
     <template v-slot:footer>
@@ -47,33 +51,48 @@ export default {
     const { rowData } = toRefs(props)
 
     const formRef = ref(null)
+    const brandList = ref([])
     const form = reactive({
-      supplierName: '',
-      contact: ''
+      categoryName: '',
+      brandIds: []
     })
-    const { supplierName, contact } = toRefs(form)
+    const { categoryName, brandIds } = toRefs(form)
 
     /**
      * @description 初始化表单
      * @param
      * @return
      */
+    console.log(rowData.value)
     rowData.value &&
-      ((form.supplierName = rowData.value.supplierName), (form.contact = rowData.value.contact))
+      ((form.categoryName = rowData.value.category_name),
+      (form.brandIds = rowData.value.brand_ids.split(',').map((item) => parseInt(item))))
 
     /* 表单规则 */
     const rules = computed(() => ({
-      supplierName: {
+      categoryName: {
         required: true,
-        message: '请输入供应商名称',
+        message: '请输入大类名称',
         trigger: 'blur'
       },
-      contact: {
+      brandIds: {
         required: true,
-        message: '请输入电话或者邮箱',
+        message: '请选择品牌',
         trigger: 'blur'
       }
     }))
+
+    /**
+     * @description 获取品牌列表
+     * @param
+     * @return
+     */
+    const getBrandList = async () => {
+      const { code, data } = await VE_API.brand.brandList({ page: 1, size: 100 })
+      if (code == 200) {
+        brandList.value = data
+      }
+    }
 
     /* 提交表单 */
     const onSubmit = () => {
@@ -81,12 +100,16 @@ export default {
         if (valid) {
           let res
           if (rowData.value && rowData.value.id) {
-            res = await VE_API.supplier.supplierUpdate({
+            res = await VE_API.category.categoryUpdate({
               id: rowData.value.id,
-              ...form
+              categoryName: categoryName.value.trim(),
+              brandIds: brandIds.value.join()
             })
           } else {
-            res = await VE_API.supplier.supplierAdd(form)
+            res = await VE_API.category.categoryAdd({
+              categoryName: categoryName.value.trim(),
+              brandIds: brandIds.value.join()
+            })
           }
           const { code } = res
           if (code == 200) {
@@ -99,11 +122,15 @@ export default {
       emit('closeDialog', false)
     }
 
+    onMounted(() => {
+      getBrandList()
+    })
     return {
       formRef,
       form,
-      supplierName,
-      contact,
+      categoryName,
+      brandIds,
+      brandList,
       onSubmit,
       rules,
       closeDialog

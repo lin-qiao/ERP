@@ -1,37 +1,8 @@
 <template>
-  <!-- 搜索 -->
-  <el-form ref="queryForm" :inline="true" :model="params">
-    <el-form-item label="商品" prop="name">
-      <el-input clearable v-model="name" placeholder="请输入商品名称"> </el-input>
-    </el-form-item>
-    <el-form-item label="品牌" prop="brandId">
-      <el-select
-        clearable
-        v-model="brandId"
-        placeholder="请选择商品品牌"
-        style="width: 180px"
-        @change="onSubmit(params, getDataList)"
-      >
-        <el-option
-          v-for="item in brandList"
-          :key="item.id"
-          :label="item.brand_name"
-          :value="item.id"
-        >
-        </el-option>
-      </el-select>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="onSubmit(params, getDataList)">搜索</el-button>
-      <el-button @click="resetForm(queryForm, params, getDataList)">重置</el-button>
-    </el-form-item>
-  </el-form>
   <!-- table工具条 -->
-  <toolbar ref="toolBar" title="商品列表">
-    <template #btns>
-      <el-button size="mini" type="primary" @click="handleEdit('添加')"> 添加商品 </el-button>
-    </template>
-  </toolbar>
+  <el-row ref="toolBar" class="ve_header_row_class_name ve_p_10">
+    <el-button size="mini" type="primary" @click="handleEdit('添加')"> 添加大类 </el-button>
+  </el-row>
   <!-- 列表 -->
   <table-com
     class="table"
@@ -75,14 +46,7 @@ import {
   getCurrentInstance //获取当前组件实例
 } from 'vue'
 //*导入公共查询方法
-import {
-  onSubmit,
-  resetForm,
-  handleSizeChange,
-  handleCurrentChange,
-  maxHeight
-} from '@/views/layoutpages/common'
-import { formatMoney } from '@/utils/index'
+import { handleSizeChange, handleCurrentChange, maxHeight } from '@/views/layoutpages/common'
 import { useRouter } from 'vue-router'
 export default {
   components: {
@@ -99,63 +63,33 @@ export default {
     const toolBar = ref(null)
     const pagination = ref(null)
     const queryForm = ref(null)
-    const brandList = ref([])
     /* 请求参数 */
     const params = reactive({
       size: 10,
       page: 1,
-      total: 0,
-      name: '',
-      brandId: ''
+      total: 0
     })
     const tableColumn = ref([
       {
-        props: { prop: 'name', label: '商品信息', minWidth: '280px', showOverflowTooltip: true },
+        props: { prop: 'category_name', label: '大类' }
+      },
+      {
+        props: { prop: 'brandNames', label: '尺码', showOverflowTooltip: true },
         default: (scope) => {
-          return (
-            <div class="goods-info">
-              <div class="goods-img">
-                <el-image src={scope.row.imgUrl} fit="fit"></el-image>
-              </div>
-              <div class="goods-name ellipsis-text">
-                <p class="p1">
-                  货号：<strong>{scope.row.goodSn}</strong>
-                </p>
-                <p class="p2 ellipsis-text"> {scope.row.name} </p>
-              </div>
-            </div>
-          )
+          return scope.row.brandNames.map((item) => item.brandName).join('，')
         }
       },
       {
-        props: { prop: 'brandName', label: '品牌', width: '100px' }
-      },
-
-      {
-        props: { prop: 'purchasePrice', label: '采购价', width: '100px' },
+        props: { prop: 'create_time', label: '修改时间' },
         default: (scope) => {
-          return formatMoney(scope.row.purchasePrice)
+          return new Date(scope.row.create_time).Format('yyyy-MM-dd hh:mm:ss')
         }
       },
-      {
-        props: { prop: 'sizeNames', label: '尺码', minWidth: '250px', showOverflowTooltip: true },
-        default: (scope) => {
-          return scope.row.sizeNames.map((item) => item.sizeName).join('，')
-        }
-      },
-      {
-        props: { prop: 'createTime', label: '修改时间', width: '180px' },
-        default: (scope) => {
-          return new Date(scope.row.createTime).Format('yyyy-MM-dd hh:mm:ss')
-        }
-      },
-
       {
         props: {
           prop: 'action',
           label: '操作',
-          fixed: 'right',
-          width: '180px'
+          fixed: 'right'
         },
         default: (scope) => {
           return (
@@ -171,17 +105,16 @@ export default {
         }
       }
     ])
-    let { size, page, total, brandId, name } = toRefs(params)
+    let { size, page, total } = toRefs(params)
 
     onMounted(async () => {
-      await getBrandList()
       await getDataList()
       maxHeight(pagination, queryForm, toolBar, ve_max_height)
     })
 
     /* 获取列表 */
     const getDataList = async () => {
-      const { code, data, total } = await VE_API.goods.goodsList(params)
+      const { code, data, total } = await VE_API.category.categoryList(params)
       console.log(total)
       if (code == 200) {
         tableData.value = data
@@ -189,19 +122,7 @@ export default {
       }
     }
 
-    /**
-     * @description 获取品牌列表
-     * @param
-     * @return
-     */
-    const getBrandList = async () => {
-      const { code, data } = await VE_API.brand.brandList({ page: 1, size: 100 })
-      if (code == 200) {
-        brandList.value = data
-      }
-    }
-
-    /* 点击添加 */
+    /* 点击添加大类 */
     const handleAdd = () => {
       showDialog.value = true
     }
@@ -225,7 +146,7 @@ export default {
           type: 'error'
         })
         .then(async () => {
-          const { code } = await VE_API.goods.goodsDelete({ id })
+          const { code } = await VE_API.category.categoryDelete({ id })
           if (code == 200) {
             getDataList()
           }
@@ -252,8 +173,6 @@ export default {
       total,
       page,
       size,
-      brandId,
-      name,
       tableColumn,
       ve_max_height,
       toolBar,
@@ -268,10 +187,7 @@ export default {
       handelDialog,
       handleSizeChange,
       handleCurrentChange,
-      getDataList,
-      brandList,
-      onSubmit,
-      resetForm
+      getDataList
     }
   }
 }

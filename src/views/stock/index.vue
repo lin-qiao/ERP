@@ -3,6 +3,7 @@
   <el-form ref="queryForm" :inline="true" :model="params">
     <el-form-item label="商品" prop="goodSn">
       <el-select
+        style="width: 180px"
         v-model="goodSn"
         value-key="articleNumber"
         filterable
@@ -25,6 +26,7 @@
     </el-form-item>
     <el-form-item label="品牌" prop="brandId">
       <el-select
+        style="width: 180px"
         v-model="brandId"
         placeholder="请选择商品品牌"
         @change="onSubmit(params, getDataList)"
@@ -87,8 +89,8 @@
   <el-pagination
     ref="pagination"
     background
-    @size-change="val => handleSizeChange(val, params, getDataList)"
-    @current-change="val => handleCurrentChange(val, params, getDataList)"
+    @size-change="(val) => handleSizeChange(val, params, getDataList)"
+    @current-change="(val) => handleCurrentChange(val, params, getDataList)"
     :hide-on-single-page="total <= size ? true : false"
     layout="total, sizes, prev, pager, next, jumper"
     :page-sizes="[10, 20, 50, 100]"
@@ -184,7 +186,7 @@ export default {
      * @param
      * @return
      */
-    const getGoodsList = async name => {
+    const getGoodsList = async (name) => {
       loading.value = true
       const { code, data } = await VE_API.goods.goodsList({ page: 1, limit: 10, name })
       if (code == 200) {

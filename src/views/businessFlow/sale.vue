@@ -5,7 +5,13 @@
       <el-input clearable v-model="name" placeholder="请输入商品名称"> </el-input>
     </el-form-item>
     <el-form-item label="品牌" prop="brandId">
-      <el-select clearable v-model="brandId" placeholder="请选择商品品牌" @change="handleSubmit">
+      <el-select
+        clearable
+        v-model="brandId"
+        style="width: 180px"
+        placeholder="请选择商品品牌"
+        @change="handleSubmit"
+      >
         <el-option
           v-for="item in brandList"
           :key="item.id"
@@ -63,8 +69,8 @@
   <el-pagination
     ref="pagination"
     background
-    @size-change="val => handleSizeChange(val, params, getDataList)"
-    @current-change="val => handleCurrentChange(val, params, getDataList)"
+    @size-change="(val) => handleSizeChange(val, params, getDataList)"
+    @current-change="(val) => handleCurrentChange(val, params, getDataList)"
     :hide-on-single-page="total <= size ? true : false"
     layout="total, sizes, prev, pager, next, jumper"
     :page-sizes="[10, 20, 50, 100]"
@@ -75,7 +81,7 @@
   </el-pagination>
 </template>
 
-<script>
+<script lang="jsx">
 import {
   ref,
   reactive,
@@ -123,7 +129,7 @@ export default {
     const tableColumn = ref([
       {
         props: { prop: 'name', label: '商品信息', minWidth: '280px', showOverflowTooltip: true },
-        default: scope => {
+        default: (scope) => {
           return (
             <div class="goods-info">
               <div class="goods-img">
@@ -182,25 +188,25 @@ export default {
       },
       {
         props: { prop: 'businessPrice', label: '单价', width: '100px' },
-        default: scope => {
+        default: (scope) => {
           return formatMoney(scope.row.businessPrice)
         }
       },
       {
         props: { prop: 'businessPrice', label: '总价', width: '100px' },
-        default: scope => {
+        default: (scope) => {
           return formatMoney(scope.row.totalBusinessPrice)
         }
       },
       {
         props: { prop: 'costPrice', label: '采购均价', width: '120px' },
-        default: scope => {
+        default: (scope) => {
           return formatMoney(scope.row.costPrice)
         }
       },
       {
         props: { prop: 'totalPrice', label: '毛利润', width: '120px' },
-        default: scope => {
+        default: (scope) => {
           return formatMoney(scope.row.grossProfitPrice)
         }
       },
@@ -273,7 +279,7 @@ export default {
      * @param
      * @return
      */
-    const toBusiness = orderSn => {
+    const toBusiness = (orderSn) => {
       let url
       if (orderSn.indexOf('PH') != -1) {
         url = '/sale?orderSn=' + orderSn
@@ -298,7 +304,7 @@ export default {
      * @param
      * @return
      */
-    const handleChangeType = async value => {
+    const handleChangeType = async (value) => {
       params.type = value
       onSubmit(params, getDataList)
       getSaleCount()
