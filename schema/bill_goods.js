@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('bill_goods', {
     id: {
-	  autoIncrement: true,
+      autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
@@ -15,12 +15,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-	goods_img: {
-	  type: DataTypes.STRING(255),
-	  allowNull: true
-	},
     goods_id: {
       type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    goods_img: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     total: {
