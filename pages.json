@@ -167,7 +167,7 @@
         {
             "path" : "pages/goodsAddSearch/goodsAddSearch",
             "style" : {
-                "navigationBarTitleText" : "",
+                "navigationBarTitleText" : "签收",
                 "enablePullDownRefresh" : false
             }
         }
@@ -180,6 +180,27 @@
                 "enablePullDownRefresh": false
             }
             
+        },
+        {
+        	"path" : "pages/takeOver/takeOver",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "入库单"
+        	}
+        },
+        {
+        	"path" : "pages/signFor/signFor",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "签收"
+        	}
+        },
+        {
+        	"path" : "pages/signForList/signForList",
+        	"style" : 
+        	{
+        		"navigationBarTitleText" : "签收列表"
+        	}
         }
     ],
     "globalStyle" : {

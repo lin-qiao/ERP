@@ -141,12 +141,12 @@
 	};
 </script>
 <style lang="scss" scoped>
-	$box-height: 35px;
+	$box-height: 25px;
 	/* #ifdef APP-NVUE */
-	$box-line-height: 35px;
+	$box-line-height: 25px;
 	/* #endif */
-	$box-line-height: 26px;
-	$box-width: 35px;
+	$box-line-height: 25px;
+	$box-width: 25px;
 
 	.uni-numbox {
 		/* #ifndef APP-NVUE */
@@ -155,7 +155,7 @@
 		flex-direction: row;
 		height: $box-height;
 		line-height: $box-height;
-		width: 120px;
+		width: 80px;
 	}
 
 	.uni-cursor-point {
@@ -166,7 +166,7 @@
 
 	.uni-numbox__value {
 		background-color: $uni-bg-color;
-		width: 50px;
+		width: 40px;
 		height: $box-height;
 		text-align: center;
 		font-size: $uni-font-size-lg;

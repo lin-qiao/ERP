@@ -1,60 +1,82 @@
 <template>
 	<view class="plr24 index">
+
 		<uni-title type="h1" title="销售"></uni-title>
 		<uni-grid :column="3" :showBorder="false" :square="false" @change="changeSale">
-		    <uni-grid-item :index="1">
+			<uni-grid-item :index="1">
 				<view class="grid-item">
 					<image src="../../static/1.png"></image>
 					<text>销售单</text>
 				</view>
-		    </uni-grid-item>
-		    <uni-grid-item :index="2">
-		        <view class="grid-item">
-		        	<image src="../../static/2.png"></image>
-		        	<text>销售历史</text>
-		        </view>
-		    </uni-grid-item>
-		    <uni-grid-item :index="3">
-		        <view class="grid-item no-right-border">
-		        	<image src="../../static/3.png"></image>
-		        	<text>销售退货单</text>
-		        </view>
-		    </uni-grid-item>
-			<uni-grid-item :index="4">
-			    <view class="grid-item no-bottom-border">
-			    	<image src="../../static/4.png"></image>
-			    	<text>销售退货历史</text>
-			    </view>
 			</uni-grid-item>
+			<uni-grid-item :index="2">
+				<view class="grid-item">
+					<image src="../../static/2.png"></image>
+					<text>销售历史</text>
+				</view>
+			</uni-grid-item>
+			<uni-grid-item :index="3">
+				<view class="grid-item no-right-border">
+					<image src="../../static/3.png"></image>
+					<text>销售退货单</text>
+				</view>
+			</uni-grid-item>
+			<uni-grid-item :index="4">
+				<view class="grid-item no-bottom-border">
+					<image src="../../static/4.png"></image>
+					<text>销售退货历史</text>
+				</view>
+			</uni-grid-item>
+		</uni-grid>
+		<uni-title type="h1" title="签收"></uni-title>
+		<uni-grid :column="3" :showBorder="false" :square="false">
+			<uni-grid-item :index="1">
+				<view class="grid-item no-bottom-border" @click="handleSignFor">
+					<image src="../../static/1.png"></image>
+					<text>签收</text>
+				</view>
+			</uni-grid-item>
+			<uni-grid-item :index="1">
+				<view class="grid-item no-bottom-border" @click="handleSignForList">
+					<image src="../../static/1.png"></image>
+					<text>签收列表</text>
+				</view>
+			</uni-grid-item>
+			<!-- 			<uni-grid-item :index="1">
+						<view class="grid-item no-bottom-border" @click="handleTakeOver">
+							<image src="../../static/1.png"></image>
+							<text>入库</text>
+						</view>
+					</uni-grid-item> -->
 		</uni-grid>
 		<uni-title type="h1" title="采购"></uni-title>
 		<uni-grid :column="3" :showBorder="false" :square="false" @change="changePurchase">
-		    <uni-grid-item :index="1">
+			<uni-grid-item :index="1">
 				<view class="grid-item">
 					<image src="../../static/5.png"></image>
 					<text>采购单</text>
 				</view>
-		    </uni-grid-item>
-		    <uni-grid-item :index="2">
-		        <view class="grid-item">
-		        	<image src="../../static/6.png"></image>
-		        	<text>采购历史</text>
-		        </view>
-		    </uni-grid-item>
-		    <uni-grid-item :index="3">
-		        <view class="grid-item no-right-border">
-		        	<image src="../../static/7.png"></image>
-		        	<text>采购退货单</text>
-		        </view>
-		    </uni-grid-item>
+			</uni-grid-item>
+			<uni-grid-item :index="2">
+				<view class="grid-item">
+					<image src="../../static/6.png"></image>
+					<text>采购历史</text>
+				</view>
+			</uni-grid-item>
+			<uni-grid-item :index="3">
+				<view class="grid-item no-right-border">
+					<image src="../../static/7.png"></image>
+					<text>采购退货单</text>
+				</view>
+			</uni-grid-item>
 			<uni-grid-item :index="4">
-			    <view class="grid-item no-bottom-border">
-			    	<image src="../../static/8.png"></image>
-			    	<text>采购退货历史</text>
-			    </view>
+				<view class="grid-item no-bottom-border">
+					<image src="../../static/8.png"></image>
+					<text>采购退货历史</text>
+				</view>
 			</uni-grid-item>
 		</uni-grid>
-<!-- 		<uni-title type="h1" title="基础"></uni-title>
+		<!-- 		<uni-title type="h1" title="基础"></uni-title>
 		<uni-grid :column="3" :showBorder="false" :square="false" @change="changeBase">
 		    <uni-grid-item :index="1">
 		        <view class="grid-item no-bottom-border">
@@ -77,12 +99,12 @@
 		</uni-grid> -->
 		<uni-title type="h1" title="统计"></uni-title>
 		<uni-grid :column="3" :showBorder="false" :square="false" @change="changeReport">
-		    <uni-grid-item :index="1">
+			<uni-grid-item :index="1">
 				<view class="grid-item">
 					<image src="../../static/9.png"></image>
 					<text>销售报表</text>
 				</view>
-		    </uni-grid-item>
+			</uni-grid-item>
 			<uni-grid-item :index="2">
 				<view class="grid-item">
 					<image src="../../static/11.png"></image>
@@ -95,23 +117,24 @@
 					<text>品牌销售报表</text>
 				</view>
 			</uni-grid-item>
-		    <uni-grid-item :index="4">
-		        <view class="grid-item no-bottom-border">
-		        	<image src="../../static/10.png"></image>
-		        	<text>采购报表</text>
-		        </view>
-		    </uni-grid-item>
+			<uni-grid-item :index="4">
+				<view class="grid-item no-bottom-border">
+					<image src="../../static/10.png"></image>
+					<text>采购报表</text>
+				</view>
+			</uni-grid-item>
 		</uni-grid>
 	</view>
-	
+
 </template>
 
 <script>
-	import { supplierList } from '../../api/index.js'
+	import {
+		supplierList
+	} from '../../api/index.js'
 	export default {
 		data() {
-			return {
-			}
+			return {}
 		},
 		onLoad() {
 			this.getSupplierList()
@@ -122,19 +145,24 @@
 			 * @param 
 			 * @return 
 			 */
-			getSupplierList(){
+			getSupplierList() {
 				uni.showLoading()
-				supplierList({page:1, size: 100}).then(res => {
+				supplierList({
+					page: 1,
+					size: 100
+				}).then(res => {
 					wx.setStorageSync('supplierList', res.data)
 				}).finally(() => {
 					uni.hideLoading()
 				})
 			},
-			changeSale(e){
-				let { index } = e.detail;
+			changeSale(e) {
+				let {
+					index
+				} = e.detail;
 				index = Number(index);
-				let url,type;
-				switch (index){
+				let url, type;
+				switch (index) {
 					case 1:
 						url = '/pages/sale/sale';
 						type = 2;
@@ -153,21 +181,23 @@
 						break;
 				}
 				console.log(url)
-				if(type == 2){
+				if (type == 2) {
 					uni.switchTab({
 						url,
 					})
-				}else{
+				} else {
 					uni.navigateTo({
 						url,
 					})
 				}
 			},
-			changePurchase(e){
-				let { index } = e.detail;
+			changePurchase(e) {
+				let {
+					index
+				} = e.detail;
 				index = Number(index);
-				let url,type;
-				switch (index){
+				let url, type;
+				switch (index) {
 					case 1:
 						url = '/pages/purchase/purchase';
 						type = 1;
@@ -185,21 +215,23 @@
 						type = 1;
 						break;
 				}
-				if(type == 2){
+				if (type == 2) {
 					uni.switchTab({
 						url,
 					})
-				}else{
+				} else {
 					uni.navigateTo({
 						url,
 					})
 				}
 			},
-			changeReport(e){
-				let { index } = e.detail;
+			changeReport(e) {
+				let {
+					index
+				} = e.detail;
 				index = Number(index);
-				let url,type;
-				switch (index){
+				let url, type;
+				switch (index) {
 					case 1:
 						url = '/pages/saleReport/saleReport';
 						type = 1;
@@ -217,21 +249,23 @@
 						type = 1;
 						break;
 				}
-				if(type == 2){
+				if (type == 2) {
 					uni.switchTab({
 						url,
 					})
-				}else{
+				} else {
 					uni.navigateTo({
 						url,
 					})
 				}
 			},
-			changeBase(){
-				let { index } = e.detail;
+			changeBase() {
+				let {
+					index
+				} = e.detail;
 				index = Number(index);
 				let url;
-				switch (index){
+				switch (index) {
 					case 1:
 						url = '/pages/saleReport/saleReport';
 						break;
@@ -248,17 +282,33 @@
 				uni.navigateTo({
 					url,
 				})
+			},
+			handleTakeOver() {
+				uni.navigateTo({
+					url: '/pages/takeOver/takeOver'
+				})
+			},
+			handleSignFor() {
+				uni.navigateTo({
+					url: '/pages/signFor/signFor'
+				})
+			},
+			handleSignForList() {
+				uni.navigateTo({
+					url: '/pages/signForList/signForList'
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	.index{
+	.index {
 		min-height: 100vh;
 		background-color: #fff;
 	}
-	.grid-item{
+
+	.grid-item {
 		height: 100%;
 		display: flex;
 		flex-direction: column;
@@ -267,17 +317,21 @@
 		padding: 30rpx 0;
 		border-right: 1rpx solid $uni-border-color;
 		border-bottom: 1rpx solid $uni-border-color;
-		&.no-right-border{
+
+		&.no-right-border {
 			border-right: none;
 		}
-		&.no-bottom-border{
+
+		&.no-bottom-border {
 			border-bottom: none;
 		}
-		image{
+
+		image {
 			width: 60rpx;
 			height: 60rpx;
 		}
-		text{
+
+		text {
 			font-size: 26rpx;
 			margin-top: 15rpx;
 			color: #333;

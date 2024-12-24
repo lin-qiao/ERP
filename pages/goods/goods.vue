@@ -5,9 +5,9 @@
 				backgroundColor="#01c2c3" 
 				color="#fff"
 				statusBar="true"
-				right-icon="plusempty" 
+				left-icon="plusempty" 
 				title="商品"
-				@clickRight="handleAdd">
+				@clickLeft="handleAdd">
 			</uni-nav-bar>
 			<uni-search-bar placeholder="货号/名称" @confirm="search" v-model="params.keywords"></uni-search-bar>
 			<view class="stat">
@@ -183,6 +183,7 @@
 					imgUrl: obj.imgUrl,
 					brandId: obj.brandId,
 					sizeIds: obj.sizeIds.split(',').map(item => Number(item)),
+					stockInfos: obj.stockInfos,
 					purchasePrice: obj.purchasePrice
 				})
 				uni.navigateTo({

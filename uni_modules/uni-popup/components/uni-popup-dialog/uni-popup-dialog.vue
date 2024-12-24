@@ -10,7 +10,8 @@
 		</view>
 		<view v-else class="uni-dialog-content">
 			<slot>
-				<input class="uni-dialog-input" v-model="val" type="text" :placeholder="placeholder" :focus="focus" >
+				<input class="uni-dialog-input" v-model="val" type="text" :placeholder="placeholder" :focus="focus"
+					@focus="changeFocus">
 			</slot>
 		</view>
 		<view class="uni-dialog-button-group">
@@ -50,7 +51,7 @@
 	export default {
 		name: "uniPopupDialog",
 		mixins: [popup],
-		emits:['confirm','close'],
+		emits: ['confirm', 'close'],
 		props: {
 			value: {
 				type: [String, Number],
@@ -113,19 +114,19 @@
 			}
 		},
 		mounted() {
-			this.focus = true
+			this.focus = true;
 		},
 		methods: {
 			/**
 			 * 点击确认按钮
 			 */
 			onOk() {
-				if (this.mode === 'input'){
+				if (this.mode === 'input') {
 					this.$emit('confirm', this.val)
-				}else{
+				} else {
 					this.$emit('confirm')
 				}
-				if(this.beforeClose) return
+				if (this.beforeClose) return
 				this.popup.close()
 			},
 			/**
@@ -133,11 +134,18 @@
 			 */
 			closeDialog() {
 				this.$emit('close')
-				if(this.beforeClose) return
+				if (this.beforeClose) return
 				this.popup.close()
 			},
-			close(){
+			close() {
 				this.popup.close()
+			},
+			changeFocus() {
+				setTimeout(function() {
+					uni.hideKeyboard(); //隐藏软键盘:隐藏已经显示的软键盘，如果软键盘没有显示则不做任何操作
+					// plus.key.hideSoftKeybord();//隐藏软键盘:隐藏已经显示的软键盘，如果软键盘没有显示则不做任何操作
+				}, 250);
+
 			}
 		}
 	}
