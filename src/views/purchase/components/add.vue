@@ -23,6 +23,28 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="快递单号" props="expressNumber">
+        <el-select
+          v-model="expressNumber"
+          value-key="id"
+          filterable
+          remote
+          reserve-keyword
+          placeholder="请输入快递单号"
+          :remote-method="getExpressNumberList"
+          :loading="loading"
+          style="width: 180px"
+          @change="changeExpressNumber"
+        >
+          <el-option
+            v-for="item in expressNumberList"
+            :key="item.id"
+            :label="item.expressNumber"
+            :value="item.expressNumber"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
       <!-- 列表 -->
       <el-table :data="tableData" show-summary :summary-method="getSummaries">
         <el-table-column align="center" type="index" width="50"> </el-table-column>
@@ -151,7 +173,52 @@ export default {
     const goodsList = ref([])
     const loading = ref(false)
     const supplierInfo = ref(null)
+    const expressNumber = ref('') //快递单号
+    const expressNumberList = ref([])
     const tableData = ref(JSON.parse(JSON.stringify(tableDataList)))
+
+    // 远程搜索单号
+    const getExpressNumberList = async (val) => {
+      console.log(val)
+      loading.value = true
+      const { code, data } = await VE_API.purchase.storageList({
+        page: 1,
+        size: 10,
+        expressNumber: val
+      })
+      if (code == 200) {
+        expressNumberList.value = data
+      }
+      loading.value = false
+    }
+
+    // 根据单号获取商品信息
+    const changeExpressNumber = async (val) => {
+      const { code, data } = await VE_API.purchase.storageGoodsList({
+        expressNumber: val
+      })
+      if (code == 200) {
+        tableData.value = JSON.parse(JSON.stringify(tableDataList))
+        for (let i = 0; i < data.length; i++) {
+          const res = await VE_API.goods.goodsList({
+            page: 1,
+            limit: 10,
+            name: data[i].goodsSn
+          })
+          tableData.value[i] = {
+            goodsInfo: res.data[0],
+            goodsName: data[i].goodsName,
+            goodsId: data[i].goodsId,
+            goodsSn: data[i].goodsSn,
+            sizeList: res.data[0].sizeNames,
+            sizeId: data[i].sizeId,
+            sizeName: data[i].sizeName,
+            quantity: data[i].number,
+            price: 0
+          }
+        }
+      }
+    }
 
     /**
      * @description 远程搜索商品
@@ -365,7 +432,8 @@ export default {
         supplierName: supplierInfo.value.supplierName,
         supplierId: supplierInfo.value.id,
         itemType: 1,
-        goods: goods
+        goods: goods,
+        expressNumber: expressNumber.value
       })
 
       if (code == 200) {
@@ -397,7 +465,11 @@ export default {
       handleDel,
       onSubmit,
       supplierInfo,
-      getSummaries
+      getSummaries,
+      expressNumber,
+      expressNumberList,
+      getExpressNumberList,
+      changeExpressNumber
     }
   }
 }

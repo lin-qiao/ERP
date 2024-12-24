@@ -74,7 +74,7 @@ export default {
         props: { prop: 'category_name', label: '大类' }
       },
       {
-        props: { prop: 'brandNames', label: '尺码', showOverflowTooltip: true },
+        props: { prop: 'brandNames', label: '品牌名称', showOverflowTooltip: true },
         default: (scope) => {
           return scope.row.brandNames.map((item) => item.brandName).join('，')
         }
