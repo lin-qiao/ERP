@@ -11,6 +11,8 @@ var _sale = require("./sale");
 var _sale_goods = require("./sale_goods");
 var _size = require("./size");
 var _stock = require("./stock");
+var _storage = require("./storage");
+var _storage_goods = require("./storage_goods");
 var _supplier = require("./supplier");
 var _user = require("./user");
 
@@ -27,6 +29,8 @@ function initModels(sequelize) {
   var sale_goods = _sale_goods(sequelize, DataTypes);
   var size = _size(sequelize, DataTypes);
   var stock = _stock(sequelize, DataTypes);
+  var storage = _storage(sequelize, DataTypes);
+  var storage_goods = _storage_goods(sequelize, DataTypes);
   var supplier = _supplier(sequelize, DataTypes);
   var user = _user(sequelize, DataTypes);
 
@@ -44,6 +48,8 @@ function initModels(sequelize) {
     sale_goods,
     size,
     stock,
+    storage,
+    storage_goods,
     supplier,
     user,
   };

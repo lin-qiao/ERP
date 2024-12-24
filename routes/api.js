@@ -12,6 +12,7 @@ const businessFlow = require("../server/businessFlow.js");
 const callback = require("../server/callback.js");
 const bill = require("../server/bill.js");
 const category = require("../server/category.js");
+const storage = require("../server/storage.js");
 
 //登录
 router.post("/login", user.userLogin);
@@ -45,6 +46,8 @@ router.post("/goodsUpdate", goods.goodsUpdate);
 router.post("/goodsDelete", goods.goodsDelete);
 //根据货号获取商品信息
 router.get("/getGoodsBySn", goods.getGoodsBySn);
+// 根据条形码获取商品信息
+router.get("/getGoodsByCode", goods.getGoodsByCode);
 //查询库存单品列表
 router.get("/stockList", stock.stockList);
 //查询库存商品列表
@@ -107,5 +110,15 @@ router.get("/categoryList", category.categoryList);
 router.post("/categoryUpdate", category.categoryUpdate);
 // 删除大类
 router.post("/categoryDelete", category.categoryDelete);
+// 签收列表
+router.get("/storageList", storage.storageList);
+// 签收详情
+router.get("/storageDetail", storage.storageDetail);
+// 添加签收
+router.post("/storageAdd", storage.storageAdd);
+// 添加入库
+router.post("/storageGoodsAdd", storage.storageGoodsAdd);
+// 包裹商品列表
+router.get("/storageGoodsList", storage.storageGoodsList);
 
 module.exports = router;

@@ -1,19 +1,23 @@
 const Sequelize = require('sequelize');
 module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('stock', {
+  return sequelize.define('storage_goods', {
     id: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    goods_id: {
-      type: DataTypes.INTEGER,
+    express_number: {
+      type: DataTypes.STRING(255),
       allowNull: false
     },
     code_number: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
+    },
+    goods_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false
     },
     size_id: {
       type: DataTypes.INTEGER,
@@ -23,15 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    cost_price: {
-      type: DataTypes.DOUBLE(20,2),
-      allowNull: false
-    },
-    total_price: {
-      type: DataTypes.DOUBLE(20,2),
-      allowNull: false
-    },
-    update_time: {
+    create_time: {
       type: DataTypes.DATE,
       allowNull: false
     },
@@ -41,7 +37,7 @@ module.exports = function(sequelize, DataTypes) {
     }
   }, {
     sequelize,
-    tableName: 'stock',
+    tableName: 'storage_goods',
     timestamps: false,
     indexes: [
       {
