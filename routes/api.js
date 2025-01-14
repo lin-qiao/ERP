@@ -90,6 +90,8 @@ router.get("/brandSaleStatList", businessFlow.brandSaleStatList);
 router.get("/saleList", sale.saleList);
 //添加销售
 router.post("/saleAdd", sale.saleAdd);
+//添加批量销售
+router.post("/saleBatchAdd", sale.saleBatchAdd);
 //销售详情
 router.get("/saleDetail", sale.saleDetail);
 //撤销销售

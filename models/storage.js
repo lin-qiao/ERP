@@ -81,8 +81,8 @@ const updateStatus = async function ({ expressNumber, status }, t) {
       where: {
         express_number: expressNumber,
       },
-    },
-    t
+      transaction: t,
+    }
   );
 };
 module.exports = {

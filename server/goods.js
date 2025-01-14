@@ -236,9 +236,7 @@ const goodsUpdate = async function (ctx) {
 
     const info = await goodsModel.update(
       { id, name, goodSn, imgUrl, brandId, sizeIds, purchasePrice },
-      {
-        transaction: t,
-      }
+      t
     );
 
     //修改库存表
@@ -256,34 +254,45 @@ const goodsUpdate = async function (ctx) {
     const addList = util.findManyArr(sizeIdList, oldSizeIdList);
     const reduceList = util.findManyArr(oldSizeIdList, sizeIdList);
     if (addList.length) {
-      addList.forEach(async (item) => {
-        await stockModel.create(
-          { id, item, number: 0, costPrice: 0, totalPrice: 0, uid },
+      console.log(id);
+      const sizeIdList = addList.map((item) => ({
+        goods_id: id,
+        size_id: item,
+        number: 0,
+        cost_price: 0,
+        total_price: 0,
+        update_time: new Date(),
+        user_id: uid,
+      }));
+      const stockInfo = await stockModel.bulkCreate(sizeIdList);
+    }
+
+    if (reduceList.length) {
+      for (let i = 0; i < reduceList.length; i++) {
+        const item = reduceList[i];
+        await stockModel.destroy(
+          { goodsId: id, sizeId: item, uid },
           {
             transaction: t,
           }
+        );
+      }
+    }
+
+    if (codeList && codeList.length) {
+      codeList.forEach(async (item) => {
+        await stockModel.updateCodeNumber(
+          {
+            codeNumber: item.codeNumber,
+            goodsId: id,
+            sizeId: item.sizeId,
+            uid,
+          },
+          t
         );
       });
     }
 
-    if (reduceList.length) {
-      reduceList.forEach(async (item) => {
-        await stockModel.destroy(
-          { id, item, uid },
-          {
-            transaction: t,
-          }
-        );
-      });
-    }
-    codeList.forEach(async (item) => {
-      await stockModel.updateCodeNumber(
-        { codeNumber: item.codeNumber, goodsId: id, sizeId: item.sizeId, uid },
-        {
-          transaction: t,
-        }
-      );
-    });
     await t.commit();
     ctx.body = {
       code: 200,
@@ -324,7 +333,12 @@ const goodsDelete = async function (ctx) {
     }
     // 删除商品表
     await goodsModel.destroy(id);
-    await stockModel.destroyByGoodsId(id, uid);
+    await stockModel.destroyByGoodsId(
+      { goodsId: id, uid },
+      {
+        transaction: t,
+      }
+    );
     ctx.body = {
       code: 200,
       message: "删除成功",

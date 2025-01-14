@@ -240,7 +240,7 @@ const destroyByGoodsId = async function ({ goodsId, uid }, t) {
  * @return
  */
 
-const destroy = async function (goodsId, sizeId, uid) {
+const destroy = async function ({ goodsId, sizeId, uid }, t) {
   return stockModel.destroy(
     {
       where: {
@@ -289,8 +289,8 @@ const updateStock = async function (
         goods_id: goodsId,
         user_id: uid,
       },
-    },
-    t
+      transaction: t,
+    }
   );
 };
 
@@ -327,10 +327,9 @@ const sumCostPrice = async function (uid) {
  * @return
  */
 const updateCodeNumber = async function (
-  { codeNumber, goodsId, sizeId, uid },
+  { codeNumber = "", goodsId, sizeId, uid },
   t
 ) {
-  console.log(codeNumber, goodsId, sizeId, uid);
   return stockModel.update(
     {
       code_number: codeNumber,
@@ -341,8 +340,8 @@ const updateCodeNumber = async function (
         goods_id: goodsId,
         user_id: uid,
       },
-    },
-    t
+      transaction: t,
+    }
   );
 };
 

@@ -139,9 +139,7 @@ const purchaseAdd = async function (ctx) {
           sizeId: item.sizeId,
           uid,
         },
-        {
-          transaction: t,
-        }
+        t
       );
 
       //添加库存流水数据
@@ -254,9 +252,7 @@ const purchaseBackout = async function (ctx) {
           sizeId: item.size_id,
           uid,
         },
-        {
-          transaction: t,
-        }
+        t
       );
     }
 
@@ -266,9 +262,7 @@ const purchaseBackout = async function (ctx) {
         status: 2,
         purchaseSn,
       },
-      {
-        transaction: t,
-      }
+      t
     );
 
     //修改流水状态
@@ -276,9 +270,7 @@ const purchaseBackout = async function (ctx) {
       {
         businessSn: purchaseSn,
       },
-      {
-        transaction: t,
-      }
+      t
     );
 
     await t.commit();

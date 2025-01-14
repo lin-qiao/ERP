@@ -103,8 +103,8 @@ const update = async function (
       where: {
         id,
       },
-    },
-    t
+      transaction: t,
+    }
   );
 };
 
