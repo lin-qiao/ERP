@@ -68,9 +68,19 @@ export default {
       component: () => import('@/views/sale/index.vue')
     },
     {
+      path: 'batchSale',
+      name: 'batchSale',
+      component: () => import('@/views/sale/batchSale.vue')
+    },
+    {
       path: 'saleReturn',
       name: 'SaleReturn',
       component: () => import('@/views/saleReturn/index.vue')
+    },
+    {
+      path: 'batchSaleReturn',
+      name: 'batchSaleReturn',
+      component: () => import('@/views/saleReturn/batchSaleReturn.vue')
     },
     {
       path: 'calculator',

@@ -90,7 +90,9 @@ export default {
         name: 'saleSys',
         children: [
           { label: '销售商品', url: '/sale' },
-          { label: '销售退货', url: '/saleReturn' }
+          { label: '销售退货', url: '/saleReturn' },
+          { label: '批量销售', url: '/batchSale' },
+          { label: '批量退货', url: '/batchSaleReturn' }
         ]
       },
       {

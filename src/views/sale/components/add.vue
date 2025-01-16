@@ -75,8 +75,8 @@
         <el-table-column fixed="right" label="操作" width="100" align="center">
           <template v-slot="{ row, $index }">
             <div class="btn">
-              <i class="el-icon-plus" @click="handleAdd"></i>
-              <i class="el-icon-delete" @click="handleDel($index)"></i>
+              <el-icon @click="handleAdd"><Plus /></el-icon>
+              <el-icon @click="handleDel($index)"><Delete /></el-icon>
             </div>
           </template>
         </el-table-column>
@@ -110,9 +110,12 @@ import {
 import { useStore } from 'vuex'
 import selectSize from '@/components/selectSize'
 import { tableDataList } from '@/utils/data'
+import { Plus, Delete } from '@element-plus/icons-vue'
 export default {
   components: {
-    selectSize
+    selectSize,
+    Plus,
+    Delete
   },
   setup(props, { emit }) {
     const { proxy } = getCurrentInstance()
