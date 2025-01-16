@@ -298,7 +298,10 @@ const findAndCountAll = async function (
         attributes: [],
       },
     ],
-    order: [["create_time", "DESC"]],
+    order: [
+      ["create_time", "DESC"],
+      ["id", "ASC"],
+    ],
     limit: size,
     offset: size * (page - 1),
   });

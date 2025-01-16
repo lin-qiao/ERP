@@ -225,7 +225,18 @@ const saleBatchAdd = async function (ctx) {
     for (let i = 0; i < goods.length; i++) {
       const item = goods[i];
       const goodInfo = await goodsModel.findByGoodsSn(item.goodsSn, uid);
+      console.log(item.goodsName, goodInfo);
+      if (!goodInfo) {
+        throw new Error(
+          "第" + i + "行" + item.goodsName + item.sizeName + "商品信息未录入"
+        );
+      }
       const sizeInfo = await sizeModel.findByName(item.sizeName, uid);
+      if (!sizeInfo) {
+        throw new Error(
+          "第" + i + "行" + item.goodsName + item.sizeName + "尺码信息未录入"
+        );
+      }
       const quantity = Number(item.quantity);
       const price = Number(item.price);
       const amount = quantity * price;
@@ -298,10 +309,11 @@ const saleBatchAdd = async function (ctx) {
       await businessFlowModel.create(flowData, {
         transaction: t,
       });
-      console.log(111111111111111111111111111, number);
       // 如果number = 0;  当前商品售空， 成本单价变为0
       if (number < 0) {
-        throw new Error(item.goodsName + item.sizeName + "库存错误，请核对");
+        throw new Error(
+          "第" + i + "行" + item.goodsName + item.sizeName + "库存错误，请核对"
+        );
       }
 
       await stockModel.updateStock(
