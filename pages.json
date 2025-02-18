@@ -207,7 +207,10 @@
         "navigationBarTextStyle" : "white",
         "navigationBarTitleText" : "管理系统",
         "navigationBarBackgroundColor" : "#01c2c3",
-        "backgroundColor" : "#F8F8F8"
+        "backgroundColor" : "#F8F8F8",
+		"app-plus": {
+		    "bounce": "none"
+		}
     },
     "tabBar" : {
         "color" : "#d7d7d7",

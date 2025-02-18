@@ -359,6 +359,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding-bottom: 88rpx;
+		overflow-y: auto;
 	}
 
 	.code-con {
