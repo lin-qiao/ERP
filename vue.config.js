@@ -19,13 +19,13 @@ module.exports = {
   devServer: {
     proxy: {
       '/api': {
-        // target: 'http://47.117.133.236/',
+        // target: 'http://106.14.195.115/',
         target: 'http://localhost:3000/',
         ws: true,
         changeOrigin: true
       },
       '/h5': {
-        // target: 'http://47.117.133.236/',
+        // target: 'http://106.14.195.115/',
         target: 'https://h5api.m.tmall.com/',
         ws: true,
         changeOrigin: true
