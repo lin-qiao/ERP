@@ -280,7 +280,8 @@ const goodsUpdate = async function (ctx) {
     }
 
     if (codeList && codeList.length) {
-      codeList.forEach(async (item) => {
+      for (let i = 0; i < codeList.length; i++) {
+        const item = codeList[i];
         await stockModel.updateCodeNumber(
           {
             codeNumber: item.codeNumber,
@@ -290,7 +291,7 @@ const goodsUpdate = async function (ctx) {
           },
           t
         );
-      });
+      }
     }
 
     await t.commit();
