@@ -73,6 +73,11 @@ export default {
       component: () => import('@/views/sale/batchSale.vue')
     },
     {
+      path: 'batchQmSale',
+      name: 'batchQmSale',
+      component: () => import('@/views/sale/batchQmSale.vue')
+    },
+    {
       path: 'saleReturn',
       name: 'SaleReturn',
       component: () => import('@/views/saleReturn/index.vue')
@@ -81,6 +86,11 @@ export default {
       path: 'batchSaleReturn',
       name: 'batchSaleReturn',
       component: () => import('@/views/saleReturn/batchSaleReturn.vue')
+    },
+    {
+      path: 'batchQmSaleReturn',
+      name: 'batchQmSaleReturn',
+      component: () => import('@/views/saleReturn/batchQmSaleReturn.vue')
     },
     {
       path: 'calculator',

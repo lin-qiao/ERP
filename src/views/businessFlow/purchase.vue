@@ -275,7 +275,8 @@ export default {
       } else if (orderSn.indexOf('JT') != -1) {
         url = '/purchaseReturn?orderSn=' + orderSn
       }
-      router.push(url)
+      window.open(url)
+      // router.push(url)
     }
     /**
      * @description  改变type
