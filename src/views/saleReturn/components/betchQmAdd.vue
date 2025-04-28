@@ -64,8 +64,9 @@
           </template>
         </el-table-column>
       </el-table>
+
       <div class="operation">
-        <el-button type="primary" @click="onSubmit">销售</el-button>
+        <el-button type="primary" @click="onSubmit">退货</el-button>
       </div>
     </el-form>
   </el-card>
@@ -105,7 +106,7 @@ const httpExcelRequest = async (op) => {
     if (index < 3) return
     let sizeName = item[8].split(' ')
     sizeName = sizeName[sizeName.length - 1]
-    const filter = data.filter((value) => value.goodsName == item[2] && value.sizeName == sizeName)
+    const filter = data.filter((value) => value.goodsName == item[5] && value.sizeName == sizeName)
     if (filter.length) {
       console.log(filter[0])
       filter[0].quantity = filter[0].quantity + 1
@@ -199,7 +200,7 @@ const onSubmit = async () => {
   }
 
   const { code, data, message } = await VE_API.sale.saleBatchAdd({
-    itemType: 1,
+    itemType: 2,
     goods: excelList.value
   })
 
