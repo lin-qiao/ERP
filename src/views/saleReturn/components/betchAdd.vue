@@ -104,18 +104,31 @@ const httpExcelRequest = async (op) => {
   const data = []
   excelData.forEach((item) => {
     let sizeName = item[8].split(' ')
+    let goodsSn = item[5]
+    if (item[7] == 'CAMEL骆驼') {
+      goodsSn = goodsSn + sizeName[0]
+    }
     sizeName = sizeName[sizeName.length - 1]
-    const filter = data.filter((value) => value.goodsName == item[4] && value.sizeName == sizeName)
+    if (sizeName == '2XL') {
+      sizeName = 'XXL'
+    } else if (sizeName == '3XL') {
+      sizeName = 'XXXL'
+    }
+
+    const filter = data.filter((value) => value.sizeName == sizeName && value.goodsSn == goodsSn)
     if (filter.length) {
       console.log(filter[0])
       filter[0].quantity = filter[0].quantity + 1
+      filter[0].totalPrice = filter[0].totalPrice + Math.abs(item[13])
+      filter[0].price = filter[0].totalPrice / filter[0].quantity
     } else {
       data.push({
         goodsName: item[4],
-        goodsSn: item[5],
+        goodsSn: goodsSn,
         sizeName: sizeName,
         quantity: 1,
-        price: item[13]
+        price: Math.abs(item[13]),
+        totalPrice: Math.abs(item[13])
       })
     }
   })

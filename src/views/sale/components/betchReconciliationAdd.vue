@@ -3,7 +3,7 @@
     <template #header>
       <div class="card-header">
         <div class="flex">
-          <span>销售单</span>
+          <span>对账单入账</span>
           <!-- 上传excel -->
           <el-upload
             :ref="(el) => handleSetUploadRefMap(el)"
@@ -95,16 +95,17 @@ const httpExcelRequest = async (op) => {
   let file = op.file
   let dataBinary = await readFile(file)
   let workBook = xlsx.read(dataBinary, { type: 'binary', cellDates: true })
-  let workSheet = workBook.Sheets[workBook.SheetNames[0]]
+  let workSheet = workBook.Sheets[workBook.SheetNames[1]]
   const excelData = xlsx.utils.sheet_to_json(workSheet, { header: 1 })
-  excelData.shift()
-
+  excelData.splice(0, 3)
   console.log(excelData)
   const data = []
   excelData.forEach((item) => {
-    let sizeName = item[8].split(' ')
-    let goodsSn = item[5]
-    if (item[7] == 'CAMEL骆驼') {
+    console.log(item[84])
+    if (item[84] !== '已结算') return
+    let sizeName = item[5].split(' ')
+    let goodsSn = item[3].split(',')[0]
+    if (item[2].includes('CAMEL骆驼')) {
       goodsSn = goodsSn + sizeName[0]
     }
     sizeName = sizeName[sizeName.length - 1]
@@ -119,16 +120,16 @@ const httpExcelRequest = async (op) => {
     if (filter.length) {
       console.log(filter[0])
       filter[0].quantity = filter[0].quantity + 1
-      filter[0].totalPrice = filter[0].totalPrice + Math.abs(item[13])
+      filter[0].totalPrice = filter[0].totalPrice + Math.abs(item[82])
       filter[0].price = filter[0].totalPrice / filter[0].quantity
     } else {
       data.push({
-        goodsName: item[4],
+        goodsName: item[2],
         goodsSn: goodsSn,
         sizeName: sizeName,
         quantity: 1,
-        price: Math.abs(item[13]),
-        totalPrice: Math.abs(item[13])
+        price: Math.abs(item[82]),
+        totalPrice: Math.abs(item[82])
       })
     }
   })

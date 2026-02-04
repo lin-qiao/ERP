@@ -78,6 +78,11 @@ export default {
       component: () => import('@/views/sale/batchQmSale.vue')
     },
     {
+      path: 'batchReconciliationSale',
+      name: 'batchReconciliationSale',
+      component: () => import('@/views/sale/batchReconciliationSale.vue')
+    },
+    {
       path: 'saleReturn',
       name: 'SaleReturn',
       component: () => import('@/views/saleReturn/index.vue')

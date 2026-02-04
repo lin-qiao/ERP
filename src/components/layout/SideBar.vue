@@ -93,6 +93,7 @@ export default {
           { label: '销售退货', url: '/saleReturn' },
           { label: '批量销售', url: '/batchSale' },
           { label: '批量退货', url: '/batchSaleReturn' },
+          { label: '对账单入账', url: '/batchReconciliationSale' },
           { label: '企卖批量销售', url: '/batchQmSale' },
           { label: '企卖批量退货', url: '/batchQmSaleReturn' }
         ]

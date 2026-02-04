@@ -109,7 +109,7 @@ const httpExcelRequest = async (op) => {
     if (filter.length) {
       console.log(filter[0])
       filter[0].quantity = filter[0].quantity + 1
-      filter[0].totalPrice = filter[0].totalPrice + Number(item[77])
+      filter[0].totalPrice = filter[0].totalPrice + Number(item[78])
       filter[0].price = filter[0].totalPrice / filter[0].quantity
     } else {
       data.push({
@@ -117,8 +117,8 @@ const httpExcelRequest = async (op) => {
         goodsSn: item[3].split(',')[0],
         sizeName: sizeName,
         quantity: 1,
-        price: Number(item[77]),
-        totalPrice: Number(item[77])
+        price: Number(item[78]),
+        totalPrice: Number(item[78])
       })
     }
   })
