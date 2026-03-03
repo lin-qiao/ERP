@@ -9,6 +9,7 @@
 import { createApp } from 'vue'
 import ElementPlus from '../node_modules/element-plus'
 import '@/styles/element-plus.scss'
+import zhCn from 'element-plus/es/locale/lang/zh-cn'
 import axios from '@/plugins/axios'
 import App from '@/App.vue'
 import router from '@/router'
@@ -20,7 +21,9 @@ import 'normalize.css/normalize.css'
 import 'nprogress/nprogress.css'
 import '@/styles/common.scss'
 const app = createApp(App)
-app.use(ElementPlus)
+app.use(ElementPlus, {
+  locale: zhCn
+})
 app
   .use(store)
   .use(router)

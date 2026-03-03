@@ -21,6 +21,19 @@
         </el-option>
       </el-select>
     </el-form-item>
+    <el-form-item label="日期" prop="saleTime">
+      <el-date-picker
+        v-model="saleTime"
+        type="daterange"
+        value-format="YYYY-MM-DD"
+        unlink-panels
+        range-separator="至"
+        start-placeholder="开始日期"
+        end-placeholder="结束日期"
+        @change="changeTime"
+      >
+      </el-date-picker>
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="handleSubmit">搜索</el-button>
       <el-button @click="handleReset">重置</el-button>
@@ -224,8 +237,11 @@ export default {
       total: 0,
       type: 'thisMonth',
       name: '',
-      brandId: ''
+      brandId: '',
+      startTime: '',
+      endTime: ''
     })
+    const saleTime = ref([])
     const tableData = ref([])
     const brandList = ref([])
     let { size, page, total, type, name, brandId } = toRefs(params)
@@ -267,6 +283,8 @@ export default {
     const getSaleCount = async () => {
       const { code, data } = await VE_API.businessFlow.saleCount({
         type: type.value,
+        startTime: params.startTime,
+        endTime: params.endTime,
         name: name.value,
         brandId: brandId.value
       })
@@ -294,6 +312,17 @@ export default {
       getSaleCount()
     }
 
+    const changeTime = () => {
+      if (saleTime.value && saleTime.value.length) {
+        params.startTime = saleTime.value[0]
+        params.endTime = saleTime.value[1]
+        type.value = ''
+      } else {
+        type.value = 'thisMonth'
+      }
+
+      handleSubmit()
+    }
     const handleReset = () => {
       resetForm(queryForm.value, params, getDataList)
       getSaleCount()
@@ -306,6 +335,9 @@ export default {
      */
     const handleChangeType = async (value) => {
       params.type = value
+      saleTime.value = []
+      params.startTime = ''
+      params.endTime = ''
       onSubmit(params, getDataList)
       getSaleCount()
     }
@@ -336,7 +368,9 @@ export default {
       resetForm,
       handleSubmit,
       handleReset,
-      other
+      saleTime,
+      other,
+      changeTime
     }
   }
 }
