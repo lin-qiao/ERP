@@ -86,6 +86,16 @@ export default {
         ]
       },
       {
+        label: '订单管理',
+        name: 'orderSys',
+        children: [
+          { label: '订单列表', url: '/orderList' },
+          { label: '导入订单', url: '/orderExport' },
+          { label: '对账单入账', url: '/creditExport' },
+          { label: '涉税信息', url: '/taxFiling' }
+        ]
+      },
+      {
         label: '销售管理',
         name: 'saleSys',
         children: [

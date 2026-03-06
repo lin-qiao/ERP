@@ -303,6 +303,8 @@ export default {
         url = '/sale?orderSn=' + orderSn
       } else if (orderSn.indexOf('PT') != -1) {
         url = '/saleReturn?orderSn=' + orderSn
+      } else {
+        url = '/orderList?orderSn=' + orderSn
       }
       router.push(url)
     }

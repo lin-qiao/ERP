@@ -111,6 +111,26 @@ export default {
       path: 'category',
       name: 'category',
       component: () => import('@/views/category/index.vue')
+    },
+    {
+      path: 'orderList',
+      name: 'orderList',
+      component: () => import('@/views/order/orderList.vue')
+    },
+    {
+      path: 'orderExport',
+      name: 'orderExport',
+      component: () => import('@/views/order/orderExport.vue')
+    },
+    {
+      path: 'creditExport',
+      name: 'creditExport',
+      component: () => import('@/views/order/creditExport.vue')
+    },
+    {
+      path: 'taxFiling',
+      name: 'taxFiling',
+      component: () => import('@/views/order/taxFiling.vue')
     }
   ]
 }
