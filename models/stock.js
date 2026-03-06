@@ -122,13 +122,15 @@ const findByGoodsId = async function (goodsId, uid) {
  * @param
  * @return
  */
-const findBySizeAndGoods = async function (goodsId, sizeId, uid) {
+const findBySizeAndGoods = async function (goodsId, sizeId, uid, t) {
   return stockModel.findOne({
     where: {
       goods_id: goodsId,
       size_id: sizeId,
       user_id: uid,
     },
+    transaction: t,
+    lock: t.LOCK.UPDATE,
   });
 };
 /**
@@ -295,6 +297,32 @@ const updateStock = async function (
 };
 
 /**
+ * @description 减少库存数据
+ * @param
+ * @return
+ */
+const decrementStock = async function (
+  { costPrice, number, goodsId, sizeId, uid },
+  t
+) {
+  return stockModel.decrement(
+    {
+      total_price: costPrice,
+      number: number,
+    },
+    {
+      where: {
+        size_id: sizeId,
+        goods_id: goodsId,
+        user_id: uid,
+      },
+      transaction: t,
+      lock: t.LOCK.UPDATE,
+    }
+  );
+};
+
+/**
  * @description 获取当前用户库存总数
  * @param
  * @return
@@ -360,4 +388,5 @@ module.exports = {
   sumCostPrice,
   updateCodeNumber,
   findByCode,
+  decrementStock,
 };

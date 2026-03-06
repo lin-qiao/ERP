@@ -299,8 +299,8 @@ const findAndCountAll = async function (
       },
     ],
     order: [
+      ["id", "DESC"],
       ["create_time", "DESC"],
-      ["id", "ASC"],
     ],
     limit: size,
     offset: size * (page - 1),
@@ -337,6 +337,7 @@ const create = async function (
     totalBusinessPrice,
     grossProfitPrice,
     uid,
+    createTime,
   },
   t
 ) {
@@ -355,7 +356,7 @@ const create = async function (
       gross_profit_price: grossProfitPrice,
       total_business_price: totalBusinessPrice,
       status: 1,
-      create_time: new Date(),
+      create_time: createTime || new Date(),
     },
     t
   );

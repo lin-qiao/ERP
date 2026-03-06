@@ -98,7 +98,12 @@ const purchaseAdd = async function (ctx) {
         number, //库存
         cost_price: costPrice, //单价
         total_price: totalPrice, //总价
-      } = await stockModel.findBySizeAndGoods(item.goodsId, item.sizeId, uid);
+      } = await stockModel.findBySizeAndGoods(
+        item.goodsId,
+        item.sizeId,
+        uid,
+        t
+      );
       if (itemType == 1) {
         totalPrice += amount;
         number += quantity;
@@ -227,7 +232,12 @@ const purchaseBackout = async function (ctx) {
         number,
         cost_price: costPrice,
         total_price: totalPrice,
-      } = await stockModel.findBySizeAndGoods(item.goods_id, item.size_id, uid);
+      } = await stockModel.findBySizeAndGoods(
+        item.goods_id,
+        item.size_id,
+        uid,
+        t
+      );
 
       if (itemType == 1) {
         totalPrice -= amount;

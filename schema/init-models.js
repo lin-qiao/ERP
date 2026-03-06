@@ -5,6 +5,7 @@ var _brand = require("./brand");
 var _business_flow = require("./business_flow");
 var _category = require("./category");
 var _goods = require("./goods");
+var _order = require("./order");
 var _purchase = require("./purchase");
 var _purchase_goods = require("./purchase_goods");
 var _sale = require("./sale");
@@ -23,6 +24,7 @@ function initModels(sequelize) {
   var business_flow = _business_flow(sequelize, DataTypes);
   var category = _category(sequelize, DataTypes);
   var goods = _goods(sequelize, DataTypes);
+  var order = _order(sequelize, DataTypes);
   var purchase = _purchase(sequelize, DataTypes);
   var purchase_goods = _purchase_goods(sequelize, DataTypes);
   var sale = _sale(sequelize, DataTypes);
@@ -42,6 +44,7 @@ function initModels(sequelize) {
     business_flow,
     category,
     goods,
+    order,
     purchase,
     purchase_goods,
     sale,

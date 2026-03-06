@@ -13,6 +13,7 @@ const callback = require("../server/callback.js");
 const bill = require("../server/bill.js");
 const category = require("../server/category.js");
 const storage = require("../server/storage.js");
+const order = require("../server/order.js");
 
 //登录
 router.post("/login", user.userLogin);
@@ -122,5 +123,17 @@ router.post("/storageAdd", storage.storageAdd);
 router.post("/storageGoodsAdd", storage.storageGoodsAdd);
 // 包裹商品列表
 router.get("/storageGoodsList", storage.storageGoodsList);
+// 导入订单
+router.post("/orderExport", order.orderExport);
+// 订单列表
+router.get("/orderList", order.orderList);
+// 批量修改订单
+router.post("/betchOrderEdit", order.betchOrderEdit);
+// 订单统计
+router.get("/orderCount", order.orderCount);
+// 税务统计
+router.get("/taxFilingCount", order.taxFilingCount);
+// 订单删除
+router.get("/orderDel", order.orderDel);
 
 module.exports = router;

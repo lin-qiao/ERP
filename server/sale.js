@@ -107,7 +107,12 @@ const saleAdd = async function (ctx) {
         number,
         cost_price: newCostPrice,
         total_price: totalPrice,
-      } = await stockModel.findBySizeAndGoods(item.goodsId, item.sizeId, uid);
+      } = await stockModel.findBySizeAndGoods(
+        item.goodsId,
+        item.sizeId,
+        uid,
+        t
+      );
 
       let oldCostPrice, grossProfitPrice;
       //销售，减少库存
@@ -228,13 +233,25 @@ const saleBatchAdd = async function (ctx) {
       console.log(item.goodsName, goodInfo);
       if (!goodInfo) {
         throw new Error(
-          "第" + i + "行" + item.goodsName + item.sizeName + "商品信息未录入"
+          "第" +
+            i +
+            1 +
+            "行" +
+            item.goodsName +
+            item.sizeName +
+            "商品信息未录入"
         );
       }
       const sizeInfo = await sizeModel.findByName(item.sizeName, uid);
       if (!sizeInfo) {
         throw new Error(
-          "第" + i + "行" + item.goodsName + item.sizeName + "尺码信息未录入"
+          "第" +
+            i +
+            1 +
+            +"行" +
+            item.goodsName +
+            item.sizeName +
+            "尺码信息未录入"
         );
       }
       const quantity = Number(item.quantity);
@@ -261,7 +278,7 @@ const saleBatchAdd = async function (ctx) {
         number,
         cost_price: newCostPrice,
         total_price: totalPrice,
-      } = await stockModel.findBySizeAndGoods(goodInfo.id, sizeInfo.id, uid);
+      } = await stockModel.findBySizeAndGoods(goodInfo.id, sizeInfo.id, uid, t);
       console.log(number, quantity);
       let oldCostPrice, grossProfitPrice;
       //销售，减少库存
@@ -385,7 +402,12 @@ const saleBackout = async function (ctx) {
       const price = Number(item.price);
       const amount = quantity * price;
       let { number, total_price: totalPrice } =
-        await stockModel.findBySizeAndGoods(item.goods_id, item.size_id, uid);
+        await stockModel.findBySizeAndGoods(
+          item.goods_id,
+          item.size_id,
+          uid,
+          t
+        );
       let { cost_price: costPrice } = await businessFlowModel.findOne(
         item.goods_id,
         item.size_id,
